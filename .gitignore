@@ -60,4 +60,7 @@ node_modules/
 
 # Task files
 tasks.json
-tasks/ 
+tasks/
+
+# Orval generated API clients (regenerate with `pnpm generate:api`)
+lib/api/generated/
