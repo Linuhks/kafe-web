@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { ShoppingCart, Coffee, LogOut, User } from 'lucide-react'
+import Link from 'next/link'
+import { ShoppingCart, Coffee, LogOut, User, ClipboardList } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useCart } from '@/context/CartContext'
 import { useAuth } from '@/context/AuthContext'
@@ -34,6 +35,15 @@ export default function NavBar() {
                   <LogOut className="h-4 w-4" />
                 </Button>
               </div>
+            )}
+
+            {user?.role === 'CLIENT' && (
+              <Button variant="ghost" size="sm" asChild>
+                <Link href="/orders/me">
+                  <ClipboardList className="h-4 w-4" />
+                  <span className="ml-1 hidden sm:inline">Meus Pedidos</span>
+                </Link>
+              </Button>
             )}
 
             {showCart && (

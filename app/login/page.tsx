@@ -52,13 +52,7 @@ export default function LoginPage() {
           body: JSON.stringify({ token }),
         })
 
-        setUser({
-          id: user.id as string,
-          name: user.name as string,
-          email: user.email as string,
-          role: user.role as UserRole,
-          isActive: user.isActive as boolean,
-        })
+        setUser(user)
 
         router.push(dashboardForRole(user.role as UserRole))
       } else {

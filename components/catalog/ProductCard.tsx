@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import { ShoppingCart, Coffee } from 'lucide-react'
+import { ShoppingCart } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useCart } from '@/context/CartContext'
 import { useToast } from '@/context/ToastContext'
@@ -23,23 +23,17 @@ export default function ProductCard({ product }: ProductCardProps) {
   return (
     <div className="flex flex-col rounded-lg border bg-card overflow-hidden">
       <div className="relative aspect-square bg-muted">
-        {product.imageUrl ? (
-          <Image
-            src={product.imageUrl}
-            alt={product.name}
-            fill
-            className="object-cover"
-          />
-        ) : (
-          <div className="flex h-full items-center justify-center text-muted-foreground">
-            <Coffee className="h-12 w-12" />
-          </div>
-        )}
+        <Image
+          src={typeof product.imageUrl === 'string' ? product.imageUrl : '/images/product-placeholder.svg'}
+          alt={product.name}
+          fill
+          className="object-cover"
+        />
       </div>
       <div className="flex flex-col gap-2 p-4">
         <div>
           <h3 className="font-medium leading-tight">{product.name}</h3>
-          {product.description && (
+          {typeof product.description === 'string' && product.description && (
             <p className="mt-1 text-sm text-muted-foreground line-clamp-2">
               {product.description}
             </p>
@@ -47,7 +41,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         </div>
         <div className="flex items-center justify-between mt-auto pt-2">
           <span className="font-semibold">
-            {product.price.toLocaleString('pt-BR', {
+            {Number(product.price).toLocaleString('pt-BR', {
               style: 'currency',
               currency: 'BRL',
             })}

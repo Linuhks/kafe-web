@@ -1,0 +1,496 @@
+<context>
+# Overview
+Kafe Web is a full-featured café management frontend built with Next.js 16 (App Router). It serves three distinct user types — customers, baristas, and admins — through a single application with role-based views. The system solves the problem of managing a café's entire operation in one place: customers browse a product catalog and place orders without needing an account; baristas manage an order queue in real time; and admins control the full business — products, categories, users, inventory, and analytics.
+
+The frontend connects to an existing NestJS REST API. All business logic and data persistence live in the backend. The frontend's job is to expose that API surface through clear, role-appropriate UIs.
+
+# Core Features
+
+## 1. Public Product Catalog & Order Creation
+- **What it does:** Displays all available products organized by category. Customers add items to a cart and submit an order (anonymously or as an authenticated client).
+- **Why it's important:** This is the primary revenue-generating flow. It must work without an account.
+- **How it works:** Fetches categories (GET /categories) and products (GET /products?categoryId=) as Server Components. Cart state is managed client-side with React Context + sessionStorage. Order submission calls POST /orders.
+
+## 2. Authentication
+- **What it does:** Login flow using email + password. JWT stored in an httpOnly cookie. Middleware protects role-gated routes.
+- **Why it's important:** Barista and admin interfaces require authenticated sessions. Client accounts enable order history.
+- **How it works:** Login page posts to a Next.js route handler (POST /api/auth/login) which calls POST /auth/login on the NestJS API, sets an httpOnly cookie with the JWT, then redirects. Middleware decodes the JWT payload (no signature verification needed — backend enforces auth) to determine role and protect routes.
+
+## 3. Client Order History
+- **What it does:** Authenticated clients can view their past orders with status.
+- **Why it's important:** Builds trust and gives customers visibility into their order progression.
+- **How it works:** GET /orders/me fetched as a Server Component. Status displayed with color-coded badges.
+
+## 4. Barista Order Queue
+- **What it does:** Baristas see a live-updating queue of active orders (RECEIVED and IN_PREPARATION). They advance order status with a single button click.
+- **Why it's important:** The operational heart of the café. Must be real-time.
+- **How it works:** Client Component polling GET /orders/queue every 15 seconds. Status updates call PATCH /orders/:id/status. Inventory alert banner at top if GET /inventory/alerts returns any items.
+
+## 5. Admin Dashboard
+- **What it does:** Displays sales summary, top-selling products, and peak order hours for a configurable date range.
+- **Why it's important:** Gives the owner actionable business intelligence.
+- **How it works:** Three parallel Server Component fetches to /dashboard/summary, /dashboard/top-products, and /dashboard/peak-hours. Date range controlled via URL params. Peak hours rendered as native SVG bar chart (no chart library).
+
+## 6. Admin Product & Category Management
+- **What it does:** Full CRUD for products and categories. Toggle product availability. Manage product ingredient recipes.
+- **Why it's important:** Admins need to update the menu without developer intervention.
+- **How it works:** Server-rendered list pages with client-side modals for create/edit/delete confirmations. API calls go to /products and /categories endpoints.
+
+## 7. Admin User Management
+- **What it does:** List, create, edit, and deactivate users. Assign roles (ADMIN, BARISTA, CLIENT).
+- **Why it's important:** Admins control who has access to what.
+- **How it works:** CRUD against /users endpoints. Role assignment via dropdown.
+
+## 8. Admin Inventory Management
+- **What it does:** List ingredients with stock levels, restock ingredients, view stock movement history.
+- **Why it's important:** Prevents ingredient shortages that would make menu items unavailable.
+- **How it works:** Server-rendered list from GET /inventory. Restock form calls POST /inventory/:id/restock. Movements table from GET /inventory/movements with date + ingredient filters.
+
+# User Experience
+
+## User Personas
+
+**Anonymous Customer:** Walks up to a kiosk or scans a QR code. Wants to see the menu, pick items, and submit an order quickly. No desire to create an account.
+
+**Client (Registered Customer):** Regular customer who logs in to track their order history. Expects their name pre-filled on orders.
+
+**Barista:** Staff member working the counter. Needs a clear, fast interface to manage their queue. Always authenticated. Views on tablet or desktop.
+
+**Admin / Owner:** Manages the business. Updates the menu seasonally, monitors sales, manages stock. Views on desktop.
+
+## Key User Flows
+
+**Customer order flow:**
+1. Land on / -> see product grid organized by category tabs
+2. Click product -> add to cart (slide-in cart sidebar or bottom bar on mobile)
+3. Click "Place Order" -> fill in name + optional notes -> confirm -> see order confirmation with order ID
+
+**Barista queue flow:**
+1. Login -> redirect to /barista/queue
+2. See cards for each active order (RECEIVED -> IN_PREPARATION -> READY)
+3. Click "Start Preparation" -> status advances to IN_PREPARATION
+4. Click "Ready" -> status advances to READY
+5. Click "Delivered" -> order leaves the queue
+
+**Admin menu update flow:**
+1. Login -> redirect to /admin/dashboard
+2. Navigate to /admin/products -> click "New Product"
+3. Fill form (name, category, price, image URL, description) -> Save
+4. Product appears on public catalog immediately
+
+## UI/UX Considerations
+- Mobile-first layout for public catalog (customers on phones)
+- Tablet-optimized for barista queue (fixed at counter)
+- Desktop-first for admin panel (keyboard + mouse)
+- Color-coded order status badges consistent across all views:
+  - RECEIVED: blue, IN_PREPARATION: amber, READY: green, DELIVERED: gray, CANCELLED: red
+- Toast notifications for all mutations (success + error)
+- Skeleton loaders for all async data
+- Confirm modal before any destructive action (delete, cancel order)
+- Unsaved changes warning on admin forms (beforeunload)
+</context>
+
+<PRD>
+# Technical Architecture
+
+## Folder Structure
+```
+kafe-web/
+├── app/
+│   ├── layout.tsx                    # Root layout: AuthProvider, CartProvider, ToastProvider, NavBar
+│   ├── page.tsx                      # Public catalog (Server Component)
+│   ├── login/
+│   │   └── page.tsx                  # Login form (Client Component)
+│   ├── orders/
+│   │   └── me/page.tsx               # My orders history (Server Component, auth required)
+│   ├── barista/
+│   │   └── queue/page.tsx            # Order queue (Client Component with polling)
+│   ├── admin/
+│   │   ├── layout.tsx                # Admin shell layout with sidebar nav
+│   │   ├── dashboard/page.tsx        # Dashboard (Server Component)
+│   │   ├── products/
+│   │   │   ├── page.tsx              # Product list (Server Component)
+│   │   │   ├── new/page.tsx          # Create product form
+│   │   │   └── [id]/edit/page.tsx    # Edit product form
+│   │   ├── categories/
+│   │   │   ├── page.tsx
+│   │   │   ├── new/page.tsx
+│   │   │   └── [id]/edit/page.tsx
+│   │   ├── users/
+│   │   │   ├── page.tsx
+│   │   │   ├── new/page.tsx
+│   │   │   └── [id]/edit/page.tsx
+│   │   └── inventory/
+│   │       ├── page.tsx
+│   │       ├── movements/page.tsx
+│   │       └── [id]/restock/page.tsx
+│   └── api/
+│       ├── auth/
+│       │   ├── login/route.ts        # Sets httpOnly cookie
+│       │   └── logout/route.ts       # Clears cookie
+│       └── orders/
+│           └── route.ts              # Proxies POST /orders (anonymous)
+├── lib/
+│   ├── types/index.ts                # All shared TypeScript interfaces
+│   └── api/
+│       ├── client.ts                 # Base fetch wrapper (server + client paths)
+│       ├── auth.ts
+│       ├── categories.ts
+│       ├── products.ts
+│       ├── orders.ts
+│       ├── users.ts
+│       ├── inventory.ts
+│       └── dashboard.ts
+├── context/
+│   ├── AuthContext.tsx               # Client-side user/role state
+│   ├── CartContext.tsx               # Cart items + sessionStorage sync
+│   └── ToastContext.tsx              # Global toast queue
+├── components/
+│   ├── ui/                           # Button, Input, Select, Modal, Toast, Skeleton, Badge, Pagination
+│   ├── catalog/                      # ProductCard, CategoryTabs, CartSidebar, OrderForm
+│   ├── barista/                      # OrderQueueCard, StatusButton, InventoryAlertBanner
+│   ├── admin/                        # DataTable, DateRangePicker, PeakHoursChart (SVG), ConfirmModal
+│   └── layout/                       # NavBar, AdminSidebar
+├── middleware.ts                      # JWT decode + route protection
+└── app/globals.css                   # Tailwind 4 @theme with brand colors
+```
+
+## Authentication Strategy
+- JWT stored in httpOnly cookie named `kafe_token`
+- Next.js route handler POST /api/auth/login calls NestJS, receives token, sets cookie via Set-Cookie header
+- middleware.ts runs at the edge, decodes JWT payload (no crypto verification), reads `role` field, enforces:
+  - /barista/* -> requires BARISTA or ADMIN
+  - /admin/* -> requires ADMIN
+  - /orders/me -> requires any authenticated role
+  - /login -> redirects to dashboard if already authenticated
+- Server Components read the token from next/headers cookies() and forward it as Authorization: Bearer
+- Client Components never call NestJS directly; they call Next.js route handlers
+
+## API Client (lib/api/client.ts)
+```typescript
+// Server-side: reads token from next/headers
+// Client-side: token forwarded by route handlers
+export async function apiRequest<T>(
+  path: string,
+  options?: RequestInit & { token?: string }
+): Promise<T>
+```
+All API modules export typed functions using apiRequest.
+Example: getProducts(query: ListProductsQuery): Promise<PaginatedResponse<Product>>
+
+## Key TypeScript Types (lib/types/index.ts)
+- User { id, name, email, role, isActive }
+- Category { id, name, description, sortOrder, isActive }
+- Product { id, categoryId, name, description, price, imageUrl, isAvailable }
+- Order { id, clientName, notes, status, items, createdAt, updatedAt }
+- OrderItem { productId, productName, quantity, unitPrice }
+- OrderStatus = 'RECEIVED' | 'IN_PREPARATION' | 'READY' | 'DELIVERED' | 'CANCELLED'
+- Ingredient { id, name, unit, currentStock, minimumStock }
+- StockMovement { id, ingredientId, type, quantity, note, orderId, createdAt }
+- DashboardSummary { totalOrders, totalRevenue, averageOrderValue }
+- TopProduct { productId, productName, quantitySold, revenue }
+- PeakHour { hour: number, orderCount: number }
+- PaginatedResponse<T> { data: T[], total, page, limit }
+- UserRole = 'ADMIN' | 'BARISTA' | 'CLIENT'
+
+## Server vs Client Components
+- Catalog page (/): Server — SEO + initial load performance
+- CategoryTabs: Client — interactive filter selection
+- CartSidebar: Client — local state
+- Barista queue: Client — polling
+- Dashboard: Server — no interactivity; parallel data fetch
+- DateRangePicker: Client — user interaction
+- Admin list pages: Server — simple data display
+- Admin create/edit forms: Client — form state + validation
+
+## Route Protection (middleware.ts)
+```typescript
+const PROTECTED_ROUTES = [
+  { pattern: /^\/admin/, roles: ['ADMIN'] },
+  { pattern: /^\/barista/, roles: ['BARISTA', 'ADMIN'] },
+  { pattern: /^\/orders\/me/, roles: ['CLIENT', 'BARISTA', 'ADMIN'] },
+];
+```
+JWT payload decoded with a pure base64 decode (no library, edge-safe).
+Unauthenticated users redirected to /login. Wrong role redirected to /.
+
+## Backend API Surface (NestJS — already built)
+
+### Auth
+- POST /auth/login — { email, password } -> { token, user }
+
+### Users (ADMIN only)
+- GET /users?page&limit
+- GET /users/:id
+- POST /users — { name, email, password, role }
+- PATCH /users/:id — { name, role, isActive }
+- DELETE /users/:id
+
+### Categories (public GET, ADMIN write)
+- GET /categories?page&limit
+- GET /categories/:id
+- POST /categories — { name, description, sortOrder }
+- PATCH /categories/:id
+- DELETE /categories/:id
+
+### Products (public GET, ADMIN write)
+- GET /products?page&limit&categoryId
+- GET /products/:id
+- POST /products — { categoryId, name, description, price, imageUrl, isAvailable }
+- PATCH /products/:id
+- DELETE /products/:id
+- PATCH /products/:id/availability — toggle
+- POST /products/:id/ingredients — { ingredientId, quantity }
+- DELETE /products/:id/ingredients/:ingredientId
+- GET /products/:id/ingredients
+
+### Orders
+- POST /orders (anonymous or authenticated) — { clientName, notes, items: [{ productId, quantity }] }
+- GET /orders (ADMIN) — ?page&limit&status&from&to
+- GET /orders/queue (BARISTA, ADMIN)
+- GET /orders/me (any authenticated) — ?page&limit
+- GET /orders/:id (BARISTA, ADMIN)
+- PATCH /orders/:id/status — { status: RECEIVED|IN_PREPARATION|READY|DELIVERED|CANCELLED }
+
+### Inventory (ADMIN + BARISTA view, ADMIN write)
+- GET /inventory?page&limit
+- GET /inventory/:id
+- GET /inventory/movements?page&limit&from&to&ingredientId&orderId
+- GET /inventory/alerts
+- POST /inventory — { name, unit, currentStock, minimumStock }
+- PATCH /inventory/:id
+- POST /inventory/:id/restock — { quantity, note }
+
+### Dashboard (ADMIN only)
+- GET /dashboard/summary?from&to
+- GET /dashboard/top-products?limit&from&to
+- GET /dashboard/peak-hours?from&to
+
+# Development Roadmap
+
+## Phase 1: Foundation + Public Catalog (MVP)
+Goal: A real, usable UI connected to the live backend. Customers can browse and order.
+
+1. Create lib/types/index.ts with all shared interfaces
+2. Create lib/api/client.ts — base fetch wrapper with error handling; throws if NEXT_PUBLIC_API_URL is undefined
+3. Create lib/api/categories.ts and lib/api/products.ts
+4. Create UI primitives: Button, Input, Skeleton, Badge, Toast, ToastContext
+5. Create CartContext (in-memory + sessionStorage sync)
+6. Build public catalog page (app/page.tsx):
+   - Server Component fetches categories + products
+   - CategoryTabs Client Component filters product grid
+   - ProductCard shows image, name, price, add-to-cart button
+7. Build CartSidebar — items list, quantity controls, total, "Place Order" button
+8. Build OrderForm modal — clientName field, notes field, submit
+9. Create app/api/orders/route.ts route handler (proxies anonymous POST /orders to NestJS)
+10. Create lib/api/orders.ts
+11. Order confirmation screen: show order ID + success message
+12. Add NavBar (logo, cart icon with item count)
+13. Set brand colors in globals.css via @theme
+
+Acceptance criteria:
+- Any user can browse products by category
+- Cart persists across tab navigation (sessionStorage)
+- Anonymous order creation works end-to-end
+- Toast appears on order success and error
+
+## Phase 2: Authentication + Client Portal
+Goal: Login, protected routes, and order history for registered clients.
+
+1. Create middleware.ts with JWT decode and route protection
+2. Create app/api/auth/login/route.ts — calls NestJS, sets httpOnly cookie
+3. Create app/api/auth/logout/route.ts — clears cookie
+4. Create AuthContext — provides { user, role, logout } to client components
+5. Wire AuthProvider into root app/layout.tsx
+6. Build app/login/page.tsx — email/password form, redirects to role-specific dashboard on success
+7. Update NavBar — show user name + logout if authenticated; pre-fill clientName in order form
+8. Build app/orders/me/page.tsx — paginated order history with status badges
+9. Add getMyOrders() to lib/api/orders.ts (server-side, reads cookie)
+
+Acceptance criteria:
+- Login/logout cycle works with httpOnly cookie
+- /orders/me is inaccessible to unauthenticated users (middleware redirects to /login)
+- Authenticated user's name pre-fills on order form
+- Order history loads with correct pagination
+
+## Phase 3: Barista Panel
+Goal: Operational interface for baristas to manage their queue in real time.
+
+1. Build app/barista/queue/page.tsx (Client Component)
+2. Create hooks/usePolling.ts hook (useRef pattern to avoid stale closures)
+3. Build OrderQueueCard — clientName, notes, items list, elapsed time, status, action buttons
+4. Build StatusButton — advances order to next status via PATCH /orders/:id/status
+5. Add CANCEL button (destructive) with ConfirmModal
+6. Build InventoryAlertBanner — calls GET /inventory/alerts, shows warning if any items below minimum
+7. Add getOrderQueue() and updateOrderStatus() to lib/api/orders.ts
+8. Create lib/api/inventory.ts with getInventoryAlerts()
+9. Update NavBar for barista role (show "Queue" link, hide cart)
+
+Acceptance criteria:
+- Queue auto-refreshes every 15 seconds without full page reload
+- Status advances correctly: RECEIVED -> IN_PREPARATION -> READY -> DELIVERED
+- Cancellation requires confirm modal
+- Inventory alert banner appears when any ingredient is below minimum stock
+
+## Phase 4: Admin Panel
+Goal: Full business management interface for admins.
+
+### 4a: Admin Shell + Dashboard
+1. Build app/admin/layout.tsx with AdminSidebar (links: Dashboard, Products, Categories, Users, Inventory)
+2. Build app/admin/dashboard/page.tsx — three parallel Server Component fetches
+3. Build DateRangePicker Client Component (drives page re-fetch via URL params)
+4. Build PeakHoursChart in native SVG (viewBox 0 0 960 300, linear scale, hour labels)
+5. Create lib/api/dashboard.ts
+
+### 4b: Product Management
+1. Build app/admin/products/page.tsx — DataTable: name, category, price, availability toggle, edit, delete
+2. Build app/admin/products/new/page.tsx — form: categoryId select, name, description, price, imageUrl, isAvailable
+3. Build app/admin/products/[id]/edit/page.tsx — pre-filled form + ingredient management section
+4. ConfirmModal for delete
+5. Ingredient section: list current ingredients, add (select ingredient + quantity), remove
+6. Create lib/api/products.ts with full CRUD + ingredient functions
+
+### 4c: Category Management
+1. Build app/admin/categories/page.tsx — DataTable: sortOrder, name, description, active badge, edit, delete
+2. Build app/admin/categories/new/page.tsx and [id]/edit/page.tsx
+3. Add write functions to lib/api/categories.ts
+
+### 4d: User Management
+1. Build app/admin/users/page.tsx — DataTable: name, email, role badge, active status, edit, delete
+2. Build app/admin/users/new/page.tsx and [id]/edit/page.tsx
+3. Create lib/api/users.ts
+
+### 4e: Inventory Management
+1. Build app/admin/inventory/page.tsx — DataTable: name, unit, currentStock, minimumStock, status badge (OK / LOW STOCK), restock button, edit
+2. Build app/admin/inventory/[id]/restock/page.tsx — quantity + note form
+3. Build app/admin/inventory/movements/page.tsx — date range + ingredient filter, movements table
+4. Create lib/api/inventory.ts with full functions
+
+Acceptance criteria:
+- All CRUD flows complete without page reload
+- Dashboard date range picker re-fetches all three widgets simultaneously
+- Peak hours SVG chart renders correctly
+- Non-admin roles hitting /admin/* are redirected by middleware
+- Pagination uses URL params (bookmarkable)
+
+# Logical Dependency Chain
+
+```
+1. lib/types/index.ts              (shared contract — must be first)
+         |
+2. lib/api/client.ts               (base fetch wrapper)
+         |
+3. lib/api/categories.ts
+   lib/api/products.ts
+   lib/api/orders.ts               (Phase 1 API modules)
+         |
+4. UI primitives + CartContext + ToastContext
+         |
+5. Phase 1: Public catalog + order creation
+         |
+6. middleware.ts + AuthContext + auth route handlers
+         |
+7. Phase 2: Login page + My Orders
+         |
+8. lib/api/inventory.ts + hooks/usePolling.ts
+         |
+9. Phase 3: Barista queue
+         |
+10. lib/api/users.ts + lib/api/dashboard.ts + remaining API modules
+         |
+11. Phase 4a-4e: Admin panel (4a-4e can be built in parallel)
+```
+
+Rationale:
+- Types are the shared contract — every module depends on them
+- The API client base must exist before any API module
+- UI primitives must exist before any page component
+- Phase 1 has zero auth dependency — testable against live API immediately
+- Auth infrastructure (Phase 2) is the prerequisite for all role-gated pages
+- Barista panel (Phase 3) needs auth + inventory API
+- Admin panel (Phase 4) needs all modules
+
+# Risks and Mitigations
+
+## Risk 1: JWT decode at edge without a library
+The middleware runs in edge runtime. No Node.js crypto, no jose library installed.
+Mitigation: Decode base64url payload only — no signature verification. Backend enforces auth on every API call; routing redirects are UX only.
+```typescript
+function decodeJwtPayload(token: string): { role?: string } | null {
+  try {
+    return JSON.parse(atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
+  } catch { return null; }
+}
+```
+
+## Risk 2: Server Component token forwarding
+Server Components cannot access httpOnly cookies via document.cookie.
+Mitigation: Use cookies() from next/headers in Server Components. Client Components use Next.js route handlers as proxies — never call NestJS directly.
+
+## Risk 3: Cart state lost on hard refresh
+In-memory CartContext resets on browser refresh.
+Mitigation: Sync cart state to sessionStorage on every change. Read from sessionStorage on mount with a try/catch guard for SSR safety.
+
+## Risk 4: Polling stale closures
+setInterval captures stale React state via closure.
+Mitigation: usePolling uses useRef to hold the latest callback version. The interval fires ref.current() instead of the captured callback.
+
+## Risk 5: API URL misconfiguration
+Missing NEXT_PUBLIC_API_URL causes all API calls to fail silently.
+Mitigation: client.ts throws an error at module load time if the variable is undefined — fails loudly and immediately.
+
+## Risk 6: Admin form data loss on navigation
+Clicking away from unsaved admin form loses all input.
+Mitigation: useFormDirty hook tracks dirty state. Attaches beforeunload event listener when dirty. Triggers confirm() on Next.js client-side navigation.
+
+# Appendix
+
+## A. Order Status State Machine
+```
+RECEIVED -> IN_PREPARATION -> READY -> DELIVERED
+    |              |             |
+    +--------------+-------------+-> CANCELLED
+```
+Next status map in StatusButton:
+```typescript
+const NEXT_STATUS: Partial<Record<OrderStatus, OrderStatus>> = {
+  RECEIVED: 'IN_PREPARATION',
+  IN_PREPARATION: 'READY',
+  READY: 'DELIVERED',
+};
+```
+CANCELLED is always available as a destructive secondary action.
+DELIVERED and CANCELLED have no next state — advance button is hidden.
+
+## B. Environment Variables
+- NEXT_PUBLIC_API_URL — NestJS API base URL (e.g., http://localhost:3001)
+No other secrets needed in the frontend. JWT verification is backend-only.
+
+## C. Brand Colors (app/globals.css)
+```css
+@import "tailwindcss";
+
+@theme {
+  --color-brand-primary: #6F4E37;       /* coffee brown */
+  --color-brand-accent: #C4A265;        /* caramel */
+  --color-status-received: #3B82F6;
+  --color-status-preparation: #F59E0B;
+  --color-status-ready: #10B981;
+  --color-status-delivered: #6B7280;
+  --color-status-cancelled: #EF4444;
+}
+```
+
+## D. Pagination Convention
+All list endpoints use ?page=1&limit=20. The Pagination component reads/writes the page URL param. limit is a constant per page (20 for most lists, 10 for top products dashboard widget).
+
+## E. Date Handling (no library)
+- Display: new Date(isoString).toLocaleDateString('en-US', { ... })
+- API query param: date.toISOString().split('T')[0] -> YYYY-MM-DD
+- Queue elapsed time: Math.floor((Date.now() - new Date(createdAt).getTime()) / 60000) minutes, recalculated each poll cycle
+
+## F. Next.js Image Configuration
+next/image used for all product images with explicit width and height props.
+Fallback: /public/images/product-placeholder.svg when imageUrl is null.
+next.config.ts must whitelist remote image domains via remotePatterns.
+</PRD>

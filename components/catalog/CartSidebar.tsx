@@ -55,7 +55,7 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium truncate">{product.name}</p>
                     <p className="text-sm text-muted-foreground">
-                      {product.price.toLocaleString('pt-BR', {
+                      {Number(product.price).toLocaleString('pt-BR', {
                         style: 'currency',
                         currency: 'BRL',
                       })}

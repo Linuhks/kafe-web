@@ -29,8 +29,7 @@ export default function BaristaQueuePage() {
         addToast('Status atualizado', 'success')
       },
       onError: (err) => {
-        const message = err instanceof Error ? err.message : 'Erro ao atualizar status'
-        addToast(message, 'error')
+        addToast('Erro ao atualizar status', 'error')
       },
     },
   })
@@ -45,8 +44,8 @@ export default function BaristaQueuePage() {
 
   const loading = queueQuery.isPending || alertsQuery.isPending
 
-  function handleStatusUpdate(id: string, status: UpdateOrderStatusDtoStatus) {
-    updateStatus.mutate({ id, data: { status } })
+  async function handleStatusUpdate(id: string, status: UpdateOrderStatusDtoStatus): Promise<void> {
+    await updateStatus.mutateAsync({ id, data: { status } })
   }
 
   return (

@@ -11,10 +11,12 @@ export async function apiFetch<T>(
     method,
     params,
     body,
+    headers: extraHeaders,
   }: {
     method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
     params?: Record<string, string>
     body?: BodyInit | null
+    headers?: HeadersInit
     responseType?: string
   },
 ): Promise<T> {
@@ -26,7 +28,7 @@ export async function apiFetch<T>(
 
   const res = await fetch(targetUrl, {
     method,
-    headers: body ? { 'Content-Type': 'application/json' } : undefined,
+    headers: extraHeaders ?? (body ? { 'Content-Type': 'application/json' } : undefined),
     body,
   })
 

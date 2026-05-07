@@ -51,8 +51,7 @@ export default function OrderForm({ isOpen, onClose }: OrderFormProps) {
         }
       },
       onError: (err) => {
-        const message = err instanceof Error ? err.message : 'Erro ao criar pedido'
-        addToast(message, 'error')
+        addToast('Erro ao criar pedido', 'error')
       },
     },
   })
