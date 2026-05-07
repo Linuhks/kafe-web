@@ -12,6 +12,8 @@ export default function NavBar() {
   const { user, logout } = useAuth()
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
+  const showCart = !user || user.role === 'CLIENT'
+
   return (
     <>
       <header className="sticky top-0 z-30 border-b bg-background/95 backdrop-blur">
@@ -34,25 +36,29 @@ export default function NavBar() {
               </div>
             )}
 
-            <Button
-              variant="outline"
-              size="sm"
-              className="relative"
-              onClick={() => setIsSidebarOpen(true)}
-            >
-              <ShoppingCart className="h-4 w-4" />
-              {itemCount > 0 && (
-                <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
-                  {itemCount > 99 ? '99+' : itemCount}
-                </span>
-              )}
-              <span className="ml-1 hidden sm:inline">Carrinho</span>
-            </Button>
+            {showCart && (
+              <Button
+                variant="outline"
+                size="sm"
+                className="relative"
+                onClick={() => setIsSidebarOpen(true)}
+              >
+                <ShoppingCart className="h-4 w-4" />
+                {itemCount > 0 && (
+                  <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
+                    {itemCount > 99 ? '99+' : itemCount}
+                  </span>
+                )}
+                <span className="ml-1 hidden sm:inline">Carrinho</span>
+              </Button>
+            )}
           </div>
         </div>
       </header>
 
-      <CartSidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+      {showCart && (
+        <CartSidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+      )}
     </>
   )
 }
