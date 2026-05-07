@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -16,6 +17,10 @@ import { useToast } from '@/context/ToastContext'
 import { useFormDirty } from '@/lib/hooks/useFormDirty'
 import type { User } from '@/lib/types'
 
+const editUserSchema = z.object({
+  name: z.string().min(1, 'Nome é obrigatório').max(100, 'Nome deve ter no máximo 100 caracteres'),
+})
+
 interface EditUserFormProps {
   user: User
 }
@@ -28,6 +33,7 @@ export default function EditUserForm({ user }: EditUserFormProps) {
   const [name, setName] = useState(user.name)
   const [role, setRole] = useState<UpdateUserDtoRole>(user.role as UpdateUserDtoRole)
   const [isActive, setIsActive] = useState(user.isActive)
+  const [nameError, setNameError] = useState<string | null>(null)
 
   const { mutate: updateUser, isPending } = useUsersControllerUpdate({
     mutation: {
@@ -49,6 +55,12 @@ export default function EditUserForm({ user }: EditUserFormProps) {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+    const result = editUserSchema.safeParse({ name })
+    if (!result.success) {
+      setNameError(result.error.issues[0].message)
+      return
+    }
+    setNameError(null)
     updateUser({ id: user.id, data: { name, role, isActive } })
   }
 
@@ -67,6 +79,9 @@ export default function EditUserForm({ user }: EditUserFormProps) {
           onChange={(e) => { setName(e.target.value); handleChange() }}
           required
         />
+        {nameError && (
+          <p className="text-xs text-destructive">{nameError}</p>
+        )}
       </div>
 
       <div className="space-y-1">

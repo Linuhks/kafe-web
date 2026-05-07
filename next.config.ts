@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       { protocol: 'http', hostname: 'localhost' },
-      { protocol: 'https', hostname: '**' },
+      // Add production CDN hostname here, e.g.: { protocol: 'https', hostname: 'your-cdn.example.com' }
     ],
   },
   async rewrites() {

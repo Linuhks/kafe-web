@@ -20,8 +20,8 @@ import { useOrdersControllerCreate } from '@/lib/api/generated/api'
 import type { OrderResponseDto } from '@/lib/api/generated/api'
 
 const orderSchema = z.object({
-  clientName: z.string().optional(),
-  notes: z.string().optional(),
+  clientName: z.string().max(100, 'Nome deve ter no máximo 100 caracteres').optional(),
+  notes: z.string().max(500, 'Observações devem ter no máximo 500 caracteres').optional(),
 })
 
 type OrderFields = z.infer<typeof orderSchema>
@@ -37,7 +37,7 @@ export default function OrderForm({ isOpen, onClose }: OrderFormProps) {
   const { addToast } = useToast()
   const [confirmedOrder, setConfirmedOrder] = useState<OrderResponseDto | null>(null)
 
-  const { register, handleSubmit, reset } = useForm<OrderFields>({
+  const { register, handleSubmit, reset, formState: { errors } } = useForm<OrderFields>({
     resolver: zodResolver(orderSchema),
     defaultValues: { clientName: user?.name ?? '', notes: '' },
   })
@@ -107,6 +107,9 @@ export default function OrderForm({ isOpen, onClose }: OrderFormProps) {
                   placeholder="Nome para o pedido"
                   {...register('clientName')}
                 />
+                {errors.clientName && (
+                  <p className="text-xs text-destructive">{errors.clientName.message}</p>
+                )}
               </div>
               <div className="space-y-1">
                 <label htmlFor="notes" className="text-sm font-medium">
@@ -118,6 +121,9 @@ export default function OrderForm({ isOpen, onClose }: OrderFormProps) {
                   placeholder="Alguma observação? (opcional)"
                   {...register('notes')}
                 />
+                {errors.notes && (
+                  <p className="text-xs text-destructive">{errors.notes.message}</p>
+                )}
               </div>
               <div className="border-t pt-3">
                 <div className="flex justify-between text-sm font-semibold">

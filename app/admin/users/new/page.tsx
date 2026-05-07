@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -15,6 +16,14 @@ import { useUsersControllerCreate, CreateUserDtoRole } from '@/lib/api/generated
 import { useToast } from '@/context/ToastContext'
 import { useFormDirty } from '@/lib/hooks/useFormDirty'
 
+const newUserSchema = z.object({
+  name: z.string().min(1, 'Nome é obrigatório').max(100, 'Nome deve ter no máximo 100 caracteres'),
+  email: z.string().email('Email inválido').max(254, 'Email deve ter no máximo 254 caracteres'),
+  password: z.string().min(8, 'Senha deve ter pelo menos 8 caracteres').max(128, 'Senha deve ter no máximo 128 caracteres'),
+})
+
+type NewUserErrors = Partial<Record<keyof z.infer<typeof newUserSchema>, string>>
+
 export default function NewUserPage() {
   const router = useRouter()
   const { addToast } = useToast()
@@ -24,6 +33,7 @@ export default function NewUserPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [role, setRole] = useState<CreateUserDtoRole>(CreateUserDtoRole.CLIENT)
+  const [fieldErrors, setFieldErrors] = useState<NewUserErrors>({})
 
   const { mutate: createUser, isPending } = useUsersControllerCreate({
     mutation: {
@@ -44,6 +54,17 @@ export default function NewUserPage() {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+    const result = newUserSchema.safeParse({ name, email, password })
+    if (!result.success) {
+      const errors: NewUserErrors = {}
+      for (const issue of result.error.issues) {
+        const field = issue.path[0] as keyof NewUserErrors
+        if (!errors[field]) errors[field] = issue.message
+      }
+      setFieldErrors(errors)
+      return
+    }
+    setFieldErrors({})
     createUser({ data: { name, email, password, role } })
   }
 
@@ -65,6 +86,9 @@ export default function NewUserPage() {
             onChange={(e) => { setName(e.target.value); handleChange() }}
             required
           />
+          {fieldErrors.name && (
+            <p className="text-xs text-destructive">{fieldErrors.name}</p>
+          )}
         </div>
 
         <div className="space-y-1">
@@ -76,6 +100,9 @@ export default function NewUserPage() {
             onChange={(e) => { setEmail(e.target.value); handleChange() }}
             required
           />
+          {fieldErrors.email && (
+            <p className="text-xs text-destructive">{fieldErrors.email}</p>
+          )}
         </div>
 
         <div className="space-y-1">
@@ -88,6 +115,9 @@ export default function NewUserPage() {
             required
             minLength={8}
           />
+          {fieldErrors.password && (
+            <p className="text-xs text-destructive">{fieldErrors.password}</p>
+          )}
         </div>
 
         <div className="space-y-1">
