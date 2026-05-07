@@ -1,11 +1,14 @@
 'use client'
 
 import Image from 'next/image'
+import { useState } from 'react'
 import { ShoppingCart } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useCart } from '@/context/CartContext'
 import { useToast } from '@/context/ToastContext'
 import type { Product } from '@/lib/types'
+
+const PLACEHOLDER = '/images/product-placeholder.svg'
 
 interface ProductCardProps {
   product: Product
@@ -14,6 +17,9 @@ interface ProductCardProps {
 export default function ProductCard({ product }: ProductCardProps) {
   const { addItem } = useCart()
   const { addToast } = useToast()
+  const [imgSrc, setImgSrc] = useState(
+    typeof product.imageUrl === 'string' ? product.imageUrl : PLACEHOLDER,
+  )
 
   function handleAddToCart() {
     addItem(product)
@@ -24,10 +30,11 @@ export default function ProductCard({ product }: ProductCardProps) {
     <div className="flex flex-col rounded-lg border bg-card overflow-hidden">
       <div className="relative aspect-square bg-muted">
         <Image
-          src={typeof product.imageUrl === 'string' ? product.imageUrl : '/images/product-placeholder.svg'}
+          src={imgSrc}
           alt={product.name}
           fill
           className="object-cover"
+          onError={() => setImgSrc(PLACEHOLDER)}
         />
       </div>
       <div className="flex flex-col gap-2 p-4">

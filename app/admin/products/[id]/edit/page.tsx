@@ -20,6 +20,7 @@ import {
   useProductsControllerRemoveIngredient,
   useCategoriesControllerList,
   useInventoryControllerList,
+  type ProductIngredientResponseDto,
 } from '@/lib/api/generated/api'
 import { useToast } from '@/context/ToastContext'
 import { useFormDirty } from '@/lib/hooks/useFormDirty'
@@ -61,12 +62,11 @@ export default function EditProductPage({ params }: PageProps) {
     useProductsControllerListIngredients(id)
   const { data: allIngredientsRes } = useInventoryControllerList()
 
-  const product = productRes?.data as unknown as
-    | { id: string; name: string; description?: string | null; price: string; imageUrl?: string | null; categoryId: string; isAvailable: boolean }
-    | undefined
+  const product = productRes?.data
 
   const categories = categoriesRes?.data?.data ?? []
-  const productIngredients = ingredientsListData?.data ?? []
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const productIngredients: ProductIngredientResponseDto[] = (ingredientsListData?.data as any)?.data ?? ingredientsListData?.data ?? []
   const allIngredients = allIngredientsRes?.data?.data ?? []
 
   useEffect(() => {
