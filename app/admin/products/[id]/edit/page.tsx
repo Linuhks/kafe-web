@@ -65,8 +65,8 @@ export default function EditProductPage({ params }: PageProps) {
   const product = productRes?.data
 
   const categories = categoriesRes?.data?.data ?? []
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const productIngredients: ProductIngredientResponseDto[] = (ingredientsListData?.data as any)?.data ?? ingredientsListData?.data ?? []
+  const productIngredients: ProductIngredientResponseDto[] =
+    ingredientsListData?.status === 200 ? ingredientsListData.data : []
   const allIngredients = allIngredientsRes?.data?.data ?? []
 
   useEffect(() => {

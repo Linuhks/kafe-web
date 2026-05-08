@@ -42,9 +42,7 @@ export default function LoginPage() {
       const response = await mutateAsync({ data: values })
 
       if (response.status === 200) {
-        const { data } = response.data
-
-        const { token, user } = data
+        const { token, user } = response.data
 
         await fetch('/api/auth/login', {
           method: 'POST',
