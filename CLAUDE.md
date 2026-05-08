@@ -16,7 +16,7 @@ Next.js 16.2.1 · React 19 · TypeScript · Tailwind 4
 ```
 pnpm dev           # start dev server
 pnpm build         # production build
-pnpm generate:api  # regenerate API hooks (requires backend running)
+pnpm generate:api  # regenerate API hooks (fetches spec from deployed backend)
 ```
 
 ## Subfolder docs
