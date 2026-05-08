@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { categoriesControllerList, productsControllerList } from '@/lib/api/generated/api'
 import NavBar from '@/components/layout/NavBar'
 import CategoryTabs from '@/components/catalog/CategoryTabs'

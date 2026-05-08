@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  output: 'standalone',
   images: {
     remotePatterns: [
       { protocol: 'http', hostname: 'localhost' },
@@ -11,7 +12,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/api/v1/:path*',
-        destination: 'http://localhost:3333/api/v1/:path*',
+        destination: `${process.env.BACKEND_URL ?? 'http://localhost:3333'}/api/v1/:path*`,
       },
     ]
   },

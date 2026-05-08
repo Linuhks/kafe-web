@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { Suspense } from 'react'
 import { getDashboardSummary, getTopProducts, getPeakHours } from '@/lib/api/dashboard'
 import DateRangePicker from '@/components/admin/DateRangePicker'

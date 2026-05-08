@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { Suspense } from 'react'
 import { getMyOrders } from '@/lib/api/orders'
 import { Badge } from '@/components/ui/badge'
