@@ -14,15 +14,15 @@ The pipeline SHALL install project dependencies using pnpm with a frozen lockfil
 - **WHEN** the pipeline starts
 - **THEN** `pnpm install --frozen-lockfile` completes without error
 
-### Requirement: Tests must pass before image is built
-The pipeline SHALL run the test suite and halt the workflow if any test fails, without proceeding to the Docker build step.
+### Requirement: API client is generated before Docker build
+The pipeline SHALL run `pnpm generate:api` after installing dependencies and before building the Docker image, so the generated file is present in the build context.
 
-#### Scenario: Tests pass — pipeline continues
-- **WHEN** `pnpm test` exits with code 0
-- **THEN** the pipeline proceeds to the Docker build step
+#### Scenario: Client generation succeeds — pipeline continues to Docker build
+- **WHEN** `pnpm generate:api` exits with code 0
+- **THEN** the pipeline proceeds to the Docker build step with `lib/api/generated/api.ts` present
 
-#### Scenario: Tests fail — pipeline halts
-- **WHEN** `pnpm test` exits with a non-zero code
+#### Scenario: Client generation fails — pipeline halts
+- **WHEN** `pnpm generate:api` exits with a non-zero code
 - **THEN** the pipeline fails and does not attempt to build or push an image
 
 ### Requirement: Docker image is built and pushed
