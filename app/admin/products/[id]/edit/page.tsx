@@ -72,9 +72,9 @@ export default function EditProductPage({ params }: PageProps) {
   useEffect(() => {
     if (product && !initialized) {
       setName(product.name)
-      setDescription(product.description ?? '')
+      setDescription((product.description ?? '') as string) // Orval generates { [key: string]: unknown } | null for @nullable fields without explicit base type
       setPrice(product.price)
-      setImageUrl(product.imageUrl ?? '')
+      setImageUrl((product.imageUrl ?? '') as string) // Orval generates { [key: string]: unknown } | null for @nullable fields without explicit base type
       setCategoryId(product.categoryId)
       setIsAvailable(product.isAvailable)
       setInitialized(true)

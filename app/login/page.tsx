@@ -52,7 +52,7 @@ export default function LoginPage() {
 
         setUser(user)
 
-        router.push(dashboardForRole(user.role as UserRole))
+        router.push(dashboardForRole(user.role))
       } else {
         addToast('Invalid email or password', 'error')
       }
