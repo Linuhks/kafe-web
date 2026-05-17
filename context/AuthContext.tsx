@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useState, useEffect } from 'react'
 import type { User } from '@/lib/types'
 
 interface AuthContextValue {
@@ -13,6 +13,13 @@ const AuthContext = createContext<AuthContextValue | null>(null)
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
+
+  useEffect(() => {
+    fetch('/api/auth/session')
+      .then(res => res.ok ? res.json() : null)
+      .then(data => { if (data?.user) setUser(data.user) })
+      .catch(() => {})
+  }, [])
 
   async function logout() {
     await fetch('/api/auth/logout', { method: 'POST' })

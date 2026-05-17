@@ -56,8 +56,7 @@ export default function LoginPage() {
       } else {
         addToast('Invalid email or password', 'error')
       }
-    } catch (err) {
-      console.error(err)
+    } catch {
       addToast('Login failed. Please try again.', 'error')
     }
   }
