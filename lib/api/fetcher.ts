@@ -1,8 +1,27 @@
+function getApiUrl(): string {
+  const url = process.env.NEXT_PUBLIC_API_URL
+  if (!url && process.env.NODE_ENV === 'production') {
+    throw new Error('NEXT_PUBLIC_API_URL is required in production')
+  }
+  return url ?? 'http://localhost:3000'
+}
+
 function getBaseUrl(): string {
   if (typeof window === 'undefined') {
-    return process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000'
+    return getApiUrl()
   }
   return ''
+}
+
+async function getServerAuthHeader(): Promise<HeadersInit> {
+  if (typeof window === 'undefined') {
+    try {
+      const { cookies } = await import('next/headers')
+      const token = (await cookies()).get('kafe_token')?.value
+      if (token) return { Authorization: `Bearer ${token}` }
+    } catch {}
+  }
+  return {}
 }
 
 export async function apiFetch<T>(
@@ -26,9 +45,14 @@ export async function apiFetch<T>(
     targetUrl += '?' + new URLSearchParams(params)
   }
 
+  const authHeaders = await getServerAuthHeader()
+
   const res = await fetch(targetUrl, {
     method,
-    headers: extraHeaders ?? (body ? { 'Content-Type': 'application/json' } : undefined),
+    headers: {
+      ...authHeaders,
+      ...(extraHeaders ?? (body ? { 'Content-Type': 'application/json' } : {})),
+    },
     body,
   })
 

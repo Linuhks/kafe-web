@@ -2,17 +2,26 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import type { UserRole } from '@/lib/types'
 
+function getApiUrl(): string {
+  const url = process.env.NEXT_PUBLIC_API_URL
+  if (!url && process.env.NODE_ENV === 'production') {
+    throw new Error('NEXT_PUBLIC_API_URL is required in production')
+  }
+  return url ?? 'http://localhost:3000'
+}
+
+const VALID_ROLES: readonly string[] = ['ADMIN', 'BARISTA', 'CLIENT']
+
 async function getSessionFromBackend(token: string): Promise<UserRole | null> {
   try {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000'
-    const res = await fetch(`${apiUrl}/api/auth/get-session`, {
+    const res = await fetch(`${getApiUrl()}/api/auth/get-session`, {
       headers: { Authorization: `Bearer ${token}` },
       signal: AbortSignal.timeout(3000),
     })
     if (res.status !== 200) return null
     const data = await res.json()
     const role = data?.user?.role
-    if (typeof role !== 'string') return null
+    if (typeof role !== 'string' || !VALID_ROLES.includes(role)) return null
     return role as UserRole
   } catch {
     return null
