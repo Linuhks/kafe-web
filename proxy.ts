@@ -4,7 +4,7 @@ import type { UserRole } from '@/lib/types'
 
 async function getSessionFromBackend(token: string): Promise<UserRole | null> {
   try {
-    const apiUrl = process.env.API_URL ?? 'http://localhost:3333'
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3333'
     const res = await fetch(`${apiUrl}/api/auth/get-session`, {
       headers: { Authorization: `Bearer ${token}` },
       signal: AbortSignal.timeout(3000),
@@ -67,6 +67,6 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/((?!api|_next/static|_next/image|favicon\\.ico|.*\\.png$|.*\\.svg$).*)',
+    '/((?!api|_next/static|_next/image|favicon\.ico|.*\.png$|.*\.svg$).*)',
   ],
 }
