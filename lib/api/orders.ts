@@ -1,4 +1,4 @@
-import { apiFetch } from '@/lib/api/fetcher'
+import { serverFetch } from '@/lib/api/server-fetch'
 import type { Order } from '@/lib/types'
 import type { OrdersControllerMyOrders200Pagination } from '@/lib/api/generated/api'
 
@@ -13,7 +13,7 @@ export async function getMyOrders(params?: { page?: number }): Promise<MyOrdersR
     queryParams.page = String(params.page)
   }
 
-  const res = await apiFetch<{
+  const res = await serverFetch<{
     data: { data?: Order[]; pagination?: OrdersControllerMyOrders200Pagination }
     status: number
     headers: Headers

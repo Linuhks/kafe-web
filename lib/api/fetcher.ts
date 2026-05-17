@@ -13,17 +13,6 @@ function getBaseUrl(): string {
   return ''
 }
 
-async function getServerAuthHeader(): Promise<HeadersInit> {
-  if (typeof window === 'undefined') {
-    try {
-      const { cookies } = await import('next/headers')
-      const token = (await cookies()).get('kafe_token')?.value
-      if (token) return { Authorization: `Bearer ${token}` }
-    } catch {}
-  }
-  return {}
-}
-
 export async function apiFetch<T>(
   url: string,
   {
@@ -45,14 +34,9 @@ export async function apiFetch<T>(
     targetUrl += '?' + new URLSearchParams(params)
   }
 
-  const authHeaders = await getServerAuthHeader()
-
   const res = await fetch(targetUrl, {
     method,
-    headers: {
-      ...authHeaders,
-      ...(extraHeaders ?? (body ? { 'Content-Type': 'application/json' } : {})),
-    },
+    headers: extraHeaders ?? (body ? { 'Content-Type': 'application/json' } : undefined),
     body,
   })
 
