@@ -9,7 +9,7 @@ export default function LandingPage() {
       <header className="flex items-center justify-between px-6 py-4">
         <div className="flex items-center gap-2 text-[#6F4E37] font-semibold text-lg">
           <Coffee className="h-5 w-5" />
-          <span>Jade</span>
+          <span>Kafe</span>
         </div>
         <Button variant="ghost" size="sm" asChild className="text-[#6F4E37] hover:text-[#5a3e2b]">
           <Link href="/cardapio">Cardápio</Link>
@@ -27,7 +27,7 @@ export default function LandingPage() {
           {/* Headline */}
           <div className="space-y-3">
             <h1 className="text-8xl md:text-9xl font-bold text-[#6F4E37] leading-none tracking-tight">
-              Jade
+              Kafe
             </h1>
             <p className="text-2xl text-[#C4A265] font-medium">
               Café &amp; Experiências
