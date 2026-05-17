@@ -13,10 +13,11 @@ export async function serverFetch<T>(
 ): Promise<T> {
   const cookieStore = await cookies()
   const token = cookieStore.get('kafe_token')?.value
-  const authHeader = token ? { Authorization: `Bearer ${token}` } : {}
 
-  return apiFetch<T>(url, {
-    ...options,
-    headers: { ...authHeader, ...(options.headers ?? {}) },
-  })
+  const headers: Record<string, string> = {
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    ...(options.headers ?? {}),
+  }
+
+  return apiFetch<T>(url, { ...options, headers })
 }
