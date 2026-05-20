@@ -1,6 +1,7 @@
 import Link from 'next/link'
-import { Coffee, ArrowRight } from 'lucide-react'
+import { Coffee } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { ExplorarCardapioButton } from '@/components/landing/ExplorarCardapioButton'
 
 export default function LandingPage() {
   return (
@@ -53,16 +54,7 @@ export default function LandingPage() {
           </div>
 
           {/* CTA */}
-          <Button
-            size="lg"
-            className="bg-[#6F4E37] hover:bg-[#5a3e2b] text-white px-10 py-6 text-lg rounded-full shadow-md hover:shadow-lg transition-all group"
-            asChild
-          >
-            <Link href="/cardapio">
-              Explorar Cardápio
-              <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </Button>
+          <ExplorarCardapioButton />
         </div>
       </main>
 
