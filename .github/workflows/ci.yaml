@@ -19,6 +19,8 @@ jobs:
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
       - run: pnpm generate:api
+      - name: Unit tests with coverage
+        run: pnpm test:coverage
       - run: pnpm build
 
       - name: Cache Playwright browsers
