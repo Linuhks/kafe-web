@@ -1,36 +1,106 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Kafe Web
 
-## Getting Started
+Frontend for the **Kafe** platform — a coffee shop management application with an online menu, real-time order queue, and admin dashboard.
 
-First, run the development server:
+Consumes the `kafe-api` REST backend and exposes a role-based UI for three user types: **CLIENT**, **BARISTA**, and **ADMIN**.
+
+---
+
+## Features
+
+| Role | Access |
+|------|--------|
+| **Client** | Menu with cart, order history |
+| **Barista** | Live order queue, status advancement |
+| **Admin** | Sales dashboard, products, categories, inventory, users |
+
+---
+
+## Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Framework | Next.js 16.2 (App Router) |
+| Language | TypeScript 5 |
+| Styling | Tailwind CSS 4 + Shadcn/Radix UI |
+| Server state | TanStack React Query v5 |
+| Forms | react-hook-form + Zod |
+| Icons | lucide-react |
+| API generation | Orval (React Query hooks from OpenAPI) |
+| Unit tests | Vitest + Testing Library |
+| E2E tests | Playwright |
+
+---
+
+## Prerequisites
+
+- Node.js 20+
+- pnpm 10+
+- `kafe-api` running locally (default: `http://localhost:8080`)
+
+---
+
+## Installation
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Create a `.env.local` file at the project root:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```env
+NEXT_PUBLIC_API_URL=http://localhost:8080
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## Development
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+pnpm dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Testing
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+# Unit tests
+pnpm test:unit
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# Coverage
+pnpm test:coverage
+
+# E2E
+pnpm test:e2e
+
+# E2E with interactive UI
+pnpm test:e2e:ui
+```
+
+---
+
+## Build
+
+```bash
+pnpm build
+pnpm start
+```
+
+Or via Docker:
+
+```bash
+docker build -t kafe-web .
+docker run -p 3000:3000 kafe-web
+```
+
+---
+
+## Documentation
+
+- [Architecture](docs/architecture.md) — rendering model, auth flow, API layers, middleware
+- [Code Guide](docs/code-guide.md) — conventions, data fetching patterns, styling, forms
+- [Modules](docs/modules.md) — route map, component index, layouts, hooks
+- [Workflow](docs/workflow-dev.md) — per-subtask gate, commit process, code standards
