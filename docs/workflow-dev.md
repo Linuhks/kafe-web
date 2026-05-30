@@ -76,43 +76,21 @@ One commit per subtask. Each commit must leave the codebase in a working state.
 
 ## Code standards
 
-### No `any`
+See [Code Guide](code-guide.md) for conventions on typing, class merging, UI primitives, and API client generation.
 
-Never use `any`. Always declare explicit types or use the generated types from `lib/types/index.ts`.
+---
 
-```typescript
-// ❌
-const data: any = await serverFetch(...)
+## After completing all tasks
 
-// ✅
-const data = await serverFetch<{ data: User[]; status: number; headers: Headers }>(...)
+When all tasks in a change are done, update documentation before archiving:
 
-// ✅ for unknown error shapes
-catch (err: unknown) {
-  const message = err instanceof Error ? err.message : 'Unknown error'
-}
-```
+| Changed | Update |
+|---------|--------|
+| New route or page | `docs/modules.md` route map, `app/CLAUDE.md` route table |
+| New component | `docs/modules.md` component index |
+| New hook | `docs/modules.md` hooks table |
+| Auth or middleware logic | `docs/architecture.md` |
+| New convention or pattern | `docs/code-guide.md` |
+| Folder structure changed | Relevant `CLAUDE.md` in that folder |
 
-### Always use `cn()` for class merging
-
-```typescript
-// ❌
-<div className={`base ${condition ? 'active' : ''} ${className}`} />
-
-// ✅
-<div className={cn('base', condition && 'active', className)} />
-```
-
-### Check `components/ui/` before creating primitives
-
-`button`, `input`, `dialog`, `select`, `badge`, `skeleton`, `pagination`, and `sonner` already exist. Do not recreate them.
-
-### Regenerate API client after backend changes
-
-If the backend adds or changes endpoints, regenerate the React Query hooks:
-
-```bash
-pnpm generate:api   # backend must be running at localhost:3333
-```
-
-Never edit `lib/api/generated/api.ts` manually — it is git-ignored and will be overwritten.
+If nothing changed structurally, no documentation update is needed.

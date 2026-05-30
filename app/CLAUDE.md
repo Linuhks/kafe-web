@@ -8,13 +8,7 @@
 
 ## Route Map
 
-| Route | Component | Access |
-|---|---|---|
-| `/` | `app/page.tsx` | public |
-| `/login` | `app/login/page.tsx` | public (redirects if authed) |
-| `/barista/queue` | `app/barista/queue/page.tsx` | BARISTA, ADMIN |
-| `/admin/*` | not yet built | ADMIN |
-| `/orders/me` | not yet built | CLIENT |
+See [docs/modules.md](../docs/modules.md) for the full, up-to-date route map.
 
 ## Auth Flow
 
