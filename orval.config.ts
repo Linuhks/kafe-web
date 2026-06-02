@@ -4,7 +4,7 @@ import { defineConfig } from 'orval';
 // Generated files are in lib/api/generated/ (git-ignored).
 export default defineConfig({
   kafe: {
-    input: 'http://localhost:3333/api/v1/docs-json',
+    input: 'https://kafe-api-latest.onrender.com/api/v1/docs-json',
     output: {
       mode: 'single',
       target: 'lib/api/generated/api.ts',
