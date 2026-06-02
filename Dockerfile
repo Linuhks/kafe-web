@@ -12,6 +12,7 @@ FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+ENV NEXT_PUBLIC_API_URL=https://kafe-api-latest.onrender.com
 RUN pnpm build
 
 # ── runner: minimal production image ─────────────────────────────────────────
