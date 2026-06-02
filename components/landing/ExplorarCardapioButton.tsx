@@ -19,7 +19,7 @@ export function ExplorarCardapioButton() {
       size="lg"
       disabled={loading}
       onClick={handleClick}
-      className="bg-[#6F4E37] hover:bg-[#5a3e2b] text-white px-10 py-6 text-lg rounded-full shadow-md hover:shadow-lg transition-all group"
+      className="bg-kafe-primary hover:bg-kafe-primary/90 text-kafe-on-primary px-10 py-6 text-lg rounded-full shadow-md hover:shadow-lg transition-all group"
     >
       {loading ? (
         <>
