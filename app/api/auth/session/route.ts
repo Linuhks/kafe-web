@@ -8,7 +8,7 @@ export async function GET() {
     return Response.json({ message: 'Not authenticated' }, { status: 401 })
   }
 
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000'
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3333'
 
   try {
     const res = await fetch(`${apiUrl}/api/auth/get-session`, {

@@ -2,13 +2,13 @@ import type { NextConfig } from "next";
 
 const isDev = process.env.NODE_ENV === 'development'
 
-const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000'
+const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3333'
 
 const cspDirectives = [
   "default-src 'self'",
   "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
   "style-src 'self' 'unsafe-inline'",
-  `img-src 'self' data: blob:${isDev ? ' http://localhost:*' : ''}`,
+  `img-src 'self' data: blob: https://lh3.googleusercontent.com${isDev ? ' http://localhost:*' : ''}`,
   "font-src 'self'",
   `connect-src 'self' ${apiUrl}`,
   "frame-ancestors 'none'",
@@ -19,7 +19,7 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       ...(isDev ? [{ protocol: 'http' as const, hostname: 'localhost' }] : []),
-      // Add production CDN hostname here, e.g.: { protocol: 'https', hostname: 'your-cdn.example.com' }
+      { protocol: 'https' as const, hostname: 'lh3.googleusercontent.com' },
     ],
   },
   async headers() {

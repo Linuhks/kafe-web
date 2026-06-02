@@ -3,7 +3,7 @@ function getApiUrl(): string {
   if (!url && process.env.NODE_ENV === 'production') {
     throw new Error('NEXT_PUBLIC_API_URL is required in production')
   }
-  return url ?? 'http://localhost:3000'
+  return url ?? 'http://localhost:3333'
 }
 
 function getBaseUrl(): string {

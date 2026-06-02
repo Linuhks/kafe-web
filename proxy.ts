@@ -7,7 +7,7 @@ function getApiUrl(): string {
   if (!url && process.env.NODE_ENV === 'production') {
     throw new Error('NEXT_PUBLIC_API_URL is required in production')
   }
-  return url ?? 'http://localhost:3000'
+  return url ?? 'http://localhost:3333'
 }
 
 const VALID_ROLES: readonly string[] = ['ADMIN', 'BARISTA', 'CLIENT']
@@ -37,6 +37,17 @@ function dashboardForRole(role: UserRole): string {
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
   const token = request.cookies.get('kafe_token')?.value
+
+  // Inject Authorization header for backend API proxy requests
+  if (pathname.startsWith('/api/v1/')) {
+    if (token) {
+      const requestHeaders = new Headers(request.headers)
+      requestHeaders.set('Authorization', `Bearer ${token}`)
+      return NextResponse.next({ request: { headers: requestHeaders } })
+    }
+    return NextResponse.next()
+  }
+
   const role = token ? await getSessionFromBackend(token) : null
 
   // Redirect authenticated users away from /login
@@ -76,6 +87,7 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
+    '/api/v1/:path*',
     '/((?!api|_next/static|_next/image|favicon\.ico|.*\.png$|.*\.svg$).*)',
   ],
 }

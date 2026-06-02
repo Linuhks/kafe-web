@@ -41,6 +41,63 @@
   --brand-coffee: #6F4E37;
   --brand-caramel: #C4A265;
 
+  /* Kafe Material-You palette */
+  --kafe-primary: #553722;
+  --kafe-on-primary: #ffffff;
+  --kafe-primary-container: #6f4e37;
+  --kafe-on-primary-container: #eec1a4;
+  --kafe-primary-fixed: #ffdcc6;
+  --kafe-primary-fixed-dim: #eabda0;
+  --kafe-on-primary-fixed: #2d1604;
+  --kafe-on-primary-fixed-variant: #5f402a;
+  --kafe-inverse-primary: #eabda0;
+  --kafe-secondary: #735a35;
+  --kafe-on-secondary: #ffffff;
+  --kafe-secondary-container: #fddaac;
+  --kafe-on-secondary-container: #785e39;
+  --kafe-secondary-fixed: #ffddb0;
+  --kafe-secondary-fixed-dim: #e2c194;
+  --kafe-on-secondary-fixed: #291800;
+  --kafe-on-secondary-fixed-variant: #594320;
+  --kafe-tertiary: #403e38;
+  --kafe-on-tertiary: #ffffff;
+  --kafe-tertiary-container: #58554f;
+  --kafe-on-tertiary-container: #cfcac2;
+  --kafe-tertiary-fixed: #e7e2da;
+  --kafe-tertiary-fixed-dim: #cbc6be;
+  --kafe-on-tertiary-fixed: #1d1b17;
+  --kafe-on-tertiary-fixed-variant: #494641;
+  --kafe-error: #ba1a1a;
+  --kafe-on-error: #ffffff;
+  --kafe-error-container: #ffdad6;
+  --kafe-on-error-container: #93000a;
+  --kafe-surface: #fcf9f8;
+  --kafe-surface-dim: #dcd9d9;
+  --kafe-surface-bright: #fcf9f8;
+  --kafe-surface-tint: #79573f;
+  --kafe-surface-variant: #e5e2e1;
+  --kafe-on-surface: #1c1b1b;
+  --kafe-on-surface-variant: #50453e;
+  --kafe-surface-container-lowest: #ffffff;
+  --kafe-surface-container-low: #f6f3f2;
+  --kafe-surface-container: #f0eded;
+  --kafe-surface-container-high: #eae7e7;
+  --kafe-surface-container-highest: #e5e2e1;
+  --kafe-background: #fcf9f8;
+  --kafe-on-background: #1c1b1b;
+  --kafe-outline: #82746d;
+  --kafe-outline-variant: #d4c3ba;
+  --kafe-inverse-surface: #313030;
+  --kafe-inverse-on-surface: #f3f0ef;
+  /* Kafe spacing tokens */
+  --kafe-stack-sm: 0.5rem;
+  --kafe-stack-md: 1.5rem;
+  --kafe-stack-lg: 4rem;
+  --kafe-gutter-grid: 1.5rem;
+  --kafe-margin-page: 2rem;
+  --kafe-radius-lg: 0.5rem;
+  --kafe-radius-xl: 0.75rem;
+
   /* Order status colors */
   --status-received: #3B82F6;
   --status-in-preparation: #F59E0B;
@@ -120,6 +177,63 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
+  /* Kafe Material-You theme colors */
+  --color-kafe-primary: var(--kafe-primary);
+  --color-kafe-on-primary: var(--kafe-on-primary);
+  --color-kafe-primary-container: var(--kafe-primary-container);
+  --color-kafe-on-primary-container: var(--kafe-on-primary-container);
+  --color-kafe-primary-fixed: var(--kafe-primary-fixed);
+  --color-kafe-primary-fixed-dim: var(--kafe-primary-fixed-dim);
+  --color-kafe-on-primary-fixed: var(--kafe-on-primary-fixed);
+  --color-kafe-on-primary-fixed-variant: var(--kafe-on-primary-fixed-variant);
+  --color-kafe-inverse-primary: var(--kafe-inverse-primary);
+  --color-kafe-secondary: var(--kafe-secondary);
+  --color-kafe-on-secondary: var(--kafe-on-secondary);
+  --color-kafe-secondary-container: var(--kafe-secondary-container);
+  --color-kafe-on-secondary-container: var(--kafe-on-secondary-container);
+  --color-kafe-secondary-fixed: var(--kafe-secondary-fixed);
+  --color-kafe-tertiary: var(--kafe-tertiary);
+  --color-kafe-on-tertiary: var(--kafe-on-tertiary);
+  --color-kafe-tertiary-container: var(--kafe-tertiary-container);
+  --color-kafe-on-tertiary-container: var(--kafe-on-tertiary-container);
+  --color-kafe-tertiary-fixed: var(--kafe-tertiary-fixed);
+  --color-kafe-tertiary-fixed-dim: var(--kafe-tertiary-fixed-dim);
+  --color-kafe-on-tertiary-fixed: var(--kafe-on-tertiary-fixed);
+  --color-kafe-on-tertiary-fixed-variant: var(--kafe-on-tertiary-fixed-variant);
+  --color-kafe-error: var(--kafe-error);
+  --color-kafe-error-container: var(--kafe-error-container);
+  --color-kafe-on-error: var(--kafe-on-error);
+  --color-kafe-on-error-container: var(--kafe-on-error-container);
+  --color-kafe-surface: var(--kafe-surface);
+  --color-kafe-surface-dim: var(--kafe-surface-dim);
+  --color-kafe-surface-variant: var(--kafe-surface-variant);
+  --color-kafe-on-surface: var(--kafe-on-surface);
+  --color-kafe-on-surface-variant: var(--kafe-on-surface-variant);
+  --color-kafe-surface-container-lowest: var(--kafe-surface-container-lowest);
+  --color-kafe-surface-container-low: var(--kafe-surface-container-low);
+  --color-kafe-surface-container: var(--kafe-surface-container);
+  --color-kafe-surface-container-high: var(--kafe-surface-container-high);
+  --color-kafe-surface-container-highest: var(--kafe-surface-container-highest);
+  --color-kafe-background: var(--kafe-background);
+  --color-kafe-on-background: var(--kafe-on-background);
+  --color-kafe-outline: var(--kafe-outline);
+  --color-kafe-outline-variant: var(--kafe-outline-variant);
+  --color-kafe-inverse-surface: var(--kafe-inverse-surface);
+  --color-kafe-inverse-on-surface: var(--kafe-inverse-on-surface);
+  /* Kafe spacing */
+  --spacing-kafe-stack-sm: var(--kafe-stack-sm);
+  --spacing-kafe-stack-md: var(--kafe-stack-md);
+  --spacing-kafe-stack-lg: var(--kafe-stack-lg);
+  --spacing-kafe-gutter: var(--kafe-gutter-grid);
+  --spacing-kafe-margin: var(--kafe-margin-page);
+  --spacing-stack-sm: var(--kafe-stack-sm);
+  --spacing-stack-md: var(--kafe-stack-md);
+  --spacing-stack-lg: var(--kafe-stack-lg);
+  --spacing-gutter-grid: var(--kafe-gutter-grid);
+  --spacing-margin-page: var(--kafe-margin-page);
+  --radius-kafe-lg: var(--kafe-radius-lg);
+  --radius-kafe-xl: var(--kafe-radius-xl);
+
   /* Fonts */
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
@@ -136,8 +250,55 @@
   --color-status-cancelled: var(--status-cancelled);
 }
 
+@utility text-display-hero {
+  font-size: 120px;
+  line-height: 110%;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+@utility text-headline-lg {
+  font-size: 32px;
+  line-height: 120%;
+  font-weight: 700;
+}
+
+@utility text-headline-md {
+  font-size: 24px;
+  line-height: 130%;
+  font-weight: 600;
+}
+
+@utility text-body-lg {
+  font-size: 18px;
+  line-height: 160%;
+  font-weight: 400;
+}
+
+@utility text-body-md {
+  font-size: 16px;
+  line-height: 150%;
+  font-weight: 400;
+}
+
+@utility text-label-sm {
+  font-size: 14px;
+  line-height: 100%;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans, Arial, Helvetica, sans-serif);
+}
+
+.kafe-input:focus {
+  border-color: var(--kafe-primary) !important;
+  box-shadow: 0 0 0 1px var(--kafe-primary);
 }
