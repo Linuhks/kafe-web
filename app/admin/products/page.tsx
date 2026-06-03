@@ -2,7 +2,6 @@ export const dynamic = 'force-dynamic'
 
 import Link from 'next/link'
 import { Plus } from 'lucide-react'
-import { Button } from '@/components/ui/button'
 import ProductsTable from '@/components/admin/ProductsTable'
 import { getProducts } from '@/lib/api/products'
 import { categoriesControllerList } from '@/lib/api/generated/api'
@@ -27,15 +26,21 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
 
   return (
     <div className="p-6 space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Produtos</h1>
-        <Button asChild>
-          <Link href="/admin/products/new">
-            <Plus className="h-4 w-4 mr-2" />
-            Novo produto
-          </Link>
-        </Button>
-      </div>
+      <header className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+          <h1 className="text-headline-lg text-kafe-primary">Product Inventory</h1>
+          <p className="text-body-md text-kafe-on-surface-variant max-w-xl mt-1">
+            Manage your artisanal coffee beans and brewing equipment. Ensure availability reflects current stock.
+          </p>
+        </div>
+        <Link
+          href="/admin/products/new"
+          className="inline-flex items-center gap-2 bg-kafe-primary text-kafe-on-primary px-6 py-3 rounded-lg text-label-sm hover:opacity-90 transition-opacity whitespace-nowrap"
+        >
+          Add New Product
+          <Plus className="h-4 w-4" />
+        </Link>
+      </header>
 
       <ProductsTable
         products={productsResult.products}
