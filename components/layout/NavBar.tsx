@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { ShoppingCart, Coffee, LogOut, User, ClipboardList } from 'lucide-react'
+import { ShoppingCart, LogOut, User, ClipboardList } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useCart } from '@/context/CartContext'
 import { useAuth } from '@/context/AuthContext'
@@ -17,12 +17,11 @@ export default function NavBar() {
 
   return (
     <>
-      <header className="sticky top-0 z-30 border-b bg-background/95 backdrop-blur">
-        <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
+      <header className="sticky top-0 z-30 border-b bg-surface/95 backdrop-blur">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-8 py-6">
           {/* Logo */}
-          <div className="flex items-center gap-2 font-semibold text-lg">
-            <Coffee className="h-5 w-5" />
-            Kafe
+          <div className="font-extrabold tracking-widest text-[var(--kafe-primary)] text-2xl uppercase">
+            KAFE
           </div>
 
           {/* Actions */}
@@ -48,9 +47,8 @@ export default function NavBar() {
 
             {showCart && (
               <Button
-                variant="outline"
-                size="sm"
-                className="relative"
+                variant="ghost"
+                className="relative flex items-center gap-2 text-[var(--kafe-primary)] hover:opacity-80"
                 onClick={() => setIsSidebarOpen(true)}
               >
                 <ShoppingCart className="h-4 w-4" />
@@ -59,7 +57,7 @@ export default function NavBar() {
                     {itemCount > 99 ? '99+' : itemCount}
                   </span>
                 )}
-                <span className="ml-1 hidden sm:inline">Carrinho</span>
+                <span className="hidden sm:inline uppercase tracking-wider font-semibold text-sm">Carrinho</span>
               </Button>
             )}
           </div>

@@ -46,7 +46,7 @@ describe('ProductCard', () => {
     expect(screen.getByText('Espresso')).toBeInTheDocument()
   })
 
-  it('renders the product price in BRL format', () => {
+  it('renders the product price as an overlay badge', () => {
     renderCard()
     expect(screen.getByText(/R\$\s*5,50/)).toBeInTheDocument()
   })

@@ -56,7 +56,7 @@ describe('CartSidebar', () => {
 
   it('shows empty cart message when no items', () => {
     renderSidebar(true)
-    expect(screen.getByText(/carrinho está vazio/i)).toBeInTheDocument()
+    expect(screen.getByText('Seu carrinho está vazio.')).toBeInTheDocument()
   })
 
   it('calls onClose when overlay is clicked', async () => {
@@ -79,9 +79,9 @@ describe('CartSidebar', () => {
     expect(document.querySelector('div[aria-hidden="true"]')).not.toBeInTheDocument()
   })
 
-  it('renders header with cart count when items exist', () => {
+  it('renders header with Sua Seleção title', () => {
     renderSidebar(true, true)
-    expect(screen.getByText(/Carrinho \(2\)/i)).toBeInTheDocument()
+    expect(screen.getByText('Sua Seleção')).toBeInTheDocument()
   })
 
   it('renders item names and quantity when items are in cart', async () => {
@@ -89,10 +89,10 @@ describe('CartSidebar', () => {
     expect(await screen.findByText('Espresso')).toBeInTheDocument()
   })
 
-  it('shows total in footer when items exist', async () => {
+  it('shows total and Finalizar Pedido in footer when items exist', async () => {
     renderSidebar(true, true)
     expect(await screen.findByText('Total')).toBeInTheDocument()
-    expect(await screen.findByRole('button', { name: /fazer pedido/i })).toBeInTheDocument()
+    expect(await screen.findByRole('button', { name: /finalizar pedido/i })).toBeInTheDocument()
   })
 
   it('increments quantity via plus button', async () => {
@@ -114,9 +114,9 @@ describe('CartSidebar', () => {
     expect(screen.queryByText('Espresso')).not.toBeInTheDocument()
   })
 
-  it('opens order form when Fazer pedido is clicked', async () => {
+  it('opens order form when Finalizar Pedido is clicked', async () => {
     renderSidebar(true, true)
-    const orderBtn = await screen.findByRole('button', { name: /fazer pedido/i })
+    const orderBtn = await screen.findByRole('button', { name: /finalizar pedido/i })
     await userEvent.click(orderBtn)
     expect(screen.getByTestId('order-form')).toBeInTheDocument()
   })

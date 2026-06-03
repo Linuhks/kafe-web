@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { X, Minus, Plus, Trash2 } from 'lucide-react'
+import { X, Minus, Plus, Trash2, ShoppingBag } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useCart } from '@/context/CartContext'
 import OrderForm from './OrderForm'
@@ -28,26 +28,33 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
 
       {/* Sidebar */}
       <div
-        className={`fixed top-0 right-0 z-50 h-full w-full max-w-sm bg-background shadow-xl flex flex-col transition-transform duration-300 ${
+        className={`fixed top-0 right-0 z-50 h-full w-full max-w-md bg-surface-container-lowest shadow-xl flex flex-col transition-transform duration-300 ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
         {/* Header */}
-        <div className="flex items-center justify-between border-b px-4 py-3">
-          <h2 className="font-semibold">
-            Carrinho{itemCount > 0 ? ` (${itemCount})` : ''}
-          </h2>
+        <div className="flex items-center justify-between border-b border-outline-variant p-8">
+          <div>
+            <h2 className="text-2xl font-extrabold text-[var(--kafe-primary)]">Sua Seleção</h2>
+            <p className="text-sm text-[var(--kafe-on-surface-variant)]">Preparado para seu ritual</p>
+          </div>
           <Button variant="ghost" size="icon" onClick={onClose}>
             <X className="h-5 w-5" />
           </Button>
         </div>
 
         {/* Items */}
-        <div className="flex-1 overflow-y-auto p-4">
+        <div className="flex-1 overflow-y-auto p-8">
           {items.length === 0 ? (
-            <p className="text-center text-sm text-muted-foreground mt-8">
-              Seu carrinho está vazio
-            </p>
+            <div className="flex flex-col items-center justify-center h-full text-center">
+              <div className="bg-[var(--kafe-surface-container)] p-8 rounded-full mb-6">
+                <ShoppingBag className="h-10 w-10 text-[var(--kafe-on-surface-variant)]" />
+              </div>
+              <p className="text-sm text-[var(--kafe-on-surface-variant)] mb-4">Seu carrinho está vazio.</p>
+              <Button variant="outline" onClick={onClose}>
+                Continuar comprando
+              </Button>
+            </div>
           ) : (
             <ul className="space-y-4">
               {items.map(({ product, quantity }) => (
@@ -92,23 +99,25 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
           )}
         </div>
 
-        {/* Footer */}
-        {items.length > 0 && (
-          <div className="border-t p-4 space-y-3">
-            <div className="flex justify-between text-sm font-semibold">
-              <span>Total</span>
-              <span>
-                {total.toLocaleString('pt-BR', {
-                  style: 'currency',
-                  currency: 'BRL',
-                })}
-              </span>
-            </div>
-            <Button className="w-full" onClick={() => setIsOrderFormOpen(true)}>
-              Fazer pedido
-            </Button>
+        {/* Footer — always rendered */}
+        <div className="border-t border-outline-variant p-8 bg-surface-container-low space-y-3">
+          <div className="flex justify-between items-baseline">
+            <span className="text-sm font-semibold">Total</span>
+            <span className="text-2xl font-extrabold text-[var(--kafe-primary)]">
+              {total.toLocaleString('pt-BR', {
+                style: 'currency',
+                currency: 'BRL',
+              })}
+            </span>
           </div>
-        )}
+          <Button
+            className="w-full disabled:bg-[var(--kafe-surface-dim)] disabled:text-[var(--kafe-outline)] disabled:cursor-not-allowed"
+            onClick={() => setIsOrderFormOpen(true)}
+            disabled={itemCount === 0}
+          >
+            Finalizar Pedido
+          </Button>
+        </div>
       </div>
 
       <OrderForm
