@@ -75,9 +75,8 @@ export async function restockIngredient(id: string, data: RestockIngredientDto):
 
 export async function getStockMovements(params?: InventoryControllerMovementsParams): Promise<MovementsResult> {
   const queryParams: Record<string, string> = {}
-  if (params?.page) queryParams.page = String(params.page)
-  if (params?.limit) queryParams.limit = String(params.limit)
   if (params?.ingredientId) queryParams.ingredientId = params.ingredientId
+  if (params?.orderId) queryParams.orderId = params.orderId
 
   const res = await serverFetch<{
     data: { data?: InventoryMovementResponseDto[]; pagination?: InventoryControllerMovements200Pagination }

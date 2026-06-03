@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { ArrowLeft, ChevronRight, CircleCheck, HelpCircle } from 'lucide-react'
 import TopNavBar from '@/components/layout/TopNavBar'
 import Footer from '@/components/layout/Footer'
 import ItemThumbnail from '@/components/confirmation/ItemThumbnail'
@@ -56,12 +57,7 @@ export default async function OrderConfirmationPage({
         {/* Success hero */}
         <section className="text-center mb-stack-lg">
           <div className="mb-stack-md inline-flex items-center justify-center w-24 h-24 bg-kafe-secondary-container rounded-full animate-float">
-            <span
-              className="material-symbols-outlined text-kafe-on-secondary-container"
-              style={{ fontSize: 48, fontVariationSettings: "'FILL' 1" }}
-            >
-              check_circle
-            </span>
+            <CircleCheck className="text-kafe-on-secondary-container" size={48} strokeWidth={1.5} />
           </div>
           <h1 className="text-headline-lg text-kafe-primary mb-stack-sm">
             Thank you for your order
@@ -173,16 +169,14 @@ export default async function OrderConfirmationPage({
                 <p className="text-body-md text-kafe-on-surface-variant mb-4">{order.pickup.address}</p>
                 <button className="w-full py-4 bg-kafe-primary text-kafe-on-primary rounded-lg text-label-sm uppercase tracking-widest hover:opacity-90 transition-opacity flex items-center justify-center gap-2 mt-auto">
                   <span>Get Directions</span>
-                  <span className="material-symbols-outlined text-[18px]">chevron_right</span>
+                  <ChevronRight size={18} />
                 </button>
               </div>
             </div>
 
             {/* Support card */}
             <div className="bg-kafe-secondary-container/10 border border-kafe-secondary-container rounded-xl p-6 flex items-start gap-4">
-              <span className="material-symbols-outlined text-kafe-secondary flex-shrink-0">
-                help_outline
-              </span>
+              <HelpCircle className="text-kafe-secondary flex-shrink-0" size={24} />
               <div>
                 <h4 className="text-body-md font-bold text-kafe-on-secondary-container">
                   Need help with your ritual?
@@ -201,7 +195,7 @@ export default async function OrderConfirmationPage({
             href="/cardapio"
             className="text-label-sm text-kafe-on-surface-variant hover:text-kafe-primary transition-colors flex items-center gap-2"
           >
-            <span className="material-symbols-outlined text-[18px]">arrow_back</span>
+            <ArrowLeft size={18} />
             Return to Shop
           </Link>
           <div className="hidden md:block w-px h-4 bg-kafe-outline-variant" />

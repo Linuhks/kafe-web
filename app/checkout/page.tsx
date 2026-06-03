@@ -1,5 +1,6 @@
 'use client'
 
+import { BadgeCheck, ChevronRight, CreditCard, Lock, Truck } from 'lucide-react'
 import TopNavBar from '@/components/layout/TopNavBar'
 import Footer from '@/components/layout/Footer'
 
@@ -106,9 +107,7 @@ export default function CheckoutPage() {
                       placeholder="0000 0000 0000 0000"
                       className={INPUT_CLASS}
                     />
-                    <span className="material-symbols-outlined absolute right-0 top-3 text-kafe-on-surface-variant text-[20px]">
-                      credit_card
-                    </span>
+                    <CreditCard className="absolute right-0 top-3 text-kafe-on-surface-variant" size={20} />
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-6">
@@ -122,9 +121,7 @@ export default function CheckoutPage() {
             <div className="pt-stack-md">
               <button className="group w-full bg-kafe-primary text-kafe-on-primary py-6 rounded-xl text-headline-md flex items-center justify-center gap-4 hover:bg-kafe-primary/90 transition-colors">
                 Confirm Purchase
-                <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">
-                  chevron_right
-                </span>
+                <ChevronRight className="group-hover:translate-x-1 transition-transform" />
               </button>
               <p className="text-center text-label-sm text-kafe-on-surface-variant mt-4">
                 By confirming, you agree to our Terms of Service.
@@ -198,15 +195,15 @@ export default function CheckoutPage() {
               {/* Trust badges */}
               <div className="bg-kafe-surface-container py-4 px-8 flex justify-center gap-6 border-t border-kafe-outline-variant/30">
                 {[
-                  { icon: 'lock', label: 'Seguro' },
-                  { icon: 'local_shipping', label: 'Frete Grátis' },
-                  { icon: 'verified', label: 'Garantia' },
-                ].map(({ icon, label }) => (
+                  { Icon: Lock, label: 'Seguro' },
+                  { Icon: Truck, label: 'Frete Grátis' },
+                  { Icon: BadgeCheck, label: 'Garantia' },
+                ].map(({ Icon, label }) => (
                   <div
                     key={label}
                     className="flex items-center gap-1.5 text-[10px] text-kafe-on-surface-variant uppercase tracking-widest"
                   >
-                    <span className="material-symbols-outlined text-[16px]">{icon}</span>
+                    <Icon size={16} />
                     {label}
                   </div>
                 ))}

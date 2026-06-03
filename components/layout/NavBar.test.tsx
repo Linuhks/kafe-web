@@ -50,7 +50,7 @@ describe('NavBar', () => {
 
   it('renders the Kafe brand name', () => {
     renderNavBar()
-    expect(screen.getByText('Kafe')).toBeInTheDocument()
+    expect(screen.getByText('KAFE')).toBeInTheDocument()
   })
 
   it('renders the Carrinho button when no user is logged in', async () => {

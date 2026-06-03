@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { ShoppingCart, User } from 'lucide-react'
 
 const NAV_LINKS = ['Shop', 'Roastery', 'Our Story', 'Locations']
 
@@ -27,10 +28,10 @@ export default function TopNavBar() {
 
         <div className="flex items-center gap-4">
           <button className="text-kafe-on-surface-variant hover:text-kafe-primary transition-colors">
-            <span className="material-symbols-outlined text-[20px]">person</span>
+            <User size={20} />
           </button>
           <button className="text-kafe-on-surface-variant hover:text-kafe-primary transition-colors">
-            <span className="material-symbols-outlined text-[20px]">shopping_cart</span>
+            <ShoppingCart size={20} />
           </button>
         </div>
       </div>
