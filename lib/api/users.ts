@@ -1,4 +1,4 @@
-import { apiFetch } from '@/lib/api/fetcher'
+import { serverFetch } from '@/lib/api/server-fetch'
 import type { User } from '@/lib/types'
 import type {
   UsersControllerList200Pagination,
@@ -14,7 +14,7 @@ export async function getUsers(params?: { page?: number; limit?: number }): Prom
   if (params?.page) queryParams.page = String(params.page)
   if (params?.limit) queryParams.limit = String(params.limit)
 
-  const res = await apiFetch<{
+  const res = await serverFetch<{
     data: { data?: User[]; pagination?: UsersControllerList200Pagination }
     status: number
     headers: Headers
@@ -31,7 +31,7 @@ export async function getUsers(params?: { page?: number; limit?: number }): Prom
 }
 
 export async function getUserById(id: string): Promise<User | null> {
-  const res = await apiFetch<{
+  const res = await serverFetch<{
     data: { data?: User }
     status: number
     headers: Headers
