@@ -11,16 +11,14 @@ const LABEL_CLASS = 'text-label-sm text-kafe-on-surface-variant uppercase'
 const DEMO_ITEMS = [
   {
     id: 1,
-    icon: 'coffee',
-    iconBg: 'bg-kafe-surface-variant',
+    imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD61Zs_BPzg-C_krrH-6djM6OFhU0Y4o_ZcZiVcAijv9IlWfj8DKsta2wiGYEI7Y4cuylzMyklV0xq3CbN_f30xbc6xy8Ph8UeMSjlZI42qEomA9hXIsX0fO_lCXLQJ00UIWtJf5OuO9pL9GGfGKZ1G59CobLbHqAAncB6ElsAwaDL2zorwBtD7Erv6Ju-lrS425esfLT3YiW8ELF4cxkejp1SZkXRaKfBztqK3pHtumYocWD1qwL7yIwrpm9g3fCUZ4Nsm_eqOXAQ',
     name: 'Midnight Blend',
     detail: 'Whole Bean • 250g',
     price: 'R$ 44,90',
   },
   {
     id: 2,
-    icon: 'coffee_maker',
-    iconBg: 'bg-kafe-secondary-container',
+    imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuC25QA-jIoFcUHR8e0Wgm5q3BvZNFIzSiuqCmSlTfJECi6O2kGk05rHlLwMduX4WJvrduU0PjRr2D-1oRfufyXKIU67lAfSVg9zDh8yVUh6DmmjrL7qQSZsQ76shWsrnstU-fOFe8Hg4mtszhaFsfI6jrW_Xq2kh8Wke4DAdrJtE9MW8f5VAGqhWoZXq7cXwMgpT79KDpeZdebPB_5rIcraoJGPy6v6Ka8IEIro6OUFdwjdZz9xSA3vx43bsJmcjptrYPG_W_6pDUo',
     name: 'V60 Ceramic Dripper',
     detail: 'Matte Black • Ceramic',
     price: 'R$ 89,90',
@@ -144,12 +142,13 @@ export default function CheckoutPage() {
                 <div className="space-y-6 max-h-[400px] overflow-y-auto pr-2">
                   {DEMO_ITEMS.map((item) => (
                     <div key={item.id} className="flex gap-4">
-                      <div
-                        className={`w-24 h-24 ${item.iconBg} rounded-lg flex-shrink-0 border border-kafe-outline-variant/20 flex items-center justify-center`}
-                      >
-                        <span className="material-symbols-outlined text-kafe-on-surface-variant text-[40px]">
-                          {item.icon}
-                        </span>
+                      <div className="w-24 h-24 rounded-lg flex-shrink-0 border border-kafe-outline-variant/20 overflow-hidden">
+                        <img
+                          src={item.imageUrl}
+                          alt={item.name}
+                          className="w-full h-full object-cover"
+                          onError={(e) => { e.currentTarget.src = '/images/product-placeholder.svg' }}
+                        />
                       </div>
                       <div className="flex-grow">
                         <div className="flex justify-between gap-2">
