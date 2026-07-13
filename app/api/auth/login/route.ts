@@ -1,5 +1,6 @@
 import { cookies, headers } from 'next/headers'
 
+// Per-instance, non-persistent — not shared across processes or deploys.
 const attempts = new Map<string, { count: number; resetAt: number }>()
 const WINDOW_MS = 15 * 60 * 1000
 const MAX_ATTEMPTS = 10
@@ -8,6 +9,7 @@ function isRateLimited(ip: string): boolean {
   const now = Date.now()
   const record = attempts.get(ip)
   if (!record || now > record.resetAt) {
+    if (record) attempts.delete(ip)
     attempts.set(ip, { count: 1, resetAt: now + WINDOW_MS })
     return false
   }
@@ -17,7 +19,12 @@ function isRateLimited(ip: string): boolean {
 
 export async function POST(request: Request) {
   const headerStore = await headers()
-  const ip = headerStore.get('x-forwarded-for')?.split(',')[0].trim() ?? 'unknown'
+  const ipHeader = process.env.TRUSTED_PROXY_HEADER ?? 'x-forwarded-for'
+  const ip = headerStore.get(ipHeader)?.split(',')[0].trim()
+
+  if (!ip) {
+    return Response.json({ message: 'Too many requests' }, { status: 429 })
+  }
 
   if (isRateLimited(ip)) {
     return Response.json({ message: 'Too many requests' }, { status: 429 })
@@ -28,6 +35,10 @@ export async function POST(request: Request) {
 
   if (!token || typeof token !== 'string') {
     return Response.json({ message: 'token is required' }, { status: 400 })
+  }
+
+  if (!/^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/.test(token)) {
+    return Response.json({ message: 'Invalid token format' }, { status: 400 })
   }
 
   const cookieStore = await cookies()
