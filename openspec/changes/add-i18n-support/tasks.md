@@ -45,9 +45,9 @@
 
 ## 7. Admin Inventory list (`app/admin/inventory/page.tsx`)
 
-- [ ] 7.1 Replace the "LOW STOCK" badge text with "ESTOQUE BAIXO" (`inventoryList.status.low`) — page is otherwise already Portuguese
-- [ ] 7.2 Update the page's existing test(s) to assert "ESTOQUE BAIXO"
-- [ ] 7.3 Run `pnpm lint && pnpm build`, fix any break, commit
+- [x] 7.1 Replace the "LOW STOCK" badge text with "ESTOQUE BAIXO" (`inventoryList.status.low`) — page is otherwise already Portuguese
+- [x] 7.2 Update the page's existing test(s) to assert "ESTOQUE BAIXO"
+- [x] 7.3 Run `pnpm lint && pnpm build`, fix any break, commit
 
 ## 8. Login page (`app/login/page.tsx`)
 

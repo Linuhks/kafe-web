@@ -1,12 +1,14 @@
 export const dynamic = 'force-dynamic'
 
 import Link from 'next/link'
+import { getTranslations } from 'next-intl/server'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { getInventory } from '@/lib/api/inventory'
 
 export default async function AdminInventoryPage() {
   const { ingredients } = await getInventory()
+  const t = await getTranslations('inventoryList.status')
 
   return (
     <div className="p-6 space-y-6">
@@ -48,7 +50,7 @@ export default async function AdminInventoryPage() {
                     <td className="px-4 py-3">{ingredient.minimumStock}</td>
                     <td className="px-4 py-3">
                       {isLow ? (
-                        <Badge variant="destructive">LOW STOCK</Badge>
+                        <Badge variant="destructive">{t('low')}</Badge>
                       ) : (
                         <Badge className="bg-green-100 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-400 dark:border-green-800">
                           OK

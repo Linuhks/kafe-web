@@ -95,7 +95,11 @@
     },
     "draftsAutosave": "Os rascunhos são salvos automaticamente"
   },
-  "inventoryList": {},
+  "inventoryList": {
+    "status": {
+      "low": "ESTOQUE BAIXO"
+    }
+  },
   "checkout": {},
   "orderConfirmation": {},
   "designSystem": {}
