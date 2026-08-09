@@ -22,7 +22,41 @@
   "dialog": {
     "close": "Fechar"
   },
-  "login": {},
+  "login": {
+    "brand": "KAFE",
+    "hero": {
+      "alt": "O Ritual do Preparo",
+      "headline": "A arte do ritual matinal.",
+      "body": "Experimente um café cuidadosamente selecionado, torrado com maestria e compartilhado com intenção."
+    },
+    "welcomeBack": "Bem-vindo de volta",
+    "subtitle": "Entre para continuar sua jornada no café.",
+    "fields": {
+      "email": "Endereço de E-mail",
+      "password": "Senha"
+    },
+    "forgotPassword": "Esqueceu a senha?",
+    "showPassword": "Mostrar senha",
+    "hidePassword": "Ocultar senha",
+    "submit": {
+      "signIn": "Entrar",
+      "signingIn": "Entrando…"
+    },
+    "orJoinClub": "ou junte-se ao clube",
+    "google": "Google",
+    "apple": "Apple",
+    "newToKafe": "Novo na Kafe?",
+    "createAccount": "Criar uma conta",
+    "footerCopyright": "© 2024 Kafe Roastery. Todos os direitos reservados.",
+    "validation": {
+      "invalidEmail": "E-mail inválido",
+      "passwordTooShort": "A senha deve ter pelo menos 8 caracteres"
+    },
+    "toast": {
+      "invalidCredentials": "E-mail ou senha inválidos",
+      "loginFailed": "Falha no login. Tente novamente."
+    }
+  },
   "dashboard": {
     "overview": "Visão Geral",
     "notificationsAriaLabel": "Notificações",

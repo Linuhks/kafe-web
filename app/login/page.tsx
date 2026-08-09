@@ -1,22 +1,25 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import { useTranslations } from 'next-intl'
 import { useAuth } from '@/context/AuthContext'
 import { useToast } from '@/context/ToastContext'
 import { useAuthControllerLogin } from '@/lib/api/generated/api'
 import type { UserRole } from '@/lib/types'
 
-const loginSchema = z.object({
-  email: z.string().email('Invalid email'),
-  password: z.string().min(8, 'Password must be at least 8 characters'),
-})
+function buildLoginSchema(t: ReturnType<typeof useTranslations>) {
+  return z.object({
+    email: z.string().email(t('invalidEmail')),
+    password: z.string().min(8, t('passwordTooShort')),
+  })
+}
 
-type LoginFields = z.infer<typeof loginSchema>
+type LoginFields = z.infer<ReturnType<typeof buildLoginSchema>>
 
 function dashboardForRole(role: UserRole): string {
   if (role === 'ADMIN') return '/admin/dashboard'
@@ -55,8 +58,12 @@ export default function LoginPage() {
   const router = useRouter()
   const { setUser } = useAuth()
   const { addToast } = useToast()
+  const t = useTranslations('login')
+  const tValidation = useTranslations('login.validation')
   const [showPassword, setShowPassword] = useState(false)
   const heroRef = useRef<HTMLDivElement>(null)
+
+  const loginSchema = useMemo(() => buildLoginSchema(tValidation), [tValidation])
 
   const {
     register,
@@ -90,10 +97,10 @@ export default function LoginPage() {
         setUser(user)
         router.push(dashboardForRole(user.role))
       } else {
-        addToast('Invalid email or password', 'error')
+        addToast(t('toast.invalidCredentials'), 'error')
       }
     } catch {
-      addToast('Login failed. Please try again.', 'error')
+      addToast(t('toast.loginFailed'), 'error')
     }
   }
 
@@ -121,7 +128,7 @@ export default function LoginPage() {
           <div ref={heroRef} className="absolute inset-0" style={{ transform: 'scale(1.1)' }}>
             <Image
               src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3o6T7dSGQvCUqQe1bCwdt594qolB1kyTZYGUdgE5T5aec367JSQoDWEXNmsZU9-v1s6aCnzg1SjlPhJcYagWrfBY91dTxjy8DZPx1x8Imo7T-IeEu7f5HmK1xpixKYU_TjXv1GE9NzUO1dkiwcuC6_QNAZUzgt5wqQ9YrRljo3Euh-PpAa__D1A6v1_YtPPFo-nxckrScZ6_dAJQCzv_vWTEhGREOCtPkCE8WyfuKXtQ7yzLE9lT6CMVAgLpMFDG1HiD3gNkyRMY"
-              alt="The Ritual of Brewing"
+              alt={t('hero.alt')}
               fill
               className="object-cover"
               priority
@@ -136,18 +143,18 @@ export default function LoginPage() {
                 className="text-2xl font-bold uppercase tracking-widest"
                 style={{ color: 'var(--kafe-primary-fixed)' }}
               >
-                KAFE
+                {t('brand')}
               </h1>
             </div>
             <div className="max-w-md">
               <p className="text-3xl font-bold leading-tight text-white mb-2">
-                The art of the morning ritual.
+                {t('hero.headline')}
               </p>
               <p
                 className="text-lg leading-relaxed opacity-90"
                 style={{ color: 'var(--kafe-primary-fixed-dim)' }}
               >
-                Experience coffee that is thoughtfully sourced, expertly roasted, and shared with intention.
+                {t('hero.body')}
               </p>
             </div>
           </div>
@@ -165,7 +172,7 @@ export default function LoginPage() {
                 className="text-2xl font-bold uppercase tracking-widest"
                 style={{ color: 'var(--kafe-primary)' }}
               >
-                KAFE
+                {t('brand')}
               </h1>
             </div>
 
@@ -175,10 +182,10 @@ export default function LoginPage() {
                 className="text-3xl font-bold"
                 style={{ color: 'var(--kafe-on-surface)' }}
               >
-                Welcome back
+                {t('welcomeBack')}
               </h2>
               <p style={{ color: 'var(--kafe-on-surface-variant)' }}>
-                Sign in to continue your coffee journey.
+                {t('subtitle')}
               </p>
             </header>
 
@@ -191,7 +198,7 @@ export default function LoginPage() {
                   className="text-sm font-semibold ml-1"
                   style={{ color: 'var(--kafe-on-surface-variant)' }}
                 >
-                  Email address
+                  {t('fields.email')}
                 </label>
                 <input
                   id="email"
@@ -219,14 +226,14 @@ export default function LoginPage() {
                     className="text-sm font-semibold"
                     style={{ color: 'var(--kafe-on-surface-variant)' }}
                   >
-                    Password
+                    {t('fields.password')}
                   </label>
                   <a
                     href="#"
                     className="text-sm font-semibold hover:underline transition-all"
                     style={{ color: 'var(--kafe-primary)' }}
                   >
-                    Forgot Password?
+                    {t('forgotPassword')}
                   </a>
                 </div>
                 <div className="relative">
@@ -245,7 +252,7 @@ export default function LoginPage() {
                   />
                   <button
                     type="button"
-                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                    aria-label={showPassword ? t('hidePassword') : t('showPassword')}
                     onClick={() => setShowPassword(v => !v)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 transition-colors"
                     style={{ color: 'var(--kafe-on-surface-variant)' }}
@@ -277,7 +284,7 @@ export default function LoginPage() {
                     e.currentTarget.style.backgroundColor = 'var(--kafe-primary-container)'
                   }}
                 >
-                  {isPending ? 'Signing in…' : 'Sign In'}
+                  {isPending ? t('submit.signingIn') : t('submit.signIn')}
                   {!isPending && <ChevronRightIcon />}
                 </button>
               </div>
@@ -292,7 +299,7 @@ export default function LoginPage() {
                   className="flex-shrink mx-4 text-xs font-semibold uppercase tracking-wider"
                   style={{ color: 'var(--kafe-outline)' }}
                 >
-                  or join the club
+                  {t('orJoinClub')}
                 </span>
                 <div className="flex-grow border-t" style={{ borderColor: 'var(--kafe-outline-variant)' }} />
               </div>
@@ -316,7 +323,7 @@ export default function LoginPage() {
                     <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
                     <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
                   </svg>
-                  Google
+                  {t('google')}
                 </button>
                 <button
                   type="button"
@@ -332,18 +339,18 @@ export default function LoginPage() {
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
                     <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11"/>
                   </svg>
-                  Apple
+                  {t('apple')}
                 </button>
               </div>
 
               <p className="text-center text-sm" style={{ color: 'var(--kafe-on-surface-variant)' }}>
-                New to Kafe?{' '}
+                {t('newToKafe')}{' '}
                 <a
                   href="#"
                   className="font-bold hover:underline"
                   style={{ color: 'var(--kafe-primary)' }}
                 >
-                  Create an account
+                  {t('createAccount')}
                 </a>
               </p>
             </div>
@@ -351,7 +358,7 @@ export default function LoginPage() {
             {/* Footer */}
             <footer className="mt-auto pt-8">
               <p className="text-xs font-semibold" style={{ color: 'var(--kafe-outline)' }}>
-                © 2024 Kafe Roastery. All rights reserved.
+                {t('footerCopyright')}
               </p>
             </footer>
           </div>

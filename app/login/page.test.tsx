@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { render, screen, waitFor, fireEvent } from '@testing-library/react'
+import { render, screen, waitFor, fireEvent } from '@/lib/test-utils'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 import { useRouter } from 'next/navigation'
@@ -43,11 +43,11 @@ function renderLogin({ isPending = false } = {}) {
 }
 
 async function fillAndSubmit(email: string, password: string) {
-  if (email) await userEvent.type(screen.getByLabelText('Email address'), email)
-  if (password) await userEvent.type(screen.getByLabelText('Password'), password)
+  if (email) await userEvent.type(screen.getByLabelText('Endereço de E-mail'), email)
+  if (password) await userEvent.type(screen.getByLabelText('Senha'), password)
   // fireEvent.submit bypasses jsdom's native HTML5 constraint validation
   // (which would block submission for invalid email values in type="email" inputs)
-  const form = screen.getByLabelText('Email address').closest('form')!
+  const form = screen.getByLabelText('Endereço de E-mail').closest('form')!
   fireEvent.submit(form)
 }
 
@@ -62,23 +62,23 @@ describe('LoginPage', () => {
   })
 
   describe('static structure', () => {
-    it('renders "Welcome back" heading and subtext', () => {
+    it('renders "Bem-vindo de volta" heading and subtext', () => {
       renderLogin()
-      expect(screen.getByText('Welcome back')).toBeInTheDocument()
-      expect(screen.getByText('Sign in to continue your coffee journey.')).toBeInTheDocument()
+      expect(screen.getByText('Bem-vindo de volta')).toBeInTheDocument()
+      expect(screen.getByText('Entre para continuar sua jornada no café.')).toBeInTheDocument()
     })
 
-    it('renders email input, password input, and "Sign In" submit button', () => {
+    it('renders email input, password input, and "Entrar" submit button', () => {
       renderLogin()
-      expect(screen.getByLabelText('Email address')).toBeInTheDocument()
-      expect(screen.getByLabelText('Password')).toBeInTheDocument()
-      expect(screen.getByRole('button', { name: 'Sign In' })).toBeInTheDocument()
+      expect(screen.getByLabelText('Endereço de E-mail')).toBeInTheDocument()
+      expect(screen.getByLabelText('Senha')).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: 'Entrar' })).toBeInTheDocument()
     })
 
-    it('renders "Forgot Password?" and "Create an account" links', () => {
+    it('renders "Esqueceu a senha?" and "Criar uma conta" links', () => {
       renderLogin()
-      expect(screen.getByText('Forgot Password?')).toBeInTheDocument()
-      expect(screen.getByText('Create an account')).toBeInTheDocument()
+      expect(screen.getByText('Esqueceu a senha?')).toBeInTheDocument()
+      expect(screen.getByText('Criar uma conta')).toBeInTheDocument()
     })
 
     it('renders "Google" and "Apple" buttons', () => {
@@ -87,64 +87,64 @@ describe('LoginPage', () => {
       expect(screen.getByRole('button', { name: /Apple/i })).toBeInTheDocument()
     })
 
-    it('renders "or join the club" divider text', () => {
+    it('renders "ou junte-se ao clube" divider text', () => {
       renderLogin()
-      expect(screen.getByText(/or join the club/i)).toBeInTheDocument()
+      expect(screen.getByText(/ou junte-se ao clube/i)).toBeInTheDocument()
     })
 
-    it('renders footer text "© 2024 Kafe Roastery. All rights reserved."', () => {
+    it('renders footer text "© 2024 Kafe Roastery. Todos os direitos reservados."', () => {
       renderLogin()
-      expect(screen.getByText('© 2024 Kafe Roastery. All rights reserved.')).toBeInTheDocument()
+      expect(screen.getByText('© 2024 Kafe Roastery. Todos os direitos reservados.')).toBeInTheDocument()
     })
 
-    it('hero image has alt "The Ritual of Brewing"', () => {
+    it('hero image has alt "O Ritual do Preparo"', () => {
       renderLogin()
-      expect(screen.getByAltText('The Ritual of Brewing')).toBeInTheDocument()
+      expect(screen.getByAltText('O Ritual do Preparo')).toBeInTheDocument()
     })
   })
 
   describe('password visibility toggle', () => {
-    it('starts with type="password" and toggle aria-label "Show password"', () => {
+    it('starts with type="password" and toggle aria-label "Mostrar senha"', () => {
       renderLogin()
-      expect(screen.getByLabelText('Password')).toHaveAttribute('type', 'password')
-      expect(screen.getByRole('button', { name: 'Show password' })).toBeInTheDocument()
+      expect(screen.getByLabelText('Senha')).toHaveAttribute('type', 'password')
+      expect(screen.getByRole('button', { name: 'Mostrar senha' })).toBeInTheDocument()
     })
 
-    it('clicking toggle changes type to "text" and aria-label to "Hide password"', async () => {
+    it('clicking toggle changes type to "text" and aria-label to "Ocultar senha"', async () => {
       renderLogin()
-      await userEvent.click(screen.getByRole('button', { name: 'Show password' }))
-      expect(screen.getByLabelText('Password')).toHaveAttribute('type', 'text')
-      expect(screen.getByRole('button', { name: 'Hide password' })).toBeInTheDocument()
+      await userEvent.click(screen.getByRole('button', { name: 'Mostrar senha' }))
+      expect(screen.getByLabelText('Senha')).toHaveAttribute('type', 'text')
+      expect(screen.getByRole('button', { name: 'Ocultar senha' })).toBeInTheDocument()
     })
 
     it('clicking toggle twice returns type to "password"', async () => {
       renderLogin()
-      await userEvent.click(screen.getByRole('button', { name: 'Show password' }))
-      await userEvent.click(screen.getByRole('button', { name: 'Hide password' }))
-      expect(screen.getByLabelText('Password')).toHaveAttribute('type', 'password')
+      await userEvent.click(screen.getByRole('button', { name: 'Mostrar senha' }))
+      await userEvent.click(screen.getByRole('button', { name: 'Ocultar senha' }))
+      expect(screen.getByLabelText('Senha')).toHaveAttribute('type', 'password')
     })
   })
 
   describe('form validation', () => {
-    it('submitting with non-email value shows "Invalid email"', async () => {
+    it('submitting with non-email value shows "E-mail inválido"', async () => {
       renderLogin()
       await fillAndSubmit('notanemail', 'validpassword')
-      await waitFor(() => expect(screen.getByText('Invalid email')).toBeInTheDocument())
+      await waitFor(() => expect(screen.getByText('E-mail inválido')).toBeInTheDocument())
     })
 
-    it('submitting with short password shows "Password must be at least 8 characters"', async () => {
+    it('submitting with short password shows "A senha deve ter pelo menos 8 caracteres"', async () => {
       renderLogin()
       await fillAndSubmit('test@example.com', 'short')
-      await waitFor(() => expect(screen.getByText('Password must be at least 8 characters')).toBeInTheDocument())
+      await waitFor(() => expect(screen.getByText('A senha deve ter pelo menos 8 caracteres')).toBeInTheDocument())
     })
 
     it('submitting empty form shows errors for both fields', async () => {
       renderLogin()
-      const form = screen.getByLabelText('Email address').closest('form')!
+      const form = screen.getByLabelText('Endereço de E-mail').closest('form')!
       fireEvent.submit(form)
       await waitFor(() => {
-        expect(screen.getByText('Invalid email')).toBeInTheDocument()
-        expect(screen.getByText('Password must be at least 8 characters')).toBeInTheDocument()
+        expect(screen.getByText('E-mail inválido')).toBeInTheDocument()
+        expect(screen.getByText('A senha deve ter pelo menos 8 caracteres')).toBeInTheDocument()
       })
     })
   })
@@ -203,31 +203,31 @@ describe('LoginPage', () => {
   })
 
   describe('error handling', () => {
-    it('non-200 response calls addToast with "Invalid email or password" and "error"', async () => {
+    it('non-200 response calls addToast with "E-mail ou senha inválidos" and "error"', async () => {
       mockMutateAsync.mockResolvedValue({ status: 401 })
       renderLogin()
       await fillAndSubmit('test@example.com', 'password123')
-      await waitFor(() => expect(mockAddToast).toHaveBeenCalledWith('Invalid email or password', 'error'))
+      await waitFor(() => expect(mockAddToast).toHaveBeenCalledWith('E-mail ou senha inválidos', 'error'))
     })
 
-    it('mutateAsync throwing calls addToast with "Login failed. Please try again." and "error"', async () => {
+    it('mutateAsync throwing calls addToast with "Falha no login. Tente novamente." and "error"', async () => {
       mockMutateAsync.mockRejectedValue(new Error('Network error'))
       renderLogin()
       await fillAndSubmit('test@example.com', 'password123')
-      await waitFor(() => expect(mockAddToast).toHaveBeenCalledWith('Login failed. Please try again.', 'error'))
+      await waitFor(() => expect(mockAddToast).toHaveBeenCalledWith('Falha no login. Tente novamente.', 'error'))
     })
   })
 
   describe('loading state', () => {
-    it('when isPending=true, button text is "Signing in…" and button is disabled', () => {
+    it('when isPending=true, button text is "Entrando…" and button is disabled', () => {
       renderLogin({ isPending: true })
-      const button = screen.getByRole('button', { name: 'Signing in…' })
+      const button = screen.getByRole('button', { name: 'Entrando…' })
       expect(button).toBeDisabled()
     })
 
-    it('when isPending=false, button is not disabled and shows "Sign In"', () => {
+    it('when isPending=false, button is not disabled and shows "Entrar"', () => {
       renderLogin()
-      const button = screen.getByRole('button', { name: 'Sign In' })
+      const button = screen.getByRole('button', { name: 'Entrar' })
       expect(button).not.toBeDisabled()
     })
   })

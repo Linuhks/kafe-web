@@ -51,12 +51,12 @@
 
 ## 8. Login page (`app/login/page.tsx`)
 
-- [ ] 8.1 Translate all copy, placeholders, and button/link labels ("Welcome back"/"Sign in to continue…"/"Sign In"/"Forgot Password?"/"Create an account"/"or join the club"/footer copyright/hero alt text → `login.*`)
-- [ ] 8.2 Translate Zod validation messages ("Invalid email"/"Password must be at least 8 characters" → `login.validation.*`)
-- [ ] 8.3 Translate toast messages ("Invalid email or password"/"Login failed. Please try again." → `login.toast.*`) and the show/hide-password aria-labels
-- [ ] 8.4 Translate the pending-state button text ("Signing in…")
-- [ ] 8.5 Update `openspec/specs/login-page-test-coverage` implementation — i.e. update the actual test file(s) backing that spec to assert every pt-BR string listed in this change's `login-page-test-coverage` spec delta
-- [ ] 8.6 Run `pnpm lint && pnpm build`, fix any break, commit
+- [x] 8.1 Translate all copy, placeholders, and button/link labels ("Welcome back"/"Sign in to continue…"/"Sign In"/"Forgot Password?"/"Create an account"/"or join the club"/footer copyright/hero alt text → `login.*`)
+- [x] 8.2 Translate Zod validation messages ("Invalid email"/"Password must be at least 8 characters" → `login.validation.*`)
+- [x] 8.3 Translate toast messages ("Invalid email or password"/"Login failed. Please try again." → `login.toast.*`) and the show/hide-password aria-labels
+- [x] 8.4 Translate the pending-state button text ("Signing in…")
+- [x] 8.5 Update `openspec/specs/login-page-test-coverage` implementation — i.e. update the actual test file(s) backing that spec to assert every pt-BR string listed in this change's `login-page-test-coverage` spec delta
+- [x] 8.6 Run `pnpm lint && pnpm build`, fix any break, commit
 
 ## 9. Checkout page (`app/checkout/page.tsx`) — lower priority, unreachable from the live app today (see design.md)
 
