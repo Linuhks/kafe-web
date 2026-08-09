@@ -16,9 +16,9 @@
 
 ## 3. Lint enforcement
 
-- [ ] 3.1 Add `eslint-plugin-i18next`, configure `i18next/no-literal-string` scoped to `app/**/*.tsx` and `components/**/*.tsx`, excluding `*.test.tsx` and `components/ui/*` internal class-name-only strings (per design.md's ignore-list approach)
-- [ ] 3.2 Run `pnpm lint` against the current (partially migrated) codebase, confirm it flags the English strings still pending in section 4+ (expected failures at this point — do not fix them here, just confirm the rule catches them)
-- [ ] 3.3 Commit the lint config with the still-expected failures noted in the commit body, so later subtasks can point back to "this is the rule catching what section N fixes"
+- [x] 3.1 Add `eslint-plugin-i18next`, configure `i18next/no-literal-string` scoped to `app/**/*.tsx` and `components/**/*.tsx`, excluding `*.test.tsx` and `components/ui/*` internal class-name-only strings (per design.md's ignore-list approach)
+- [x] 3.2 Run `pnpm lint` against the current (partially migrated) codebase, confirm it flags the English strings still pending in section 4+ (expected failures at this point — do not fix them here, just confirm the rule catches them)
+- [x] 3.3 Commit the lint config with the still-expected failures noted in the commit body, so later subtasks can point back to "this is the rule catching what section N fixes"
 
 ## 4. Admin Dashboard (`app/admin/dashboard/page.tsx`)
 
