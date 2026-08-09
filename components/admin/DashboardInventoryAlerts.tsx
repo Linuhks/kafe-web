@@ -1,16 +1,19 @@
 import Link from 'next/link'
 import { Package } from 'lucide-react'
+import { getTranslations } from 'next-intl/server'
 import type { InventoryAlert } from '@/lib/api/inventory'
 
-export default function DashboardInventoryAlerts({ alerts }: { alerts: InventoryAlert[] }) {
+export default async function DashboardInventoryAlerts({ alerts }: { alerts: InventoryAlert[] }) {
   if (alerts.length === 0) return null
+
+  const t = await getTranslations('dashboard.inventoryAlerts')
 
   return (
     <section className="bg-[var(--kafe-surface-container-lowest)] rounded-3xl border border-[var(--kafe-outline-variant)]/30 p-6">
       <div className="flex items-center justify-between mb-5">
-        <h2 className="text-headline-md text-[var(--kafe-on-surface)]">Inventory Alerts</h2>
+        <h2 className="text-headline-md text-[var(--kafe-on-surface)]">{t('title')}</h2>
         <span className="px-3 py-1 rounded-full bg-[var(--kafe-error-container)] text-[var(--kafe-on-error-container)] text-label-sm">
-          {alerts.length} Items Critical
+          {t('itemsCritical', { count: alerts.length })}
         </span>
       </div>
       <div className="space-y-4">
@@ -41,7 +44,7 @@ export default function DashboardInventoryAlerts({ alerts }: { alerts: Inventory
                 href="/admin/inventory"
                 className="shrink-0 px-3 py-1.5 rounded-lg border border-[var(--kafe-outline-variant)] text-label-sm text-[var(--kafe-primary)] hover:bg-[var(--kafe-surface-container-low)] transition-colors"
               >
-                Restock Now
+                {t('restockNow')}
               </Link>
             </div>
           )

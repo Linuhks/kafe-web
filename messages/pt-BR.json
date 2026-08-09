@@ -23,7 +23,34 @@
     "close": "Fechar"
   },
   "login": {},
-  "dashboard": {},
+  "dashboard": {
+    "overview": "Visão Geral",
+    "notificationsAriaLabel": "Notificações",
+    "summary": {
+      "totalOrders": "Total de Pedidos",
+      "totalRevenue": "Receita Total",
+      "avgTicket": "Ticket Médio"
+    },
+    "topProducts": {
+      "title": "Produtos Mais Vendidos",
+      "product": "Produto",
+      "qtySold": "Qtd. Vendida",
+      "revenue": "Receita",
+      "noSalesData": "Ainda sem dados de vendas",
+      "noSalesDataDescription": "As vendas aparecerão aqui assim que os pedidos forem feitos.",
+      "syncPos": "Sincronizar Ponto de Venda"
+    },
+    "peakHours": {
+      "title": "Horários de Pico",
+      "awaitingTraffic": "Aguardando Tráfego Horário",
+      "awaitingTrafficDescription": "Os dados de pedidos por hora aparecerão aqui assim que os pedidos chegarem."
+    },
+    "inventoryAlerts": {
+      "title": "Alertas de Estoque",
+      "itemsCritical": "{count} itens críticos",
+      "restockNow": "Reabastecer Agora"
+    }
+  },
   "productsList": {},
   "productForm": {},
   "inventoryList": {},

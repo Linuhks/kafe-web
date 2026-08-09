@@ -11,6 +11,7 @@ import {
   BarChart2,
   Clock,
 } from 'lucide-react'
+import { getTranslations } from 'next-intl/server'
 import { getDashboardSummary, getTopProducts, getPeakHours } from '@/lib/api/dashboard'
 import { getInventoryAlerts } from '@/lib/api/inventory'
 import DateRangePicker from '@/components/admin/DateRangePicker'
@@ -29,7 +30,7 @@ function formatCurrency(value: string | number): string {
 }
 
 function formatDate(date: Date): string {
-  return date.toLocaleDateString('en-US', {
+  return date.toLocaleDateString('pt-BR', {
     weekday: 'long',
     year: 'numeric',
     month: 'long',
@@ -44,6 +45,7 @@ export default async function AdminDashboardPage({
 }) {
   const { from = today(), to = today() } = await searchParams
   const dateRange = { from, to }
+  const t = await getTranslations('dashboard')
 
   const [summary, topProducts, peakHours, inventoryAlerts] = await Promise.all([
     getDashboardSummary(dateRange),
@@ -54,21 +56,21 @@ export default async function AdminDashboardPage({
 
   const stats = [
     {
-      label: 'Total Orders',
+      label: t('summary.totalOrders'),
       value: summary?.totalOrders?.toString() ?? '—',
       Icon: ShoppingBag,
       change: '+12%',
       positive: true,
     },
     {
-      label: 'Total Revenue',
+      label: t('summary.totalRevenue'),
       value: summary ? formatCurrency(summary.totalRevenue) : '—',
       Icon: Banknote,
       change: '+8%',
       positive: true,
     },
     {
-      label: 'Average Ticket',
+      label: t('summary.avgTicket'),
       value: summary ? formatCurrency(summary.avgOrderValue) : '—',
       Icon: ReceiptText,
       change: '-3%',
@@ -80,11 +82,11 @@ export default async function AdminDashboardPage({
     <div className="p-margin-page space-y-stack-md max-w-7xl mx-auto">
       <header className="flex justify-between items-start mb-8">
         <div>
-          <h1 className="text-headline-lg text-[var(--kafe-on-surface)]">Overview</h1>
+          <h1 className="text-headline-lg text-[var(--kafe-on-surface)]">{t('overview')}</h1>
           <p className="text-body-md text-[var(--kafe-on-surface-variant)]">{formatDate(new Date())}</p>
         </div>
         <div className="flex items-center gap-3">
-          <button aria-label="Notifications" className="relative p-2 rounded-xl hover:bg-[var(--kafe-surface-container-low)] transition-colors">
+          <button aria-label={t('notificationsAriaLabel')} className="relative p-2 rounded-xl hover:bg-[var(--kafe-surface-container-low)] transition-colors">
             <Bell className="w-5 h-5 text-[var(--kafe-on-surface-variant)]" />
             <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[var(--kafe-error)]" />
           </button>
@@ -139,16 +141,16 @@ export default async function AdminDashboardPage({
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Best Selling Products Panel */}
         <div className="lg:col-span-2 bg-[var(--kafe-surface-container-lowest)] rounded-3xl border border-[var(--kafe-outline-variant)]/30 p-6">
-          <h2 className="text-headline-md text-[var(--kafe-on-surface)] mb-4">Best Selling Products</h2>
+          <h2 className="text-headline-md text-[var(--kafe-on-surface)] mb-4">{t('topProducts.title')}</h2>
           {topProducts.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-12 border-2 border-dashed border-[var(--kafe-outline-variant)] rounded-2xl text-center px-6">
               <BarChart2 className="w-10 h-10 text-[var(--kafe-on-surface-variant)] mb-3" />
-              <p className="text-headline-md text-[var(--kafe-on-surface)]">No sales data yet</p>
+              <p className="text-headline-md text-[var(--kafe-on-surface)]">{t('topProducts.noSalesData')}</p>
               <p className="text-body-md text-[var(--kafe-on-surface-variant)] mt-1 mb-4">
-                Sales will appear here once orders have been placed.
+                {t('topProducts.noSalesDataDescription')}
               </p>
               <button className="text-body-md text-[var(--kafe-primary)] hover:underline">
-                Sync Point of Sale
+                {t('topProducts.syncPos')}
               </button>
             </div>
           ) : (
@@ -157,13 +159,13 @@ export default async function AdminDashboardPage({
                 <thead className="bg-[var(--kafe-surface-container-low)]">
                   <tr>
                     <th className="text-left px-4 py-3 text-label-sm text-[var(--kafe-on-surface-variant)]">
-                      Product
+                      {t('topProducts.product')}
                     </th>
                     <th className="text-right px-4 py-3 text-label-sm text-[var(--kafe-on-surface-variant)]">
-                      Qty. Sold
+                      {t('topProducts.qtySold')}
                     </th>
                     <th className="text-right px-4 py-3 text-label-sm text-[var(--kafe-on-surface-variant)]">
-                      Revenue
+                      {t('topProducts.revenue')}
                     </th>
                   </tr>
                 </thead>
@@ -190,13 +192,13 @@ export default async function AdminDashboardPage({
 
         {/* Peak Hours Panel */}
         <div className="lg:col-span-1 bg-[var(--kafe-surface-container-lowest)] rounded-3xl border border-[var(--kafe-outline-variant)]/30 p-6">
-          <h2 className="text-headline-md text-[var(--kafe-on-surface)] mb-4">Peak Hours</h2>
+          <h2 className="text-headline-md text-[var(--kafe-on-surface)] mb-4">{t('peakHours.title')}</h2>
           {peakHours.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-12 border-2 border-dashed border-[var(--kafe-outline-variant)] rounded-2xl text-center px-6">
               <Clock className="w-10 h-10 text-[var(--kafe-on-surface-variant)] mb-3" />
-              <p className="text-headline-md text-[var(--kafe-on-surface)]">Awaiting Hourly Traffic</p>
+              <p className="text-headline-md text-[var(--kafe-on-surface)]">{t('peakHours.awaitingTraffic')}</p>
               <p className="text-body-md text-[var(--kafe-on-surface-variant)] mt-1">
-                Hourly order data will appear here once orders come in.
+                {t('peakHours.awaitingTrafficDescription')}
               </p>
             </div>
           ) : (

@@ -22,12 +22,12 @@
 
 ## 4. Admin Dashboard (`app/admin/dashboard/page.tsx`)
 
-- [ ] 4.1 Replace summary card labels ("Total Orders"/"Total Revenue"/"Average Ticket" → `dashboard.summary.*`)
-- [ ] 4.2 Replace top-products table title and column headers ("Best Selling Products"/"Product"/"Qty. Sold"/"Revenue" → `dashboard.topProducts.*`)
-- [ ] 4.3 Replace "Overview" heading, "Notifications" aria-label, and both empty states ("No sales data yet…", "Awaiting Hourly Traffic…") → `dashboard.*`
-- [ ] 4.4 Fix `formatDate()` to use `'pt-BR'` locale instead of `'en-US'` (matches `admin-dashboard` spec delta's date-formatting scenario)
-- [ ] 4.5 Update `admin-dashboard`'s existing component test(s) to assert the new pt-BR strings
-- [ ] 4.6 Run `pnpm lint && pnpm build`, fix any break, commit
+- [x] 4.1 Replace summary card labels ("Total Orders"/"Total Revenue"/"Average Ticket" → `dashboard.summary.*`)
+- [x] 4.2 Replace top-products table title and column headers ("Best Selling Products"/"Product"/"Qty. Sold"/"Revenue" → `dashboard.topProducts.*`)
+- [x] 4.3 Replace "Overview" heading, "Notifications" aria-label, and both empty states ("No sales data yet…", "Awaiting Hourly Traffic…") → `dashboard.*`
+- [x] 4.4 Fix `formatDate()` to use `'pt-BR'` locale instead of `'en-US'` (matches `admin-dashboard` spec delta's date-formatting scenario)
+- [x] 4.5 Update `admin-dashboard`'s existing component test(s) to assert the new pt-BR strings
+- [x] 4.6 Run `pnpm lint && pnpm build`, fix any break, commit
 
 ## 5. Admin Products listing (`app/admin/products/page.tsx`, `components/admin/ProductsTable.tsx`)
 
