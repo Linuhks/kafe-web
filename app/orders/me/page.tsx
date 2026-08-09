@@ -5,6 +5,7 @@ import { getMyOrders } from '@/lib/api/orders'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import { PaginationWithSuspense } from '@/components/ui/pagination'
+import NavBar from '@/components/layout/NavBar'
 import type { Order, OrderStatus } from '@/lib/types'
 
 function formatBRL(amount: string): string {
@@ -118,11 +119,14 @@ export default async function OrdersPage({
   const page = Math.max(1, Number(pageStr) || 1)
 
   return (
-    <main className="mx-auto max-w-2xl px-4 py-8">
-      <h1 className="mb-6 text-2xl font-bold">Meus Pedidos</h1>
-      <Suspense fallback={<OrderListSkeleton />}>
-        <OrderList page={page} />
-      </Suspense>
-    </main>
+    <>
+      <NavBar />
+      <main className="mx-auto max-w-2xl px-4 py-8">
+        <h1 className="mb-6 text-2xl font-bold">Meus Pedidos</h1>
+        <Suspense fallback={<OrderListSkeleton />}>
+          <OrderList page={page} />
+        </Suspense>
+      </main>
+    </>
   )
 }
