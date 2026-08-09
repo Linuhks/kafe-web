@@ -1,6 +1,5 @@
-## Purpose
-Defines the /admin/inventory page: a table of ingredients with stock-status badges and a restock action.
-## Requirements
+## MODIFIED Requirements
+
 ### Requirement: Inventory list page with stock status badges
 The system SHALL render `/admin/inventory` as a Server Component displaying a table of all ingredients. The table SHALL include columns: Nome, Unidade, Estoque atual, Estoque mínimo, Status, and Ações. The Status column SHALL show a badge: "OK" (green) when `currentStock >= minimumStock`, and "ESTOQUE BAIXO" (red/destructive) when `currentStock < minimumStock`. The Actions column SHALL include a "Reabastecer" button linking to `/admin/inventory/[id]/restock`.
 
@@ -19,4 +18,3 @@ The system SHALL render `/admin/inventory` as a Server Component displaying a ta
 #### Scenario: Empty inventory list
 - **WHEN** the backend returns no ingredients
 - **THEN** the page renders the table with no rows and no error state
-

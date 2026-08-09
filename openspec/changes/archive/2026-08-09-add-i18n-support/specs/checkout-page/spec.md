@@ -1,12 +1,4 @@
-## Purpose
-Defines the /checkout page: the numbered contact/shipping/payment form, the confirm-purchase CTA, and the sticky order summary sidebar.
-## Requirements
-### Requirement: Checkout page route exists
-The system SHALL expose a `/checkout` route rendered by `app/checkout/page.tsx` as a Client Component (`'use client'`).
-
-#### Scenario: Route renders
-- **WHEN** user navigates to `/checkout`
-- **THEN** the page renders without errors, showing the checkout header and both columns
+## MODIFIED Requirements
 
 ### Requirement: Numbered form sections
 The checkout form SHALL contain three numbered sections in order: **01 Informações de Contato**, **02 Endereço de Entrega**, **03 Forma de Pagamento**. Each section heading SHALL display its number in `text-kafe-primary` and title in `text-headline-md`.
@@ -40,13 +32,6 @@ The payment section SHALL contain: Número do Cartão (with trailing `credit_car
 - **WHEN** the payment section renders
 - **THEN** card number, expiry, and CVC inputs are visible inside a bordered card, labeled "Número do Cartão", "Validade", "CVC"
 
-### Requirement: Input underline style
-All checkout form inputs SHALL use the underline style: `bg-transparent`, bottom border only (`border-b border-kafe-outline-variant`), `focus:border-kafe-primary`, no outline ring.
-
-#### Scenario: Input focus border changes to primary
-- **WHEN** user focuses any form input
-- **THEN** the bottom border color transitions to `kafe-primary`
-
 ### Requirement: Confirm Purchase CTA
 A full-width "Confirmar Compra" button SHALL appear below the payment section using `bg-kafe-primary text-kafe-on-primary`, with a `chevron_right` Material Symbol icon that translates right on hover.
 
@@ -78,15 +63,3 @@ Each item in the scrollable list SHALL render a `w-24 h-24` thumbnail using a na
 #### Scenario: Item thumbnail falls back to placeholder
 - **WHEN** an order summary item has no `imageUrl` or the image URL fails to load
 - **THEN** the thumbnail displays `/images/product-placeholder.svg`
-
-### Requirement: Two-column responsive layout
-On large screens (lg+) the layout SHALL be a 12-column CSS grid with the form spanning 7 columns and the sidebar spanning 5 columns. On smaller screens both columns stack vertically.
-
-#### Scenario: Two-column on large viewport
-- **WHEN** viewport is large (1024px+)
-- **THEN** form and sidebar appear side by side
-
-#### Scenario: Single column on small viewport
-- **WHEN** viewport is small (< 1024px)
-- **THEN** form and sidebar stack vertically
-

@@ -1,6 +1,5 @@
-## Purpose
-Defines the /checkout/confirmation page: the success hero, order status card, order summary, pickup location, support callout, and footer actions.
-## Requirements
+## MODIFIED Requirements
+
 ### Requirement: Order confirmation route exists
 The system SHALL expose a `/checkout/confirmation` route rendered by `app/checkout/confirmation/page.tsx` as a Server Component (no `'use client'`). It SHALL accept an `orderId` search param and use it to fetch order details server-side.
 
@@ -69,26 +68,3 @@ Below the main content grid, the page SHALL render: a "Voltar à Loja" link (wit
 #### Scenario: Footer actions render
 - **WHEN** the confirmation page renders
 - **THEN** both "Voltar à Loja" and "Baixar Recibo" actions are visible below the main grid
-
-### Requirement: Two-column responsive layout
-On medium screens and above, the page content SHALL use a 12-column grid: the left column (order status + order summary) spans 7 columns, the right column (pickup location + support card) spans 5 columns. On smaller screens both columns stack vertically.
-
-#### Scenario: Two-column layout on medium+ viewport
-- **WHEN** viewport is md or wider
-- **THEN** status/summary cards and location/support cards appear side by side
-
-#### Scenario: Stacked layout on small viewport
-- **WHEN** viewport is below md breakpoint
-- **THEN** all cards stack vertically in a single column
-
-### Requirement: Shared layout integration
-The confirmation page SHALL render inside the same layout as the rest of the app, using `TopNavBar` (with only the logo and icon buttons — no nav links, for a task-focused confirmation state) and `Footer`.
-
-#### Scenario: TopNavBar renders on confirmation page
-- **WHEN** the confirmation page renders
-- **THEN** the Kafe logotype and cart/person icons are visible at the top
-
-#### Scenario: Footer renders on confirmation page
-- **WHEN** the confirmation page renders
-- **THEN** the standard site footer with links and copyright is visible at the bottom
-

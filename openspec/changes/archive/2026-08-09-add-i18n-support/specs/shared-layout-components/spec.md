@@ -1,12 +1,4 @@
-## Purpose
-Defines the shared TopNavBar and Footer components used across public-facing pages.
-## Requirements
-### Requirement: TopNavBar component exists
-A `TopNavBar` component SHALL be created at `components/layout/TopNavBar.tsx` as a Server Component (no `'use client'`). It SHALL accept no required props for initial implementation (nav links are static).
-
-#### Scenario: Component file exists and renders
-- **WHEN** TopNavBar is imported and rendered
-- **THEN** it renders a `<nav>` element without errors
+## MODIFIED Requirements
 
 ### Requirement: TopNavBar structure and styling
 TopNavBar SHALL render: a sticky top bar (`sticky top-0 z-50`) with `bg-kafe-surface border-b border-kafe-outline-variant`, containing: Kafe logotype in `text-kafe-primary uppercase tracking-widest text-label-sm`, horizontal nav links (Loja, Torrefação, Nossa História, Unidades) hidden on mobile (`hidden md:flex`), and right-side icon buttons (person, shopping_cart) in `text-kafe-on-surface-variant hover:text-kafe-primary`.
@@ -27,13 +19,6 @@ TopNavBar SHALL render: a sticky top bar (`sticky top-0 z-50`) with `bg-kafe-sur
 - **WHEN** TopNavBar renders
 - **THEN** person and shopping_cart Material Symbol icons are visible on the right side
 
-### Requirement: Footer component exists
-A `Footer` component SHALL be created at `components/layout/Footer.tsx` as a Server Component (no `'use client'`).
-
-#### Scenario: Component file exists and renders
-- **WHEN** Footer is imported and rendered
-- **THEN** it renders a `<footer>` element without errors
-
 ### Requirement: Footer structure and styling
 Footer SHALL render: `bg-kafe-surface-container-high border-t border-kafe-outline-variant`, containing: Kafe logotype (`text-kafe-primary text-headline-md`), horizontal links (Política de Privacidade, Termos de Serviço, Contato, Atacado) in `text-kafe-on-surface-variant hover:text-kafe-primary text-label-sm`, and copyright text `© 2024 Kafe Roastery. Todos os direitos reservados.` in `text-kafe-on-surface-variant`. On mobile the layout stacks vertically; on md+ it is a row with `justify-between`.
 
@@ -48,4 +33,3 @@ Footer SHALL render: `bg-kafe-surface-container-high border-t border-kafe-outlin
 #### Scenario: Responsive layout
 - **WHEN** viewport is md or wider
 - **THEN** logotype, links, and copyright appear in a single row with space between
-

@@ -1,6 +1,5 @@
-## Purpose
-Defines the dev-only /test-components reference page documenting the Kafe design system's typography, color palette, interactive states, and composite UI patterns.
-## Requirements
+## MODIFIED Requirements
+
 ### Requirement: Page renders sticky navigation header
 The page SHALL render a sticky top navigation bar with the Kafe brand wordmark, a set of nav links, and cart/profile icon buttons.
 
@@ -11,39 +10,6 @@ The page SHALL render a sticky top navigation bar with the Kafe brand wordmark, 
 #### Scenario: Navigation links are present
 - **WHEN** the design system page is rendered
 - **THEN** "Design System", "Loja", "Torrefação", and "Nossa História" navigation links are visible
-
-### Requirement: Page renders typography and color palette section
-The page SHALL render a section displaying all six Kafe type scale specimens and four color swatches.
-
-#### Scenario: Type scale specimens present
-- **WHEN** the design system page is rendered
-- **THEN** the typography section contains specimens for Display Hero ("Ritual"), Headline Large, Body Large, Body Medium, and Label Small
-
-#### Scenario: Color swatches present
-- **WHEN** the design system page is rendered
-- **THEN** four color swatches are shown: Primary, Accent, Surface, and Neutral
-
-### Requirement: Page renders interactive elements table
-The page SHALL render a table showing Primary, Outline, and Destructive button variants across Normal, Hover, and Disabled states.
-
-#### Scenario: Button table header is present
-- **WHEN** the design system page is rendered
-- **THEN** the Interactive Elements section contains a table with column headers: Variant, Normal, Hover, Disabled
-
-#### Scenario: Three button variant rows are present
-- **WHEN** the design system page is rendered
-- **THEN** the table contains rows labelled PRIMARY, OUTLINE, and DESTRUCTIVE
-
-### Requirement: Page renders order states section
-The page SHALL render a section showing all four order state badge variants: Recebido, Em preparo, Concluído, Cancelado.
-
-#### Scenario: All order states shown
-- **WHEN** the design system page is rendered
-- **THEN** the Order States section shows badges for Recebido, Em preparo, Concluído, and Cancelado
-
-#### Scenario: Em preparo badge has animated pulse indicator
-- **WHEN** the design system page is rendered
-- **THEN** the "Em preparo" badge contains a dot element with the `animate-pulse` class
 
 ### Requirement: Page renders form inputs section
 The page SHALL render a Form Inputs section containing an email text input (underline style) and a textarea (box style).
@@ -88,11 +54,3 @@ The page SHALL render a footer with the Kafe brand name and copyright text along
 #### Scenario: Footer copyright present
 - **WHEN** the design system page is rendered
 - **THEN** the footer contains "© 2024 Kafe Roastery. Todos os direitos reservados." and links for Política de Privacidade, Termos de Serviço, Contato, and Atacado
-
-### Requirement: Material Symbols icons render on the page
-The page SHALL load the Material Symbols Outlined icon font and use it for icons in the header, section headings, sidebar, and card elements.
-
-#### Scenario: Icon font stylesheet loaded
-- **WHEN** the application layout renders
-- **THEN** a `<link>` to the Material Symbols Outlined Google Font stylesheet is present in the document head
-

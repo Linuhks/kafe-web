@@ -1,6 +1,5 @@
-## Purpose
-Defines the test coverage expected for the /login page: static structure, password visibility toggle, form validation, login success/error handling, and loading state.
-## Requirements
+## MODIFIED Requirements
+
 ### Requirement: Static structure renders
 The test suite SHALL verify that the key structural elements of the login page are present in the DOM on initial render.
 
@@ -62,29 +61,6 @@ The test suite SHALL verify that Zod validation messages appear when the form is
 - **WHEN** user clicks the submit button without filling any field
 - **THEN** validation error messages appear for both fields
 
-### Requirement: Successful login and role-based redirect
-The test suite SHALL verify that a successful login calls the auth API, sets the user, and redirects to the correct dashboard based on role.
-
-#### Scenario: ADMIN redirected to /admin/dashboard
-- **WHEN** login API returns 200 with role ADMIN
-- **THEN** router.push is called with "/admin/dashboard"
-
-#### Scenario: BARISTA redirected to /barista/queue
-- **WHEN** login API returns 200 with role BARISTA
-- **THEN** router.push is called with "/barista/queue"
-
-#### Scenario: CLIENT redirected to /orders/me
-- **WHEN** login API returns 200 with role CLIENT
-- **THEN** router.push is called with "/orders/me"
-
-#### Scenario: Session cookie endpoint called on success
-- **WHEN** login API returns 200
-- **THEN** fetch is called with "/api/auth/login" via POST with the token in the body
-
-#### Scenario: setUser called with returned user
-- **WHEN** login API returns 200
-- **THEN** setUser is called with the user object from the response
-
 ### Requirement: Login error handling
 The test suite SHALL verify that appropriate error toasts are shown when login fails.
 
@@ -106,15 +82,3 @@ The test suite SHALL verify the button's behavior while a login request is in fl
 #### Scenario: Button is enabled when not pending
 - **WHEN** isPending is false
 - **THEN** the submit button is not disabled and shows "Entrar"
-
-### Requirement: Social buttons do not submit the form
-The test suite SHALL verify that the Google and Apple buttons cannot accidentally submit the login form.
-
-#### Scenario: Google button has type="button"
-- **WHEN** the login page is rendered
-- **THEN** the Google button has type "button"
-
-#### Scenario: Apple button has type="button"
-- **WHEN** the login page is rendered
-- **THEN** the Apple button has type "button"
-
