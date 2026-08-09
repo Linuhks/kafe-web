@@ -11,6 +11,7 @@ import {
   DialogFooter,
 } from '@/components/ui/dialog'
 import {
+  useOrdersControllerList,
   useOrdersControllerQueue,
   useOrdersControllerUpdateStatus,
 } from '@/lib/api/generated/api'
@@ -50,10 +51,16 @@ export default function AdminOrderQueueClient() {
     query: { refetchInterval: 15_000 },
   })
 
+  const readyQuery = useOrdersControllerList(
+    { status: 'READY' },
+    { query: { refetchInterval: 15_000 } },
+  )
+
   const updateStatus = useOrdersControllerUpdateStatus({
     mutation: {
       onSuccess: () => {
         queueQuery.refetch()
+        readyQuery.refetch()
         addToast('Status atualizado', 'success')
       },
       onError: () => {
@@ -96,9 +103,25 @@ export default function AdminOrderQueueClient() {
     [filteredAndSorted],
   )
 
+  const readyOrders = useMemo(() => {
+    const list = readyQuery.data?.status === 200 ? readyQuery.data.data.data : []
+    const filtered = list.filter((o) => {
+      if (!search.trim()) return true
+      const name = typeof o.clientName === 'string' ? o.clientName : ''
+      return name.toLowerCase().includes(search.trim().toLowerCase())
+    })
+    return sort === 'oldest'
+      ? [...filtered].sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
+      : [...filtered].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+  }, [readyQuery.data, search, sort])
+
   async function handleAdvance(order: OrderResponseDto) {
     const next: UpdateOrderStatusDtoStatus =
-      order.status === 'RECEIVED' ? 'IN_PREPARATION' : 'READY'
+      order.status === 'RECEIVED'
+        ? 'IN_PREPARATION'
+        : order.status === 'IN_PREPARATION'
+          ? 'READY'
+          : 'DELIVERED'
     setUpdatingIds((prev) => new Set(prev).add(order.id))
     try {
       await updateStatus.mutateAsync({ id: order.id, data: { status: next } })
@@ -263,20 +286,26 @@ export default function AdminOrderQueueClient() {
             )}
           </KanbanColumn>
 
-          <div className="flex-none w-80 opacity-50">
-            <div className="flex items-center gap-2 mb-3">
-              <span className="w-2.5 h-2.5 rounded-full bg-[var(--kafe-tertiary-fixed)] flex-none" />
-              <span className="text-xs font-bold uppercase tracking-wider text-[var(--kafe-on-surface-variant)]">
-                CONCLUÍDOS
-              </span>
-            </div>
-            <div className="flex flex-col items-center justify-center gap-3 py-16 rounded-2xl border border-dashed border-[var(--kafe-outline-variant)] bg-[var(--kafe-surface-container-lowest)]">
-              <History className="h-8 w-8 text-[var(--kafe-on-surface-variant)]" />
-              <p className="text-sm text-[var(--kafe-on-surface-variant)] text-center px-4">
-                Pedidos recentes arquivados
-              </p>
-            </div>
-          </div>
+          <KanbanColumn dotClass="bg-[var(--kafe-tertiary-fixed)]" label="PRONTOS" count={readyOrders.length}>
+            {readyOrders.map((order) => (
+              <OrderCard
+                key={order.id}
+                order={order}
+                isUpdating={updatingIds.has(order.id)}
+                onAdvance={handleAdvance}
+                onDelete={handleDelete}
+                onOpen={setSelectedOrder}
+              />
+            ))}
+            {readyOrders.length === 0 && (
+              <div className="flex flex-col items-center justify-center gap-3 py-16 rounded-2xl border border-dashed border-[var(--kafe-outline-variant)] bg-[var(--kafe-surface-container-lowest)]">
+                <History className="h-8 w-8 text-[var(--kafe-on-surface-variant)]" />
+                <p className="text-sm text-[var(--kafe-on-surface-variant)] text-center px-4">
+                  Nenhum pedido pronto para entrega
+                </p>
+              </div>
+            )}
+          </KanbanColumn>
         </div>
       )}
 
@@ -368,7 +397,9 @@ export default function AdminOrderQueueClient() {
                 )}
               </div>
 
-              {(selectedOrder.status === 'RECEIVED' || selectedOrder.status === 'IN_PREPARATION') && (
+              {(selectedOrder.status === 'RECEIVED' ||
+                selectedOrder.status === 'IN_PREPARATION' ||
+                selectedOrder.status === 'READY') && (
                 <DialogFooter className="border-t border-[var(--kafe-outline-variant)] pt-4">
                   <button
                     disabled={updatingIds.has(selectedOrder.id)}
@@ -379,7 +410,9 @@ export default function AdminOrderQueueClient() {
                       ? 'Atualizando...'
                       : selectedOrder.status === 'RECEIVED'
                         ? 'Iniciar preparo'
-                        : 'Concluir'}
+                        : selectedOrder.status === 'IN_PREPARATION'
+                          ? 'Concluir'
+                          : 'Marcar como entregue'}
                   </button>
                 </DialogFooter>
               )}
@@ -436,6 +469,7 @@ function OrderCard({
   const orderNum = order.id.slice(-6).toUpperCase()
   const isReceived = order.status === 'RECEIVED'
   const isInPrep = order.status === 'IN_PREPARATION'
+  const isReady = order.status === 'READY'
   const notes = typeof order.notes === 'string' ? order.notes : null
 
   return (
@@ -477,23 +511,31 @@ function OrderCard({
           </div>
         )}
 
-        {(isReceived || isInPrep) && (
+        {(isReceived || isInPrep || isReady) && (
           <div className="flex gap-2">
             <button
               disabled={isUpdating}
               onClick={(e) => { e.stopPropagation(); onAdvance(order) }}
               className="flex-1 bg-[var(--kafe-primary)] text-[var(--kafe-on-primary)] py-2.5 rounded-xl text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              {isUpdating ? 'Atualizando...' : isReceived ? 'Iniciar preparo' : 'Concluir'}
+              {isUpdating
+                ? 'Atualizando...'
+                : isReceived
+                  ? 'Iniciar preparo'
+                  : isInPrep
+                    ? 'Concluir'
+                    : 'Marcar como entregue'}
             </button>
-            <button
-              disabled={isUpdating}
-              onClick={(e) => { e.stopPropagation(); onDelete(order) }}
-              aria-label="Cancelar pedido"
-              className="p-2.5 rounded-xl border border-[var(--kafe-outline-variant)] text-[var(--kafe-on-surface-variant)] hover:bg-red-50 hover:text-red-500 hover:border-red-200 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
-            >
-              <Trash2 className="h-4 w-4" />
-            </button>
+            {!isReady && (
+              <button
+                disabled={isUpdating}
+                onClick={(e) => { e.stopPropagation(); onDelete(order) }}
+                aria-label="Cancelar pedido"
+                className="p-2.5 rounded-xl border border-[var(--kafe-outline-variant)] text-[var(--kafe-on-surface-variant)] hover:bg-red-50 hover:text-red-500 hover:border-red-200 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+              >
+                <Trash2 className="h-4 w-4" />
+              </button>
+            )}
           </div>
         )}
       </div>
