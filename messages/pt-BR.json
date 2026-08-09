@@ -221,5 +221,23 @@
       "downloadReceipt": "Baixar Recibo"
     }
   },
-  "designSystem": {}
+  "designSystem": {
+    "fields": {
+      "email": "Endereço de E-mail",
+      "orderObservations": "Observações do Pedido"
+    },
+    "sidebar": {
+      "yourSelection": "Sua Seleção",
+      "categories": {
+        "coffee": "Cafés",
+        "sweets": "Doces",
+        "savory": "Salgados"
+      }
+    },
+    "cards": {
+      "addToSelection": "Adicionar à Seleção",
+      "membership": "ASSINATURA",
+      "subscribeNow": "Assinar Agora"
+    }
+  }
 }

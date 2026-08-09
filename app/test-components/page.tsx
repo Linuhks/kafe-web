@@ -1,11 +1,17 @@
-export default function DesignSystemPage() {
+import { getTranslations } from 'next-intl/server'
+
+export default async function DesignSystemPage() {
+  const tNav = await getTranslations('nav.links')
+  const tFooter = await getTranslations('footer')
+  const t = await getTranslations('designSystem')
+
   return (
     <div className="min-h-screen bg-kafe-surface font-sans">
       {/* Sticky header */}
       <header className="sticky top-0 z-50 bg-kafe-surface border-b border-kafe-outline-variant px-margin-page py-3 flex items-center justify-between">
         <span className="text-label-sm tracking-widest text-kafe-primary uppercase">Kafe</span>
         <nav className="hidden md:flex items-center gap-8">
-          {["Design System", "Shop", "Roastery", "Our Story"].map((link) => (
+          {["Design System", tNav('shop'), tNav('roastery'), tNav('ourStory')].map((link) => (
             <span key={link} className="text-label-sm text-kafe-on-surface-variant hover:text-kafe-primary cursor-pointer transition-colors">
               {link}
             </span>
@@ -203,7 +209,7 @@ export default function DesignSystemPage() {
           <div className="bg-kafe-surface-container-low rounded-xl p-8 max-w-xl space-y-8">
             {/* Underline input */}
             <div>
-              <label className="text-label-sm text-kafe-on-surface-variant block mb-2">Email Address</label>
+              <label className="text-label-sm text-kafe-on-surface-variant block mb-2">{t('fields.email')}</label>
               <input
                 type="email"
                 placeholder="ritual@kafe.com"
@@ -212,7 +218,7 @@ export default function DesignSystemPage() {
             </div>
             {/* Box textarea */}
             <div>
-              <label className="text-label-sm text-kafe-on-surface-variant block mb-2">Order Observations</label>
+              <label className="text-label-sm text-kafe-on-surface-variant block mb-2">{t('fields.orderObservations')}</label>
               <textarea
                 rows={3}
                 placeholder="Any special instructions..."
@@ -253,13 +259,13 @@ export default function DesignSystemPage() {
             {/* Sidebar mockup */}
             <div className="col-span-12 lg:col-span-4 bg-kafe-surface-container-low rounded-xl overflow-hidden">
               <div className="bg-kafe-surface border-b border-kafe-outline-variant px-5 py-4">
-                <p className="text-label-sm text-kafe-primary uppercase tracking-widest">Your Selection</p>
+                <p className="text-label-sm text-kafe-primary uppercase tracking-widest">{t('sidebar.yourSelection')}</p>
               </div>
               <nav className="p-4 space-y-1">
                 {[
-                  { icon: "coffee", label: "Coffee Beans" },
-                  { icon: "coffee_maker", label: "Brewing Gear" },
-                  { icon: "loyalty", label: "Subscription" },
+                  { icon: "coffee", label: t('sidebar.categories.coffee') },
+                  { icon: "coffee_maker", label: t('sidebar.categories.sweets') },
+                  { icon: "loyalty", label: t('sidebar.categories.savory') },
                 ].map(({ icon, label }) => (
                   <div key={label} className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-kafe-surface-container cursor-pointer">
                     <span className="material-symbols-outlined text-kafe-on-surface-variant text-[18px]">{icon}</span>
@@ -314,7 +320,7 @@ export default function DesignSystemPage() {
                 <div className="flex items-center justify-between pt-2">
                   <span className="text-headline-md text-kafe-on-surface">R$ 44,90</span>
                   <button className="px-5 py-2 bg-kafe-primary text-kafe-on-primary rounded-full text-label-sm">
-                    Add to Selection
+                    {t('cards.addToSelection')}
                   </button>
                 </div>
               </div>
@@ -323,7 +329,7 @@ export default function DesignSystemPage() {
             {/* Subscription card */}
             <div className="bg-kafe-primary rounded-xl p-6 space-y-4 flex flex-col">
               <span className="inline-block self-start px-3 py-1 rounded-full border border-kafe-on-primary/30 text-kafe-on-primary text-label-sm uppercase tracking-widest">
-                MEMBERSHIP
+                {t('cards.membership')}
               </span>
               <div className="flex-1">
                 <p className="text-headline-lg text-kafe-on-primary" style={{ fontFamily: "var(--font-jakarta)" }}>The Ritualist</p>
@@ -337,7 +343,7 @@ export default function DesignSystemPage() {
                   <span className="text-body-md text-kafe-on-primary/70">/mês</span>
                 </div>
                 <button className="w-full py-3 bg-kafe-on-primary text-kafe-primary rounded-full text-label-sm">
-                  Subscribe Now
+                  {t('cards.subscribeNow')}
                 </button>
               </div>
             </div>
@@ -349,10 +355,10 @@ export default function DesignSystemPage() {
       <footer className="px-margin-page py-8 border-t border-kafe-outline-variant flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
           <p className="text-label-sm text-kafe-primary uppercase tracking-widest">Kafe</p>
-          <p className="text-body-md text-kafe-on-surface-variant mt-1">© 2024 Kafe Roastery. All rights reserved.</p>
+          <p className="text-body-md text-kafe-on-surface-variant mt-1">{tFooter('copyright')}</p>
         </div>
         <nav className="flex items-center gap-6">
-          {["Privacy Policy", "Terms of Service", "Contact", "Wholesale"].map((link) => (
+          {[tFooter('links.privacyPolicy'), tFooter('links.termsOfService'), tFooter('links.contact'), tFooter('links.wholesale')].map((link) => (
             <span key={link} className="text-label-sm text-kafe-on-surface-variant hover:text-kafe-primary cursor-pointer transition-colors">
               {link}
             </span>

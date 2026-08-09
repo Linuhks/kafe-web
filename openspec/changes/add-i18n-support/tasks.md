@@ -82,13 +82,13 @@
 
 ## 12. Dev-only design-system page (`app/test-components/`) — lowest priority, internal reference only
 
-- [ ] 12.1 Translate the sticky nav header links (reuses the `nav.*` keys from section 11 where labels match)
-- [ ] 12.2 Translate the Form Inputs section ("Email Address"/"Order Observations" → `designSystem.*`)
-- [ ] 12.3 Translate the Navigation Shells sidebar mock ("Your Selection" → "Sua Seleção", nav items → "Cafés"/"Doces"/"Salgados")
-- [ ] 12.4 Translate the Composite Cards section's interface chrome only — CTA/badge text ("Add to Selection"/"MEMBERSHIP"/"Subscribe Now" → "Adicionar à Seleção"/"ASSINATURA"/"Assinar Agora"); leave illustrative example content ("Marcos V.", "Guatemalan Antigua", "Order #8842", "The Ritualist") untranslated per design.md
-- [ ] 12.5 Translate the footer (reuses `footer.*` keys from section 11)
-- [ ] 12.6 Update any existing tests for this page
-- [ ] 12.7 Run `pnpm lint && pnpm build`, fix any break, commit
+- [x] 12.1 Translate the sticky nav header links (reuses the `nav.*` keys from section 11 where labels match)
+- [x] 12.2 Translate the Form Inputs section ("Email Address"/"Order Observations" → `designSystem.*`)
+- [x] 12.3 Translate the Navigation Shells sidebar mock ("Your Selection" → "Sua Seleção", nav items → "Cafés"/"Doces"/"Salgados")
+- [x] 12.4 Translate the Composite Cards section's interface chrome only — CTA/badge text ("Add to Selection"/"MEMBERSHIP"/"Subscribe Now" → "Adicionar à Seleção"/"ASSINATURA"/"Assinar Agora"); leave illustrative example content ("Marcos V.", "Guatemalan Antigua", "Order #8842", "The Ritualist") untranslated per design.md
+- [x] 12.5 Translate the footer (reuses `footer.*` keys from section 11)
+- [x] 12.6 Update any existing tests for this page
+- [x] 12.7 Run `pnpm lint && pnpm build`, fix any break, commit
 
 ## 13. en-US scaffold and final verification
 
