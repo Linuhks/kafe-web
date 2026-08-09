@@ -8,11 +8,11 @@
 
 ## 2. Shared primitives (migrate before any page)
 
-- [ ] 2.1 `components/ui/badge.tsx`: replace the hardcoded `statusLabels` map with `badge.status.*` keys (Recebido, Em preparo, Pronto, Entregue, Cancelado — matching the labels already used by `AdminOrderQueueClient`/`OrderQueueCard`/barista queue)
-- [ ] 2.2 `components/ui/pagination.tsx`: replace "Previous"/"Next"/"Showing X–Y of Z items" and their aria-labels with `pagination.*` keys ("Anterior"/"Próximo"/"Mostrando X–Y de Z itens")
-- [ ] 2.3 `components/ui/dialog.tsx`: replace the default close-button `sr-only` text and `DialogFooter`'s fallback "Close" button with `dialog.close` ("Fechar")
-- [ ] 2.4 Update `app/orders/me/page.tsx` — verify `<Badge status={...} />` now renders "Recebido" not "Received" (no code change expected here, just confirms 2.1 fixed the leak)
-- [ ] 2.5 Run `pnpm lint && pnpm build`, fix any break, commit
+- [x] 2.1 `components/ui/badge.tsx`: replace the hardcoded `statusLabels` map with `badge.status.*` keys (Recebido, Em preparo, Pronto, Entregue, Cancelado — matching the labels already used by `AdminOrderQueueClient`/`OrderQueueCard`/barista queue)
+- [x] 2.2 `components/ui/pagination.tsx`: replace "Previous"/"Next"/"Showing X–Y of Z items" and their aria-labels with `pagination.*` keys ("Anterior"/"Próximo"/"Mostrando X–Y de Z itens")
+- [x] 2.3 `components/ui/dialog.tsx`: replace the default close-button `sr-only` text and `DialogFooter`'s fallback "Close" button with `dialog.close` ("Fechar")
+- [x] 2.4 Update `app/orders/me/page.tsx` — verify `<Badge status={...} />` now renders "Recebido" not "Received" (no code change expected here, just confirms 2.1 fixed the leak)
+- [x] 2.5 Run `pnpm lint && pnpm build`, fix any break, commit
 
 ## 3. Lint enforcement
 

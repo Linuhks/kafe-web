@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { render, screen } from '@/lib/test-utils'
 import React from 'react'
 import { Badge } from './badge'
 
@@ -11,7 +11,7 @@ describe('Badge', () => {
 
   it('renders status label when status prop is provided', () => {
     render(<Badge status="RECEIVED" />)
-    expect(screen.getByText('Received')).toBeInTheDocument()
+    expect(screen.getByText('Recebido')).toBeInTheDocument()
   })
 
   it('renders with destructive variant', () => {

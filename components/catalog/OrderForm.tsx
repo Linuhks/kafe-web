@@ -74,7 +74,7 @@ export default function OrderForm({ isOpen, onClose }: OrderFormProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={open => !open && handleClose()}>
-      <DialogContent>
+      <DialogContent showCloseButton={!confirmedOrder}>
         {confirmedOrder ? (
           <>
             <DialogHeader>

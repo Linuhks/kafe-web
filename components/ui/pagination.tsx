@@ -2,6 +2,7 @@
 
 import { Suspense, useCallback } from 'react'
 import { useSearchParams, useRouter, usePathname } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -22,6 +23,7 @@ function PaginationInner({
   onPageChange,
   className,
 }: PaginationProps) {
+  const t = useTranslations('pagination')
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -72,19 +74,17 @@ function PaginationInner({
   return (
     <div className={cn('flex flex-col items-center gap-3 sm:flex-row sm:justify-between', className)}>
       <p className="text-sm text-muted-foreground">
-        Showing <span className="font-medium">{firstItem}</span>–
-        <span className="font-medium">{lastItem}</span> of{' '}
-        <span className="font-medium">{totalItems}</span> items
+        {t('summary', { firstItem, lastItem, totalItems })}
       </p>
-      <nav role="navigation" aria-label="Pagination" className="flex items-center gap-1">
+      <nav role="navigation" aria-label={t('navAriaLabel')} className="flex items-center gap-1">
         <Button
           variant="outline"
           size="sm"
           onClick={() => navigateToPage(currentPage - 1)}
           disabled={currentPage <= 1}
-          aria-label="Go to previous page"
+          aria-label={t('previousAriaLabel')}
         >
-          Previous
+          {t('previous')}
         </Button>
 
         {getPageNumbers().map((page, index) =>
@@ -102,7 +102,7 @@ function PaginationInner({
               variant={page === currentPage ? 'default' : 'outline'}
               size="sm"
               onClick={() => navigateToPage(page as number)}
-              aria-label={`Go to page ${page}`}
+              aria-label={t('pageAriaLabel', { page })}
               aria-current={page === currentPage ? 'page' : undefined}
             >
               {page}
@@ -115,9 +115,9 @@ function PaginationInner({
           size="sm"
           onClick={() => navigateToPage(currentPage + 1)}
           disabled={currentPage >= totalPages}
-          aria-label="Go to next page"
+          aria-label={t('nextAriaLabel')}
         >
-          Next
+          {t('next')}
         </Button>
       </nav>
     </div>

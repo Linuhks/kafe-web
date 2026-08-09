@@ -1,6 +1,7 @@
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 import { Slot } from "radix-ui"
+import { useTranslations } from "next-intl"
 
 import { cn } from "@/lib/utils"
 import type { OrderStatus } from "@/lib/types"
@@ -15,14 +16,6 @@ const statusStyles: Record<OrderStatus, string> = {
     "bg-status-delivered/15 text-status-delivered border-status-delivered/30",
   CANCELLED:
     "bg-status-cancelled/15 text-status-cancelled border-status-cancelled/30",
-}
-
-const statusLabels: Record<OrderStatus, string> = {
-  RECEIVED: "Received",
-  IN_PREPARATION: "In Preparation",
-  READY: "Ready",
-  DELIVERED: "Delivered",
-  CANCELLED: "Cancelled",
 }
 
 const badgeVariants = cva(
@@ -59,6 +52,8 @@ function Badge({
     asChild?: boolean
     status?: OrderStatus
   }) {
+  const t = useTranslations("badge.status")
+
   if (status) {
     return (
       <span
@@ -70,7 +65,7 @@ function Badge({
         )}
         {...props}
       >
-        {statusLabels[status]}
+        {t(status)}
       </span>
     )
   }
