@@ -92,8 +92,8 @@
 
 ## 13. en-US scaffold and final verification
 
-- [ ] 13.1 Create `messages/en-US.json` with the same key structure as `messages/pt-BR.json`, seeded with the original English strings recovered from this change's diffs (no new translation work — every string here was English before this change)
-- [ ] 13.2 Add a script or test asserting `en-US.json` and `pt-BR.json` have identical key sets (per the `i18n-infrastructure` spec's "en-US catalog has no missing keys" scenario)
-- [ ] 13.3 Run the full suite: `pnpm lint`, `pnpm build`, `pnpm test:unit`, `pnpm test:e2e` — confirm everything is green
-- [ ] 13.4 Grep `app/` and `components/` for any remaining hardcoded English strings the audit may have missed; fix or file a follow-up if out of scope
-- [ ] 13.5 Update this change's status and prepare for `/opsx:apply` archive once all tasks are checked off
+- [x] 13.1 Create `messages/en-US.json` with the same key structure as `messages/pt-BR.json`, seeded with the original English strings recovered from this change's diffs (no new translation work — every string here was English before this change)
+- [x] 13.2 Add a script or test asserting `en-US.json` and `pt-BR.json` have identical key sets (per the `i18n-infrastructure` spec's "en-US catalog has no missing keys" scenario)
+- [x] 13.3 Run the full suite: `pnpm lint`, `pnpm build`, `pnpm test:unit`, `pnpm test:e2e` — confirm everything is green
+- [x] 13.4 Grep `app/` and `components/` for any remaining hardcoded English strings the audit may have missed; fix or file a follow-up if out of scope
+- [x] 13.5 Update this change's status and prepare for `/opsx:apply` archive once all tasks are checked off

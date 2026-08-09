@@ -30,12 +30,12 @@ export default async function DesignSystemPage() {
       <main className="px-margin-page">
         {/* Page header */}
         <section className="py-stack-lg border-b border-kafe-outline-variant">
-          <p className="text-label-sm text-kafe-primary uppercase tracking-widest mb-4">Foundations</p>
+          <p className="text-label-sm text-kafe-primary uppercase tracking-widest mb-4">{t('header.eyebrow')}</p>
           <h1 className="text-display-hero text-kafe-on-surface" style={{ fontFamily: "var(--font-jakarta)" }}>
-            System
+            {t('header.title')}
           </h1>
           <p className="text-body-lg text-kafe-on-surface-variant max-w-2xl mt-6">
-            A comprehensive reference for Kafe&apos;s visual language — typography, color, interactive states, and composite patterns used across the product.
+            {t('header.description')}
           </p>
         </section>
 
@@ -172,7 +172,7 @@ export default async function DesignSystemPage() {
         <section className="py-stack-lg border-b border-kafe-outline-variant">
           <div className="flex items-center gap-3 mb-8">
             <span className="material-symbols-outlined text-kafe-primary">receipt_long</span>
-            <h2 className="text-headline-md text-kafe-on-surface">Order States</h2>
+            <h2 className="text-headline-md text-kafe-on-surface">{t('sections.orderStates')}</h2>
           </div>
           <div className="bg-kafe-surface-container-low rounded-xl p-8">
             <div className="flex flex-wrap gap-3">
@@ -204,7 +204,7 @@ export default async function DesignSystemPage() {
         <section className="py-stack-lg border-b border-kafe-outline-variant">
           <div className="flex items-center gap-3 mb-8">
             <span className="material-symbols-outlined text-kafe-primary">edit</span>
-            <h2 className="text-headline-md text-kafe-on-surface">Form Inputs</h2>
+            <h2 className="text-headline-md text-kafe-on-surface">{t('sections.formInputs')}</h2>
           </div>
           <div className="bg-kafe-surface-container-low rounded-xl p-8 max-w-xl space-y-8">
             {/* Underline input */}
@@ -221,7 +221,7 @@ export default async function DesignSystemPage() {
               <label className="text-label-sm text-kafe-on-surface-variant block mb-2">{t('fields.orderObservations')}</label>
               <textarea
                 rows={3}
-                placeholder="Any special instructions..."
+                placeholder={t('fields.orderObservationsPlaceholder')}
                 className="w-full bg-transparent border border-kafe-outline-variant rounded-lg focus:border-kafe-primary outline-none p-3 text-body-md text-kafe-on-surface placeholder:text-kafe-on-surface-variant/50 transition-colors resize-none"
               />
             </div>
@@ -232,7 +232,7 @@ export default async function DesignSystemPage() {
         <section className="py-stack-lg border-b border-kafe-outline-variant">
           <div className="flex items-center gap-3 mb-8">
             <span className="material-symbols-outlined text-kafe-primary">navigation</span>
-            <h2 className="text-headline-md text-kafe-on-surface">Navigation Shells</h2>
+            <h2 className="text-headline-md text-kafe-on-surface">{t('sections.navigationShells')}</h2>
           </div>
           <div className="grid grid-cols-12 gap-gutter-grid">
             {/* Top bar mockup */}
@@ -240,7 +240,7 @@ export default async function DesignSystemPage() {
               <div className="bg-kafe-surface border-b border-kafe-outline-variant px-6 py-4 flex items-center justify-between">
                 <span className="text-label-sm text-kafe-primary uppercase tracking-widest font-bold">KAFE</span>
                 <div className="flex items-center gap-6">
-                  {["Shop", "Roastery", "Our Story"].map((item) => (
+                  {[tNav('shop'), tNav('roastery'), tNav('ourStory')].map((item) => (
                     <span key={item} className="text-label-sm text-kafe-on-surface-variant">
                       {item}
                     </span>
@@ -253,7 +253,7 @@ export default async function DesignSystemPage() {
                 </div>
               </div>
               <div className="p-8 bg-kafe-background/50 h-32 flex items-center justify-center">
-                <span className="text-label-sm text-kafe-on-surface-variant">Page content area</span>
+                <span className="text-label-sm text-kafe-on-surface-variant">{t('topBar.contentArea')}</span>
               </div>
             </div>
             {/* Sidebar mockup */}
@@ -275,7 +275,7 @@ export default async function DesignSystemPage() {
               </nav>
               <div className="p-4 border-t border-kafe-outline-variant">
                 <button className="w-full py-2.5 bg-kafe-primary text-kafe-on-primary rounded-full text-label-sm">
-                  Checkout
+                  {t('sidebar.checkout')}
                 </button>
               </div>
             </div>
@@ -286,7 +286,7 @@ export default async function DesignSystemPage() {
         <section className="py-stack-lg border-b border-kafe-outline-variant">
           <div className="flex items-center gap-3 mb-8">
             <span className="material-symbols-outlined text-kafe-primary">grid_view</span>
-            <h2 className="text-headline-md text-kafe-on-surface">Composite Cards</h2>
+            <h2 className="text-headline-md text-kafe-on-surface">{t('sections.compositeCards')}</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-gutter-grid">
             {/* Order card */}

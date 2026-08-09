@@ -1,0 +1,261 @@
+{
+  "nav": {
+    "links": {
+      "shop": "Shop",
+      "roastery": "Roastery",
+      "ourStory": "Our Story",
+      "locations": "Locations"
+    }
+  },
+  "footer": {
+    "links": {
+      "privacyPolicy": "Privacy Policy",
+      "termsOfService": "Terms of Service",
+      "contact": "Contact",
+      "wholesale": "Wholesale"
+    },
+    "copyright": "© 2024 Kafe Roastery. All rights reserved."
+  },
+  "badge": {
+    "status": {
+      "RECEIVED": "Received",
+      "IN_PREPARATION": "In Preparation",
+      "READY": "Ready",
+      "DELIVERED": "Delivered",
+      "CANCELLED": "Cancelled"
+    }
+  },
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next",
+    "previousAriaLabel": "Go to previous page",
+    "nextAriaLabel": "Go to next page",
+    "pageAriaLabel": "Go to page {page}",
+    "navAriaLabel": "Pagination",
+    "summary": "Showing {firstItem}–{lastItem} of {totalItems} items"
+  },
+  "dialog": {
+    "close": "Close"
+  },
+  "login": {
+    "brand": "KAFE",
+    "hero": {
+      "alt": "The Ritual of Brewing",
+      "headline": "The art of the morning ritual.",
+      "body": "Experience coffee that is thoughtfully sourced, expertly roasted, and shared with intention."
+    },
+    "welcomeBack": "Welcome back",
+    "subtitle": "Sign in to continue your coffee journey.",
+    "fields": {
+      "email": "Email address",
+      "password": "Password"
+    },
+    "forgotPassword": "Forgot Password?",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "submit": {
+      "signIn": "Sign In",
+      "signingIn": "Signing in…"
+    },
+    "orJoinClub": "or join the club",
+    "google": "Google",
+    "apple": "Apple",
+    "newToKafe": "New to Kafe?",
+    "createAccount": "Create an account",
+    "footerCopyright": "© 2024 Kafe Roastery. All rights reserved.",
+    "validation": {
+      "invalidEmail": "Invalid email",
+      "passwordTooShort": "Password must be at least 8 characters"
+    },
+    "toast": {
+      "invalidCredentials": "Invalid email or password",
+      "loginFailed": "Login failed. Please try again."
+    }
+  },
+  "dashboard": {
+    "overview": "Overview",
+    "notificationsAriaLabel": "Notifications",
+    "summary": {
+      "totalOrders": "Total Orders",
+      "totalRevenue": "Total Revenue",
+      "avgTicket": "Average Ticket"
+    },
+    "topProducts": {
+      "title": "Best Selling Products",
+      "product": "Product",
+      "qtySold": "Qty. Sold",
+      "revenue": "Revenue",
+      "noSalesData": "No sales data yet",
+      "noSalesDataDescription": "Sales will appear here once orders have been placed.",
+      "syncPos": "Sync Point of Sale"
+    },
+    "peakHours": {
+      "title": "Peak Hours",
+      "awaitingTraffic": "Awaiting Hourly Traffic",
+      "awaitingTrafficDescription": "Hourly order data will appear here once orders come in."
+    },
+    "inventoryAlerts": {
+      "title": "Inventory Alerts",
+      "itemsCritical": "{count} Items Critical",
+      "restockNow": "Restock Now"
+    },
+    "generateReport": "Generate Report",
+    "reportGenerationStarted": "Report generation started"
+  },
+  "productsList": {
+    "header": {
+      "title": "Product Inventory",
+      "subtitle": "Manage your artisanal coffee beans and brewing equipment. Ensure availability reflects current stock.",
+      "addProduct": "Add New Product"
+    },
+    "table": {
+      "name": "Product Name",
+      "category": "Category",
+      "price": "Price",
+      "availability": "Availability",
+      "actions": "Actions",
+      "footerCount": "Showing {filtered} of {total} products",
+      "empty": "No products found."
+    },
+    "search": {
+      "placeholder": "Search beans, equipment…"
+    }
+  },
+  "productForm": {
+    "title": "New Product",
+    "subtitle": "Add a new artisanal selection to the Kafe catalog.",
+    "cancel": "Cancel",
+    "productInfo": "Product Information",
+    "fields": {
+      "name": "Name",
+      "description": "Description",
+      "category": "Category",
+      "selectCategory": "Select a category",
+      "price": "Price",
+      "imageUrl": "Image URL"
+    },
+    "imagePreviewAlt": "Product preview",
+    "productImage": "Product Image",
+    "availability": {
+      "title": "Availability",
+      "description": "Toggle product visibility in the shop"
+    },
+    "submit": {
+      "saving": "Saving…",
+      "create": "Create Product"
+    },
+    "draftsAutosave": "Drafts are saved automatically"
+  },
+  "inventoryList": {
+    "status": {
+      "low": "LOW STOCK"
+    }
+  },
+  "checkout": {
+    "title": "Checkout",
+    "subtitle": "Complete your ritual selection.",
+    "sections": {
+      "contact": "01 Contact Information",
+      "shipping": "02 Shipping Address",
+      "payment": "03 Payment Method"
+    },
+    "fields": {
+      "email": "Email Address",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "streetAddress": "Street Address",
+      "city": "City",
+      "postalCode": "Postal Code",
+      "cardNumber": "Card Number",
+      "expiryDate": "Expiry Date",
+      "cvc": "CVC"
+    },
+    "confirmPurchase": "Confirm Purchase",
+    "termsNotice": "By confirming, you agree to our Terms of Service.",
+    "orderSummary": "Order Summary",
+    "qty": "Qty: {count}",
+    "priceBreakdown": {
+      "subtotal": "Subtotal",
+      "shipping": "Frete",
+      "free": "Grátis",
+      "estimatedTaxes": "Impostos estimados",
+      "total": "Total"
+    },
+    "promoCodePlaceholder": "Código promocional",
+    "applyPromo": "Aplicar",
+    "trustBadges": {
+      "secure": "Seguro",
+      "freeShipping": "Frete Grátis",
+      "warranty": "Garantia"
+    }
+  },
+  "orderConfirmation": {
+    "hero": {
+      "headline": "Thank you for your order",
+      "body": "Your ritual is being prepared with care. We've sent a confirmation receipt to your email."
+    },
+    "status": {
+      "estimatedReadyLabel": "Estimated Ready At",
+      "orderIdLabel": "Order ID"
+    },
+    "statusSteps": {
+      "received": "Received",
+      "roasting": "Roasting",
+      "ready": "Ready"
+    },
+    "orderSummary": {
+      "title": "Order Summary",
+      "subtotal": "Subtotal",
+      "taxes": "Tax",
+      "total": "Total"
+    },
+    "pickup": {
+      "title": "Pickup Location",
+      "getDirections": "Get Directions",
+      "mapAlt": "Map showing pickup location"
+    },
+    "support": {
+      "heading": "Need help with your ritual?",
+      "body": "Our baristas are here for you. Reach out via chat or call us at (555) KAFE-NOW."
+    },
+    "footer": {
+      "returnToShop": "Return to Shop",
+      "downloadReceipt": "Download Receipt"
+    }
+  },
+  "designSystem": {
+    "header": {
+      "eyebrow": "Foundations",
+      "title": "System",
+      "description": "A comprehensive reference for Kafe's visual language — typography, color, interactive states, and composite patterns used across the product."
+    },
+    "sections": {
+      "orderStates": "Order States",
+      "formInputs": "Form Inputs",
+      "navigationShells": "Navigation Shells",
+      "compositeCards": "Composite Cards"
+    },
+    "fields": {
+      "email": "Email Address",
+      "orderObservations": "Order Observations",
+      "orderObservationsPlaceholder": "Any special instructions..."
+    },
+    "topBar": {
+      "contentArea": "Page content area"
+    },
+    "sidebar": {
+      "yourSelection": "Your Selection",
+      "categories": {
+        "coffee": "Coffee",
+        "sweets": "Sweets",
+        "savory": "Savory"
+      },
+      "checkout": "Checkout"
+    },
+    "cards": {
+      "addToSelection": "Add to Selection",
+      "membership": "MEMBERSHIP",
+      "subscribeNow": "Subscribe Now"
+    }
+  }
+}

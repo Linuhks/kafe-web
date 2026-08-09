@@ -98,7 +98,9 @@
       "title": "Alertas de Estoque",
       "itemsCritical": "{count} itens críticos",
       "restockNow": "Reabastecer Agora"
-    }
+    },
+    "generateReport": "Gerar Relatório",
+    "reportGenerationStarted": "Geração de relatório iniciada"
   },
   "productsList": {
     "header": {
@@ -222,9 +224,24 @@
     }
   },
   "designSystem": {
+    "header": {
+      "eyebrow": "Fundamentos",
+      "title": "Sistema",
+      "description": "Uma referência abrangente para a linguagem visual da Kafe — tipografia, cor, estados interativos e padrões compostos usados em todo o produto."
+    },
+    "sections": {
+      "orderStates": "Estados do Pedido",
+      "formInputs": "Campos de Formulário",
+      "navigationShells": "Estruturas de Navegação",
+      "compositeCards": "Cartões Compostos"
+    },
     "fields": {
       "email": "Endereço de E-mail",
-      "orderObservations": "Observações do Pedido"
+      "orderObservations": "Observações do Pedido",
+      "orderObservationsPlaceholder": "Alguma instrução especial..."
+    },
+    "topBar": {
+      "contentArea": "Área de conteúdo da página"
     },
     "sidebar": {
       "yourSelection": "Sua Seleção",
@@ -232,7 +249,8 @@
         "coffee": "Cafés",
         "sweets": "Doces",
         "savory": "Salgados"
-      }
+      },
+      "checkout": "Finalizar Pedido"
     },
     "cards": {
       "addToSelection": "Adicionar à Seleção",
