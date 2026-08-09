@@ -70,7 +70,31 @@
       "placeholder": "Buscar produtos…"
     }
   },
-  "productForm": {},
+  "productForm": {
+    "title": "Novo Produto",
+    "subtitle": "Adicione uma nova seleção artesanal ao catálogo da Kafe.",
+    "cancel": "Cancelar",
+    "productInfo": "Informações do Produto",
+    "fields": {
+      "name": "Nome",
+      "description": "Descrição",
+      "category": "Categoria",
+      "selectCategory": "Selecione uma categoria",
+      "price": "Preço",
+      "imageUrl": "URL da Imagem"
+    },
+    "imagePreviewAlt": "Prévia do produto",
+    "productImage": "Imagem do Produto",
+    "availability": {
+      "title": "Disponibilidade",
+      "description": "Ativar visibilidade do produto na loja"
+    },
+    "submit": {
+      "saving": "Salvando…",
+      "create": "Criar Produto"
+    },
+    "draftsAutosave": "Os rascunhos são salvos automaticamente"
+  },
   "inventoryList": {},
   "checkout": {},
   "orderConfirmation": {},

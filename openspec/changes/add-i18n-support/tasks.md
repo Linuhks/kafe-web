@@ -39,9 +39,9 @@
 
 ## 6. Admin new/edit product form (`app/admin/products/new/page.tsx`)
 
-- [ ] 6.1 Translate all field labels, helper text, and button states ("New Product"/"Name"/"Description"/"Category"/"Price"/"Availability"/"Create Product"/"Saving…" → `productForm.*`) — note: this page's capability (`admin-product-management`) has no spec delta since the spec never pinned literal copy, so no spec file changes here, just the component and its test
-- [ ] 6.2 Update the page's existing test(s) (if any) to assert the new pt-BR strings
-- [ ] 6.3 Run `pnpm lint && pnpm build`, fix any break, commit
+- [x] 6.1 Translate all field labels, helper text, and button states ("New Product"/"Name"/"Description"/"Category"/"Price"/"Availability"/"Create Product"/"Saving…" → `productForm.*`) — note: this page's capability (`admin-product-management`) has no spec delta since the spec never pinned literal copy, so no spec file changes here, just the component and its test
+- [x] 6.2 Update the page's existing test(s) (if any) to assert the new pt-BR strings
+- [x] 6.3 Run `pnpm lint && pnpm build`, fix any break, commit
 
 ## 7. Admin Inventory list (`app/admin/inventory/page.tsx`)
 

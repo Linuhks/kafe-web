@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { ChevronDown, ChevronRight, ImageIcon } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import {
   useProductsControllerCreate,
   useCategoriesControllerList,
@@ -18,6 +19,7 @@ interface FormErrors {
 
 export default function NewProductPage() {
   const router = useRouter()
+  const t = useTranslations('productForm')
   const { addToast } = useToast()
   const { setDirty, confirmNavigation } = useFormDirty()
 
@@ -84,9 +86,9 @@ export default function NewProductPage() {
       <header className="py-6 border-b border-kafe-outline-variant mb-8">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h1 className="text-headline-lg text-kafe-on-surface">New Product</h1>
+            <h1 className="text-headline-lg text-kafe-on-surface">{t('title')}</h1>
             <p className="text-body-md text-kafe-on-surface-variant mt-1">
-              Add a new artisanal selection to the Kafe catalog.
+              {t('subtitle')}
             </p>
           </div>
           <button
@@ -94,7 +96,7 @@ export default function NewProductPage() {
             onClick={() => confirmNavigation('/admin/products')}
             className="text-body-md text-kafe-on-surface-variant hover:text-kafe-on-surface transition-colors"
           >
-            Cancel
+            {t('cancel')}
           </button>
         </div>
       </header>
@@ -102,7 +104,7 @@ export default function NewProductPage() {
       <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-12 gap-gutter-grid items-start">
         <div className="lg:col-span-7 space-y-gutter-grid">
           <div className="bg-kafe-surface-container-lowest p-stack-md rounded-xl border border-kafe-outline-variant/30">
-            <h2 className="text-headline-md text-kafe-on-surface mb-6">Product Information</h2>
+            <h2 className="text-headline-md text-kafe-on-surface mb-6">{t('productInfo')}</h2>
 
             <div className="space-y-6">
               <div className="space-y-2">
@@ -110,7 +112,7 @@ export default function NewProductPage() {
                   htmlFor="name"
                   className="font-label-sm text-label-sm text-kafe-primary uppercase"
                 >
-                  Name
+                  {t('fields.name')}
                 </label>
                 <input
                   id="name"
@@ -126,7 +128,7 @@ export default function NewProductPage() {
                   htmlFor="description"
                   className="font-label-sm text-label-sm text-kafe-primary uppercase"
                 >
-                  Description
+                  {t('fields.description')}
                 </label>
                 <textarea
                   id="description"
@@ -143,7 +145,7 @@ export default function NewProductPage() {
                     htmlFor="categoryId"
                     className="font-label-sm text-label-sm text-kafe-primary uppercase"
                   >
-                    Category
+                    {t('fields.category')}
                   </label>
                   <div className="relative">
                     <select
@@ -152,7 +154,7 @@ export default function NewProductPage() {
                       onChange={(e) => { setCategoryId(e.target.value); handleChange() }}
                       className="w-full appearance-none bg-transparent border-b-2 border-kafe-outline-variant pb-2 pr-8 focus:outline-none focus:border-kafe-primary text-kafe-on-surface"
                     >
-                      <option value="">Select a category</option>
+                      <option value="">{t('fields.selectCategory')}</option>
                       {categories.map((cat) => (
                         <option key={cat.id} value={cat.id}>{cat.name}</option>
                       ))}
@@ -167,7 +169,7 @@ export default function NewProductPage() {
                     htmlFor="price"
                     className="font-label-sm text-label-sm text-kafe-primary uppercase"
                   >
-                    Price
+                    {t('fields.price')}
                   </label>
                   <div className="flex items-end border-b-2 border-kafe-outline-variant focus-within:border-kafe-primary pb-2">
                     <span className="text-kafe-on-surface-variant mr-1">$</span>
@@ -189,8 +191,8 @@ export default function NewProductPage() {
 
           <div className="bg-kafe-surface-container-low rounded-xl border border-kafe-outline-variant/30 p-stack-md flex items-center justify-between gap-4">
             <div>
-              <p className="text-body-md font-medium text-kafe-on-surface">Availability</p>
-              <p className="text-body-sm text-kafe-on-surface-variant">Toggle product visibility in the shop</p>
+              <p className="text-body-md font-medium text-kafe-on-surface">{t('availability.title')}</p>
+              <p className="text-body-sm text-kafe-on-surface-variant">{t('availability.description')}</p>
             </div>
             <label htmlFor="isAvailable" className="relative inline-flex cursor-pointer items-center">
               <input
@@ -209,13 +211,13 @@ export default function NewProductPage() {
 
         <div className="lg:col-span-5 space-y-gutter-grid">
           <div className="bg-kafe-surface-container-lowest p-stack-md rounded-xl border border-kafe-outline-variant/30">
-            <h2 className="text-headline-md text-kafe-on-surface mb-6">Product Image</h2>
+            <h2 className="text-headline-md text-kafe-on-surface mb-6">{t('productImage')}</h2>
 
             <div className="aspect-square w-full rounded-xl overflow-hidden border border-kafe-outline-variant/30 bg-kafe-surface-container-low mb-6">
               {imageUrl ? (
                 <img
                   src={imageUrl}
-                  alt="Product preview"
+                  alt={t('imagePreviewAlt')}
                   className="w-full h-full object-cover"
                 />
               ) : (
@@ -230,7 +232,7 @@ export default function NewProductPage() {
                 htmlFor="imageUrl"
                 className="font-label-sm text-label-sm text-kafe-primary uppercase"
               >
-                Image URL
+                {t('fields.imageUrl')}
               </label>
               <input
                 id="imageUrl"
@@ -248,17 +250,17 @@ export default function NewProductPage() {
             className="w-full bg-kafe-primary-container text-kafe-on-primary py-6 rounded-full flex items-center justify-center gap-2 text-body-lg font-medium hover:opacity-90 transition-opacity disabled:opacity-60"
           >
             {isPending ? (
-              'Saving...'
+              t('submit.saving')
             ) : (
               <>
-                Create Product
+                {t('submit.create')}
                 <ChevronRight className="w-5 h-5" />
               </>
             )}
           </button>
 
           <p className="text-center font-label-sm text-label-sm text-kafe-outline-variant uppercase tracking-widest">
-            Drafts are saved automatically
+            {t('draftsAutosave')}
           </p>
         </div>
       </form>
