@@ -15,7 +15,14 @@ const eslintConfig = defineConfig([
     ignores: ["**/*.test.tsx", "components/ui/**"],
     plugins: { i18next },
     rules: {
-      "i18next/no-literal-string": ["error"],
+      "i18next/no-literal-string": [
+        "error",
+        {
+          // Brand names and proper nouns are never translated (see
+          // design.md's Decisions section on the add-i18n-support change).
+          words: { exclude: ["[0-9!-/:-@[-`{-~]+", "[A-Z_-]+", "Kafe", "Google", "Apple"] },
+        },
+      ],
     },
   },
   // Override default ignores of eslint-config-next.

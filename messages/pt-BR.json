@@ -1,6 +1,21 @@
 {
-  "nav": {},
-  "footer": {},
+  "nav": {
+    "links": {
+      "shop": "Loja",
+      "roastery": "Torrefação",
+      "ourStory": "Nossa História",
+      "locations": "Unidades"
+    }
+  },
+  "footer": {
+    "links": {
+      "privacyPolicy": "Política de Privacidade",
+      "termsOfService": "Termos de Serviço",
+      "contact": "Contato",
+      "wholesale": "Atacado"
+    },
+    "copyright": "© 2024 Kafe Roastery. Todos os direitos reservados."
+  },
   "badge": {
     "status": {
       "RECEIVED": "Recebido",

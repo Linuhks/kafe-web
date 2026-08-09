@@ -1,8 +1,11 @@
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 
-const FOOTER_LINKS = ['Privacy Policy', 'Terms of Service', 'Contact', 'Wholesale']
+const FOOTER_LINK_KEYS = ['privacyPolicy', 'termsOfService', 'contact', 'wholesale'] as const
 
 export default function Footer() {
+  const t = useTranslations('footer')
+
   return (
     <footer className="bg-kafe-surface-container-high border-t border-kafe-outline-variant">
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between px-margin-page py-stack-md max-w-7xl mx-auto gap-4">
@@ -11,19 +14,19 @@ export default function Footer() {
         </p>
 
         <nav className="flex flex-wrap items-center gap-6">
-          {FOOTER_LINKS.map((link) => (
+          {FOOTER_LINK_KEYS.map((key) => (
             <Link
-              key={link}
+              key={key}
               href="#"
               className="text-label-sm text-kafe-on-surface-variant hover:text-kafe-primary transition-colors"
             >
-              {link}
+              {t(`links.${key}`)}
             </Link>
           ))}
         </nav>
 
         <p className="text-label-sm text-kafe-on-surface-variant">
-          © 2024 Kafe Roastery. All rights reserved.
+          {t('copyright')}
         </p>
       </div>
     </footer>

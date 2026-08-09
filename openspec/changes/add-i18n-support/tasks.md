@@ -75,10 +75,10 @@
 
 ## 11. Shared layout components used by checkout/confirmation (`components/layout/TopNavBar.tsx`, `components/layout/Footer.tsx`)
 
-- [ ] 11.1 Translate `TopNavBar` nav links ("Shop"/"Roastery"/"Our Story"/"Locations" → "Loja"/"Torrefação"/"Nossa História"/"Unidades")
-- [ ] 11.2 Translate `Footer` links and copyright text
-- [ ] 11.3 Update any existing tests for these two components
-- [ ] 11.4 Run `pnpm lint && pnpm build`, fix any break, commit
+- [x] 11.1 Translate `TopNavBar` nav links ("Shop"/"Roastery"/"Our Story"/"Locations" → "Loja"/"Torrefação"/"Nossa História"/"Unidades")
+- [x] 11.2 Translate `Footer` links and copyright text
+- [x] 11.3 Update any existing tests for these two components
+- [x] 11.4 Run `pnpm lint && pnpm build`, fix any break, commit
 
 ## 12. Dev-only design-system page (`app/test-components/`) — lowest priority, internal reference only
 
