@@ -13,7 +13,7 @@ Next.js Route Handlers — run server-side, not in the browser.
 
 - Name: `kafe_token`
 - Flags: `httpOnly`, `secure`, `sameSite: lax`
-- Contains a JWT signed by the backend
+- Contains the opaque bearer token issued by Better-Auth (not a JWT)
 
 ## Rules
 

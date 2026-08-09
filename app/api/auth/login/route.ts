@@ -37,7 +37,8 @@ export async function POST(request: Request) {
     return Response.json({ message: 'token is required' }, { status: 400 })
   }
 
-  if (!/^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/.test(token)) {
+  // Better-Auth issues an opaque bearer token (not a JWT) — just guard against garbage/injection.
+  if (!/^[A-Za-z0-9_-]{16,512}$/.test(token)) {
     return Response.json({ message: 'Invalid token format' }, { status: 400 })
   }
 
