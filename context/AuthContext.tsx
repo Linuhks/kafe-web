@@ -24,6 +24,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   async function logout() {
     await fetch('/api/auth/logout', { method: 'POST' })
     setUser(null)
+    // Full navigation (not router.push) so the React Query cache and any
+    // screen still showing another user's data (e.g. barista queue) is wiped.
+    window.location.href = '/login'
   }
 
   return (
