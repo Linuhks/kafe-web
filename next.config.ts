@@ -6,7 +6,7 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3333'
 
 const cspDirectives = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline'",
+  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''}`,
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   `img-src 'self' data: blob: https://lh3.googleusercontent.com${isDev ? ' http://localhost:*' : ''}`,
   "font-src 'self' https://fonts.gstatic.com",
