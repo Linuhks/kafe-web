@@ -60,11 +60,11 @@
 
 ## 9. Checkout page (`app/checkout/page.tsx`) — lower priority, unreachable from the live app today (see design.md)
 
-- [ ] 9.1 Translate the three numbered section headings and all field labels (Contact/Shipping/Payment sections → `checkout.*`)
-- [ ] 9.2 Translate the "Confirm Purchase" CTA and order-summary sidebar heading/price-breakdown row labels
-- [ ] 9.3 Fix hardcoded `$` to `R$`/BRL formatting throughout the order summary sidebar (per the `checkout-page` spec delta)
-- [ ] 9.4 Update the page's existing test(s) to assert the new pt-BR strings and BRL formatting
-- [ ] 9.5 Run `pnpm lint && pnpm build`, fix any break, commit
+- [x] 9.1 Translate the three numbered section headings and all field labels (Contact/Shipping/Payment sections → `checkout.*`)
+- [x] 9.2 Translate the "Confirm Purchase" CTA and order-summary sidebar heading/price-breakdown row labels
+- [x] 9.3 Fix hardcoded `$` to `R$`/BRL formatting throughout the order summary sidebar (per the `checkout-page` spec delta)
+- [x] 9.4 Update the page's existing test(s) to assert the new pt-BR strings and BRL formatting
+- [x] 9.5 Run `pnpm lint && pnpm build`, fix any break, commit
 
 ## 10. Order confirmation page (`app/checkout/confirmation/page.tsx`) — lower priority, same reason as section 9
 

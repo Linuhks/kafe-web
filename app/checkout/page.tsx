@@ -1,6 +1,7 @@
 'use client'
 
 import { BadgeCheck, ChevronRight, CreditCard, Lock, Truck } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import TopNavBar from '@/components/layout/TopNavBar'
 import Footer from '@/components/layout/Footer'
 
@@ -25,6 +26,8 @@ const DEMO_ITEMS = [
     price: 'R$ 89,90',
   },
 ]
+
+const DEMO_TOTAL = 'R$ 145,58'
 
 function SectionHeader({ number, title }: { number: string; title: string }) {
   return (
@@ -55,6 +58,8 @@ function FormField({
 }
 
 export default function CheckoutPage() {
+  const t = useTranslations('checkout')
+
   return (
     <div className="min-h-screen bg-kafe-surface">
       <TopNavBar />
@@ -70,37 +75,37 @@ export default function CheckoutPage() {
                 className="text-headline-lg text-kafe-primary mb-2"
                 style={{ fontFamily: 'var(--font-jakarta)' }}
               >
-                Checkout
+                {t('title')}
               </h1>
               <p className="text-body-md text-kafe-on-surface-variant">
-                Complete your ritual selection.
+                {t('subtitle')}
               </p>
             </header>
 
             {/* 01 Contact */}
             <section className="space-y-stack-md">
-              <SectionHeader number="01" title="Contact Information" />
-              <FormField label="Email Address" type="email" placeholder="ritual@kafe.com" />
+              <SectionHeader number="01" title={t('sections.contact')} />
+              <FormField label={t('fields.email')} type="email" placeholder="ritual@kafe.com" />
             </section>
 
             {/* 02 Shipping */}
             <section className="space-y-stack-md">
-              <SectionHeader number="02" title="Shipping Address" />
+              <SectionHeader number="02" title={t('sections.shipping')} />
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <FormField label="First Name" placeholder="Julian" />
-                <FormField label="Last Name" placeholder="Anders" />
-                <FormField label="Street Address" placeholder="123 Roastery Lane" className="md:col-span-2" />
-                <FormField label="City" placeholder="Portland" />
-                <FormField label="Postal Code" placeholder="97201" />
+                <FormField label={t('fields.firstName')} placeholder="Julian" />
+                <FormField label={t('fields.lastName')} placeholder="Anders" />
+                <FormField label={t('fields.streetAddress')} placeholder="123 Roastery Lane" className="md:col-span-2" />
+                <FormField label={t('fields.city')} placeholder="Portland" />
+                <FormField label={t('fields.postalCode')} placeholder="97201" />
               </div>
             </section>
 
             {/* 03 Payment */}
             <section className="space-y-stack-md">
-              <SectionHeader number="03" title="Payment Method" />
+              <SectionHeader number="03" title={t('sections.payment')} />
               <div className="bg-kafe-surface-container-low p-6 rounded-xl border border-kafe-outline-variant/30 space-y-6">
                 <div className="flex flex-col gap-2">
-                  <label className={LABEL_CLASS}>Card Number</label>
+                  <label className={LABEL_CLASS}>{t('fields.cardNumber')}</label>
                   <div className="relative">
                     <input
                       type="text"
@@ -111,8 +116,8 @@ export default function CheckoutPage() {
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-6">
-                  <FormField label="Expiry Date" placeholder="MM/YY" />
-                  <FormField label="CVC" placeholder="123" />
+                  <FormField label={t('fields.expiryDate')} placeholder="MM/YY" />
+                  <FormField label={t('fields.cvc')} placeholder="123" />
                 </div>
               </div>
             </section>
@@ -120,11 +125,11 @@ export default function CheckoutPage() {
             {/* CTA */}
             <div className="pt-stack-md">
               <button className="group w-full bg-kafe-primary text-kafe-on-primary py-6 rounded-xl text-headline-md flex items-center justify-center gap-4 hover:bg-kafe-primary/90 transition-colors">
-                Confirm Purchase
+                {t('confirmPurchase')}
                 <ChevronRight className="group-hover:translate-x-1 transition-transform" />
               </button>
               <p className="text-center text-label-sm text-kafe-on-surface-variant mt-4">
-                By confirming, you agree to our Terms of Service.
+                {t('termsNotice')}
               </p>
             </div>
           </div>
@@ -133,7 +138,7 @@ export default function CheckoutPage() {
           <div className="lg:col-span-5">
             <div className="sticky top-32 bg-kafe-surface-container-lowest border border-kafe-outline-variant rounded-xl overflow-hidden shadow-sm">
               <div className="p-8 space-y-8">
-                <h2 className="text-headline-md text-kafe-primary">Order Summary</h2>
+                <h2 className="text-headline-md text-kafe-primary">{t('orderSummary')}</h2>
 
                 {/* Item list */}
                 <div className="space-y-6 max-h-[400px] overflow-y-auto pr-2">
@@ -155,7 +160,7 @@ export default function CheckoutPage() {
                           </span>
                         </div>
                         <p className="text-label-sm text-kafe-on-surface-variant mt-1">{item.detail}</p>
-                        <p className="text-label-sm text-kafe-on-surface-variant mt-2">Qty: 1</p>
+                        <p className="text-label-sm text-kafe-on-surface-variant mt-2">{t('qty', { count: 1 })}</p>
                       </div>
                     </div>
                   ))}
@@ -164,9 +169,9 @@ export default function CheckoutPage() {
                 {/* Price breakdown */}
                 <div className="border-t border-kafe-outline-variant pt-6 space-y-3">
                   {[
-                    { label: 'Subtotal', value: 'R$ 134,80' },
-                    { label: 'Frete', value: 'Grátis', valueClass: 'text-kafe-secondary font-semibold' },
-                    { label: 'Impostos estimados', value: 'R$ 10,78' },
+                    { label: t('priceBreakdown.subtotal'), value: 'R$ 134,80' },
+                    { label: t('priceBreakdown.shipping'), value: t('priceBreakdown.free'), valueClass: 'text-kafe-secondary font-semibold' },
+                    { label: t('priceBreakdown.estimatedTaxes'), value: 'R$ 10,78' },
                   ].map(({ label, value, valueClass }) => (
                     <div key={label} className="flex justify-between text-body-md text-kafe-on-surface-variant">
                       <span>{label}</span>
@@ -174,8 +179,8 @@ export default function CheckoutPage() {
                     </div>
                   ))}
                   <div className="flex justify-between pt-4 border-t border-kafe-outline-variant">
-                    <span className="text-headline-md text-kafe-on-surface">Total</span>
-                    <span className="text-headline-md text-kafe-primary">R$ 145,58</span>
+                    <span className="text-headline-md text-kafe-on-surface">{t('priceBreakdown.total')}</span>
+                    <span className="text-headline-md text-kafe-primary">{DEMO_TOTAL}</span>
                   </div>
                 </div>
 
@@ -183,11 +188,11 @@ export default function CheckoutPage() {
                 <div className="flex gap-2">
                   <input
                     type="text"
-                    placeholder="Código promocional"
+                    placeholder={t('promoCodePlaceholder')}
                     className="flex-grow bg-transparent border border-kafe-outline-variant rounded-lg px-4 py-2 text-label-sm text-kafe-on-surface placeholder:text-kafe-on-surface-variant/50 focus:border-kafe-primary outline-none transition-colors"
                   />
                   <button className="px-6 py-2 border border-kafe-primary text-kafe-primary text-label-sm rounded-lg hover:bg-kafe-primary hover:text-kafe-on-primary transition-colors">
-                    Aplicar
+                    {t('applyPromo')}
                   </button>
                 </div>
               </div>
@@ -195,9 +200,9 @@ export default function CheckoutPage() {
               {/* Trust badges */}
               <div className="bg-kafe-surface-container py-4 px-8 flex justify-center gap-6 border-t border-kafe-outline-variant/30">
                 {[
-                  { Icon: Lock, label: 'Seguro' },
-                  { Icon: Truck, label: 'Frete Grátis' },
-                  { Icon: BadgeCheck, label: 'Garantia' },
+                  { Icon: Lock, label: t('trustBadges.secure') },
+                  { Icon: Truck, label: t('trustBadges.freeShipping') },
+                  { Icon: BadgeCheck, label: t('trustBadges.warranty') },
                 ].map(({ Icon, label }) => (
                   <div
                     key={label}

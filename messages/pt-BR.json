@@ -134,7 +134,44 @@
       "low": "ESTOQUE BAIXO"
     }
   },
-  "checkout": {},
+  "checkout": {
+    "title": "Finalizar Compra",
+    "subtitle": "Complete sua seleção do ritual.",
+    "sections": {
+      "contact": "01 Informações de Contato",
+      "shipping": "02 Endereço de Entrega",
+      "payment": "03 Forma de Pagamento"
+    },
+    "fields": {
+      "email": "Endereço de E-mail",
+      "firstName": "Nome",
+      "lastName": "Sobrenome",
+      "streetAddress": "Endereço",
+      "city": "Cidade",
+      "postalCode": "CEP",
+      "cardNumber": "Número do Cartão",
+      "expiryDate": "Validade",
+      "cvc": "CVC"
+    },
+    "confirmPurchase": "Confirmar Compra",
+    "termsNotice": "Ao confirmar, você concorda com nossos Termos de Serviço.",
+    "orderSummary": "Resumo do Pedido",
+    "qty": "Qtd: {count}",
+    "priceBreakdown": {
+      "subtotal": "Subtotal",
+      "shipping": "Frete",
+      "free": "Grátis",
+      "estimatedTaxes": "Impostos estimados",
+      "total": "Total"
+    },
+    "promoCodePlaceholder": "Código promocional",
+    "applyPromo": "Aplicar",
+    "trustBadges": {
+      "secure": "Seguro",
+      "freeShipping": "Frete Grátis",
+      "warranty": "Garantia"
+    }
+  },
   "orderConfirmation": {},
   "designSystem": {}
 }
