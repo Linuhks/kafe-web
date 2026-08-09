@@ -71,11 +71,11 @@ export default function CategoriesTable({ categories }: CategoriesTableProps) {
                   <td className="px-6 py-5">
                     {cat.isActive ? (
                       <span className="inline-block px-3 py-1 bg-status-ready/15 text-status-ready rounded-full text-[12px] uppercase font-semibold">
-                        Active
+                        Ativo
                       </span>
                     ) : (
                       <span className="inline-block px-3 py-1 bg-kafe-surface-container text-kafe-on-surface-variant rounded-full text-[12px] uppercase font-semibold">
-                        Inactive
+                        Inativo
                       </span>
                     )}
                   </td>
@@ -86,14 +86,14 @@ export default function CategoriesTable({ categories }: CategoriesTableProps) {
                         className="p-2 text-kafe-on-surface-variant hover:text-kafe-primary hover:bg-kafe-surface-container-high transition-all rounded-lg"
                       >
                         <Pencil className="h-4 w-4" />
-                        <span className="sr-only">Edit</span>
+                        <span className="sr-only">Editar</span>
                       </Link>
                       <button
                         className="p-2 text-kafe-on-surface-variant hover:text-kafe-error hover:bg-kafe-error-container/50 transition-all rounded-lg"
                         onClick={() => setDeleteTarget(cat)}
                       >
                         <Trash2 className="h-4 w-4" />
-                        <span className="sr-only">Delete</span>
+                        <span className="sr-only">Remover</span>
                       </button>
                     </div>
                   </td>
