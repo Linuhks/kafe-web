@@ -172,6 +172,39 @@
       "warranty": "Garantia"
     }
   },
-  "orderConfirmation": {},
+  "orderConfirmation": {
+    "hero": {
+      "headline": "Obrigado pelo seu pedido",
+      "body": "Seu ritual está sendo preparado com cuidado. Enviamos um recibo de confirmação para o seu e-mail."
+    },
+    "status": {
+      "estimatedReadyLabel": "Pronto Estimado Para",
+      "orderIdLabel": "Pedido Nº"
+    },
+    "statusSteps": {
+      "received": "Recebido",
+      "roasting": "Torrando",
+      "ready": "Pronto"
+    },
+    "orderSummary": {
+      "title": "Resumo do Pedido",
+      "subtotal": "Subtotal",
+      "taxes": "Impostos",
+      "total": "Total"
+    },
+    "pickup": {
+      "title": "Local de Retirada",
+      "getDirections": "Como Chegar",
+      "mapAlt": "Mapa mostrando o local de retirada"
+    },
+    "support": {
+      "heading": "Precisa de ajuda com seu pedido?",
+      "body": "Nossos baristas estão aqui para você. Entre em contato pelo chat ou ligue para (555) KAFE-NOW."
+    },
+    "footer": {
+      "returnToShop": "Voltar à Loja",
+      "downloadReceipt": "Baixar Recibo"
+    }
+  },
   "designSystem": {}
 }

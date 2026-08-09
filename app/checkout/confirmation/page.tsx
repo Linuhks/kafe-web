@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { ArrowLeft, ChevronRight, CircleCheck, HelpCircle } from 'lucide-react'
+import { getTranslations } from 'next-intl/server'
 import TopNavBar from '@/components/layout/TopNavBar'
 import Footer from '@/components/layout/Footer'
 import ItemThumbnail from '@/components/confirmation/ItemThumbnail'
@@ -7,7 +8,7 @@ import ItemThumbnail from '@/components/confirmation/ItemThumbnail'
 const DEMO_ORDER = {
   id: '#KF-88291',
   estimatedReady: '09:45 AM',
-  status: 'Received' as const,
+  status: 'received' as const,
   items: [
     {
       id: 1,
@@ -15,7 +16,7 @@ const DEMO_ORDER = {
         'https://lh3.googleusercontent.com/aida-public/AB6AXuC9BG29B6ob8WabxNEw4WS-8pb7VDfR4Wna_fKNdvTIEuljzSY_ECssmHmXis6jo1VRm2-okFJUqkgrl5t86HdKC612YHqF6zDP1W9CbswIq9CcOpCX3s9Q0aj3z2sSmFGOGtUnItxv3kVVQiGBiGTegsRixpQX_GwcCCKlBmEF0bZcgMS-z9yRRHeCSPY330yAxWKkLDscNudLuF78VhCAUD5EwLd5u0oo1b4TVZwSs1Pjtp2aYw2oo1djJwF_9Sr0FjAg85mIJSA',
       name: 'Ethiopia Yirgacheffe',
       detail: '250g • Whole Bean',
-      price: '$18.00',
+      price: 'R$ 18,00',
     },
     {
       id: 2,
@@ -23,12 +24,12 @@ const DEMO_ORDER = {
         'https://lh3.googleusercontent.com/aida-public/AB6AXuCZyn6yLIjxU7sjVCFc_dQrnQWIY0doo2rBXkPgX2XwqWIApPNXVDyJYEjPLm4k1LAXFWjOCtquLF-oOm04y1S7a2DVsqzgdNk7Jf119nClX95T4fPwS1utp4Hg_bCErnIqw5bHkOBU9Sq_qitL6w10dgMaPX1-qw7BNXYZ0fDOGELqbJSrpLswgHwHSAHdXpwyynyG3ScYKI6hg-PuOGVu38UOLK02RnuCxk6dtHvRNtmPBiNziVRKkm-rskRa53Z2wwu3M-AugGM',
       name: 'Signature Oat Latte',
       detail: 'Large • Extra Shot',
-      price: '$6.50',
+      price: 'R$ 6,50',
     },
   ],
-  subtotal: '$24.50',
-  tax: '$1.96',
-  total: '$26.46',
+  subtotal: 'R$ 24,50',
+  tax: 'R$ 1,96',
+  total: 'R$ 26,46',
   pickup: {
     name: 'Kafe Roastery Central',
     address: '124 Ritual Way, Artisans Quarter, Brooklyn',
@@ -37,7 +38,7 @@ const DEMO_ORDER = {
   },
 }
 
-const STATUS_STEPS = ['Received', 'Roasting', 'Ready'] as const
+const STATUS_STEPS = ['received', 'roasting', 'ready'] as const
 
 export default async function OrderConfirmationPage({
   searchParams,
@@ -47,6 +48,7 @@ export default async function OrderConfirmationPage({
   await searchParams
   // Real app: const { orderId } = await searchParams; order = await fetchOrder(orderId)
   const order = DEMO_ORDER
+  const t = await getTranslations('orderConfirmation')
 
   return (
     <div className="min-h-screen bg-kafe-surface">
@@ -60,10 +62,10 @@ export default async function OrderConfirmationPage({
             <CircleCheck className="text-kafe-on-secondary-container" size={48} strokeWidth={1.5} />
           </div>
           <h1 className="text-headline-lg text-kafe-primary mb-stack-sm">
-            Thank you for your order
+            {t('hero.headline')}
           </h1>
           <p className="text-body-lg text-kafe-on-surface-variant max-w-lg mx-auto">
-            Your ritual is being prepared with care. We&apos;ve sent a confirmation receipt to your email.
+            {t('hero.body')}
           </p>
         </section>
 
@@ -78,13 +80,13 @@ export default async function OrderConfirmationPage({
               <div className="flex items-start justify-between mb-6">
                 <div>
                   <p className="text-label-sm text-kafe-on-surface-variant uppercase tracking-widest mb-1">
-                    Estimated Ready At
+                    {t('status.estimatedReadyLabel')}
                   </p>
                   <p className="text-headline-md text-kafe-primary">{order.estimatedReady}</p>
                 </div>
                 <div className="text-right">
                   <p className="text-label-sm text-kafe-on-surface-variant uppercase tracking-widest mb-1">
-                    Order ID
+                    {t('status.orderIdLabel')}
                   </p>
                   <p className="text-body-md font-bold text-kafe-on-surface">{order.id}</p>
                 </div>
@@ -106,7 +108,7 @@ export default async function OrderConfirmationPage({
                         : 'text-kafe-on-surface-variant'
                     }`}
                   >
-                    {step}
+                    {t(`statusSteps.${step}`)}
                   </span>
                 ))}
               </div>
@@ -115,7 +117,7 @@ export default async function OrderConfirmationPage({
             {/* Order summary card */}
             <div className="bg-kafe-surface-container-lowest border border-kafe-outline-variant rounded-xl overflow-hidden shadow-sm">
               <div className="p-6 border-b border-kafe-outline-variant">
-                <h2 className="text-headline-md text-kafe-on-surface">Order Summary</h2>
+                <h2 className="text-headline-md text-kafe-on-surface">{t('orderSummary.title')}</h2>
               </div>
 
               <div className="divide-y divide-kafe-outline-variant">
@@ -134,15 +136,15 @@ export default async function OrderConfirmationPage({
               {/* Price breakdown */}
               <div className="p-6 bg-kafe-surface-container-low">
                 <div className="flex justify-between mb-2">
-                  <span className="text-body-md text-kafe-on-surface-variant">Subtotal</span>
+                  <span className="text-body-md text-kafe-on-surface-variant">{t('orderSummary.subtotal')}</span>
                   <span className="text-body-md text-kafe-on-surface">{order.subtotal}</span>
                 </div>
                 <div className="flex justify-between mb-4">
-                  <span className="text-body-md text-kafe-on-surface-variant">Tax</span>
+                  <span className="text-body-md text-kafe-on-surface-variant">{t('orderSummary.taxes')}</span>
                   <span className="text-body-md text-kafe-on-surface">{order.tax}</span>
                 </div>
                 <div className="flex justify-between pt-4 border-t border-kafe-outline-variant">
-                  <span className="text-headline-md text-kafe-on-surface">Total</span>
+                  <span className="text-headline-md text-kafe-on-surface">{t('orderSummary.total')}</span>
                   <span className="text-headline-md text-kafe-primary">{order.total}</span>
                 </div>
               </div>
@@ -158,17 +160,17 @@ export default async function OrderConfirmationPage({
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={order.pickup.mapImageUrl}
-                  alt="Map showing pickup location"
+                  alt={t('pickup.mapAlt')}
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-kafe-surface-container-lowest/80 to-transparent" />
               </div>
               <div className="p-6 flex-1 flex flex-col">
-                <h2 className="text-headline-md text-kafe-primary mb-2">Pickup Location</h2>
+                <h2 className="text-headline-md text-kafe-primary mb-2">{t('pickup.title')}</h2>
                 <p className="text-body-md font-bold text-kafe-on-surface">{order.pickup.name}</p>
                 <p className="text-body-md text-kafe-on-surface-variant mb-4">{order.pickup.address}</p>
                 <button className="w-full py-4 bg-kafe-primary text-kafe-on-primary rounded-lg text-label-sm uppercase tracking-widest hover:opacity-90 transition-opacity flex items-center justify-center gap-2 mt-auto">
-                  <span>Get Directions</span>
+                  <span>{t('pickup.getDirections')}</span>
                   <ChevronRight size={18} />
                 </button>
               </div>
@@ -179,10 +181,10 @@ export default async function OrderConfirmationPage({
               <HelpCircle className="text-kafe-secondary flex-shrink-0" size={24} />
               <div>
                 <h4 className="text-body-md font-bold text-kafe-on-secondary-container">
-                  Need help with your ritual?
+                  {t('support.heading')}
                 </h4>
                 <p className="text-label-sm text-kafe-on-secondary-container/80 mt-1">
-                  Our baristas are here for you. Reach out via chat or call us at (555) KAFE-NOW.
+                  {t('support.body')}
                 </p>
               </div>
             </div>
@@ -196,11 +198,11 @@ export default async function OrderConfirmationPage({
             className="text-label-sm text-kafe-on-surface-variant hover:text-kafe-primary transition-colors flex items-center gap-2"
           >
             <ArrowLeft size={18} />
-            Return to Shop
+            {t('footer.returnToShop')}
           </Link>
           <div className="hidden md:block w-px h-4 bg-kafe-outline-variant" />
           <button className="px-8 py-4 bg-kafe-surface-container-high text-kafe-primary rounded-full text-label-sm uppercase tracking-widest hover:bg-kafe-surface-container-highest transition-colors">
-            Download Receipt
+            {t('footer.downloadReceipt')}
           </button>
         </div>
       </main>

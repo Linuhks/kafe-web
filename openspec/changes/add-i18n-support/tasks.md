@@ -68,10 +68,10 @@
 
 ## 10. Order confirmation page (`app/checkout/confirmation/page.tsx`) — lower priority, same reason as section 9
 
-- [ ] 10.1 Translate the success hero, order status card (including the "Received → Roasting → Ready" step labels → "Recebido → Torrando → Pronto"), order summary card, pickup location card, support callout, and footer actions
-- [ ] 10.2 Fix hardcoded `$` to `R$`/BRL formatting in the order summary card
-- [ ] 10.3 Update the page's existing test(s) to assert the new pt-BR strings and BRL formatting
-- [ ] 10.4 Run `pnpm lint && pnpm build`, fix any break, commit
+- [x] 10.1 Translate the success hero, order status card (including the "Received → Roasting → Ready" step labels → "Recebido → Torrando → Pronto"), order summary card, pickup location card, support callout, and footer actions
+- [x] 10.2 Fix hardcoded `$` to `R$`/BRL formatting in the order summary card
+- [x] 10.3 Update the page's existing test(s) to assert the new pt-BR strings and BRL formatting
+- [x] 10.4 Run `pnpm lint && pnpm build`, fix any break, commit
 
 ## 11. Shared layout components used by checkout/confirmation (`components/layout/TopNavBar.tsx`, `components/layout/Footer.tsx`)
 
