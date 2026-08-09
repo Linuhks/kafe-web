@@ -51,7 +51,25 @@
       "restockNow": "Reabastecer Agora"
     }
   },
-  "productsList": {},
+  "productsList": {
+    "header": {
+      "title": "Catálogo de Produtos",
+      "subtitle": "Gerencie seus grãos de café artesanais e equipamentos de preparo. Garanta que a disponibilidade reflita o estoque atual.",
+      "addProduct": "Adicionar Produto"
+    },
+    "table": {
+      "name": "Nome do Produto",
+      "category": "Categoria",
+      "price": "Preço",
+      "availability": "Disponibilidade",
+      "actions": "Ações",
+      "footerCount": "Mostrando {filtered} de {total} produtos",
+      "empty": "Nenhum produto encontrado."
+    },
+    "search": {
+      "placeholder": "Buscar produtos…"
+    }
+  },
   "productForm": {},
   "inventoryList": {},
   "checkout": {},

@@ -4,6 +4,7 @@ import { useState, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Pencil, Trash2, Coffee, Search, ChevronUp, ChevronDown, ChevronsUpDown } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { cn } from '@/lib/utils'
 import { PaginationWithSuspense } from '@/components/ui/pagination'
 import ConfirmModal from '@/components/admin/ConfirmModal'
@@ -21,7 +22,7 @@ const CATEGORY_BADGE_STYLES: Record<string, string> = {
 }
 const DEFAULT_BADGE = 'bg-kafe-surface-container text-kafe-on-surface-variant'
 
-const FILTER_CHIPS = ['All Items', 'Coffee Beans', 'Brewing Gear', 'Gifts'] as const
+const FILTER_CHIPS = ['Todos', 'Cafés', 'Doces', 'Salgados'] as const
 
 interface ProductRow {
   id: string
@@ -51,11 +52,12 @@ export default function ProductsTable({
   currentPage,
 }: ProductsTableProps) {
   const router = useRouter()
+  const t = useTranslations('productsList')
   const { addToast } = useToast()
   const [deleteTarget, setDeleteTarget] = useState<ProductRow | null>(null)
   const [optimisticAvail, setOptimisticAvail] = useState<Record<string, boolean>>({})
   const [searchQuery, setSearchQuery] = useState('')
-  const [activeCategory, setActiveCategory] = useState<string>('All Items')
+  const [activeCategory, setActiveCategory] = useState<string>('Todos')
   const [sortKey, setSortKey] = useState<SortKey | null>(null)
   const [sortDir, setSortDir] = useState<SortDir>('asc')
 
@@ -111,7 +113,7 @@ export default function ProductsTable({
       const q = searchQuery.trim().toLowerCase()
       result = result.filter((r) => r.name.toLowerCase().includes(q))
     }
-    if (activeCategory !== 'All Items') {
+    if (activeCategory !== 'Todos') {
       result = result.filter((r) => r.categoryName === activeCategory)
     }
     if (sortKey) {
@@ -140,7 +142,7 @@ export default function ProductsTable({
   }
 
   if (rows.length === 0) {
-    return <p className="text-body-md text-kafe-on-surface-variant py-8 text-center">Nenhum produto encontrado.</p>
+    return <p className="text-body-md text-kafe-on-surface-variant py-8 text-center">{t('table.empty')}</p>
   }
 
   return (
@@ -153,7 +155,7 @@ export default function ProductsTable({
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search beans, equipment…"
+            placeholder={t('search.placeholder')}
             className="w-full pl-10 pr-4 py-2 bg-kafe-surface-container-lowest border border-kafe-outline-variant rounded-lg focus:outline-none focus:border-kafe-primary transition-colors text-body-md text-kafe-on-surface placeholder:text-kafe-on-surface-variant/60"
           />
         </div>
@@ -185,25 +187,25 @@ export default function ProductsTable({
                   className="px-6 py-4 text-label-sm text-kafe-on-surface-variant uppercase tracking-wider cursor-pointer select-none"
                   onClick={() => handleSort('name')}
                 >
-                  <span className="inline-flex items-center gap-1">Product Name <SortIcon col="name" /></span>
+                  <span className="inline-flex items-center gap-1">{t('table.name')} <SortIcon col="name" /></span>
                 </th>
                 <th
                   className="px-6 py-4 text-label-sm text-kafe-on-surface-variant uppercase tracking-wider cursor-pointer select-none"
                   onClick={() => handleSort('categoryName')}
                 >
-                  <span className="inline-flex items-center gap-1">Category <SortIcon col="categoryName" /></span>
+                  <span className="inline-flex items-center gap-1">{t('table.category')} <SortIcon col="categoryName" /></span>
                 </th>
                 <th
                   className="px-6 py-4 text-label-sm text-kafe-on-surface-variant uppercase tracking-wider text-right cursor-pointer select-none"
                   onClick={() => handleSort('price')}
                 >
-                  <span className="inline-flex items-center justify-end gap-1 w-full">Price <SortIcon col="price" /></span>
+                  <span className="inline-flex items-center justify-end gap-1 w-full">{t('table.price')} <SortIcon col="price" /></span>
                 </th>
                 <th className="px-6 py-4 text-label-sm text-kafe-on-surface-variant uppercase tracking-wider text-center">
-                  Availability
+                  {t('table.availability')}
                 </th>
                 <th className="px-6 py-4 text-label-sm text-kafe-on-surface-variant uppercase tracking-wider text-right">
-                  Actions
+                  {t('table.actions')}
                 </th>
               </tr>
             </thead>
@@ -211,7 +213,7 @@ export default function ProductsTable({
               {filteredRows.length === 0 ? (
                 <tr>
                   <td colSpan={5} className="px-6 py-8 text-center text-body-md text-kafe-on-surface-variant">
-                    Nenhum produto encontrado.
+                    {t('table.empty')}
                   </td>
                 </tr>
               ) : (
@@ -309,7 +311,7 @@ export default function ProductsTable({
         {/* Pagination */}
         <div className="px-6 py-4 bg-kafe-surface-container-low border-t border-kafe-outline-variant flex items-center justify-between">
           <span className="text-label-sm text-kafe-on-surface-variant">
-            Showing {filteredRows.length} of {totalItems} products
+            {t('table.footerCount', { filtered: filteredRows.length, total: totalItems })}
           </span>
           <PaginationWithSuspense
             totalItems={totalItems}

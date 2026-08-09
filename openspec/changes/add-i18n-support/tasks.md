@@ -31,11 +31,11 @@
 
 ## 5. Admin Products listing (`app/admin/products/page.tsx`, `components/admin/ProductsTable.tsx`)
 
-- [ ] 5.1 Translate page header ("Product Inventory"/"Add New Product"/subtitle → `productsList.header.*`)
-- [ ] 5.2 Translate `ProductsTable` column headers ("Product Name"/"Category"/"Price"/"Availability"/"Actions" → `productsList.table.*`) and footer row-count text
-- [ ] 5.3 Translate search placeholder and replace filter chip labels with real category names per the `admin-product-listing-ui` spec delta ("Todos"/"Cafés"/"Doces"/"Salgados" instead of "All Items"/"Coffee Beans"/"Brewing Gear"/"Gifts") — **do not** touch the category pill-badge color mapping (out of scope, see design.md)
-- [ ] 5.4 Update `ProductsTable`'s existing test(s) to assert the new pt-BR strings and new chip labels
-- [ ] 5.5 Run `pnpm lint && pnpm build`, fix any break, commit
+- [x] 5.1 Translate page header ("Product Inventory"/"Add New Product"/subtitle → `productsList.header.*`)
+- [x] 5.2 Translate `ProductsTable` column headers ("Product Name"/"Category"/"Price"/"Availability"/"Actions" → `productsList.table.*`) and footer row-count text
+- [x] 5.3 Translate search placeholder and replace filter chip labels with real category names per the `admin-product-listing-ui` spec delta ("Todos"/"Cafés"/"Doces"/"Salgados" instead of "All Items"/"Coffee Beans"/"Brewing Gear"/"Gifts") — **do not** touch the category pill-badge color mapping (out of scope, see design.md)
+- [x] 5.4 Update `ProductsTable`'s existing test(s) to assert the new pt-BR strings and new chip labels
+- [x] 5.5 Run `pnpm lint && pnpm build`, fix any break, commit
 
 ## 6. Admin new/edit product form (`app/admin/products/new/page.tsx`)
 
