@@ -58,9 +58,9 @@ Both paths share the same `apiFetch` function. The difference is the base URL: s
 
 ## Authentication
 
-- **Cookie**: `kafe_token` — httpOnly, secure, sameSite: lax. Set by the `/api/auth/login` route handler after the backend validates credentials.
-- **Token format**: Bearer JWT signed by the backend.
-- **Session verification**: `proxy.ts` (Next.js middleware) calls `GET /api/auth/get-session` on every non-asset request to validate the token and read the user's role.
+- **Cookie**: `kafe_token` — httpOnly, secure in production, sameSite: strict, 8-hour `maxAge`. Set by the `/api/auth/login` route handler after the backend validates credentials.
+- **Token format**: opaque bearer token issued by Better-Auth — not a JWT, and never decoded or verified client-side.
+- **Session verification**: `proxy.ts` (Next.js middleware) calls `GET /api/auth/get-session` on every non-asset request to validate the token and read the user's role. Fails closed (treated as unauthenticated) on a non-200 response, network error, or timeout (3s).
 - **Logout**: `POST /api/auth/logout` deletes the cookie server-side.
 
 ---

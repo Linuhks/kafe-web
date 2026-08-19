@@ -12,7 +12,7 @@ Next.js Route Handlers — run server-side, not in the browser.
 ## Cookie
 
 - Name: `kafe_token`
-- Flags: `httpOnly`, `secure`, `sameSite: lax`
+- Flags: `httpOnly`, `secure` (production only), `sameSite: strict`, `maxAge: 8h`
 - Contains the opaque bearer token issued by Better-Auth (not a JWT)
 
 ## Rules

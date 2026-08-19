@@ -11,9 +11,12 @@ Route map and component index for `kafe-web`.
 | `/` | `app/page.tsx` | Public | Home / landing |
 | `/login` | `app/login/page.tsx` | Public | Login form (redirects if authenticated) |
 | `/cardapio` | `app/cardapio/page.tsx` | Public | Menu catalog with cart |
+| `/checkout` | `app/checkout/page.tsx` | Public | Checkout form (contact, shipping, payment) with order summary |
+| `/checkout/confirmation` | `app/checkout/confirmation/page.tsx` | Public | Order confirmation — status timeline, pickup location |
 | `/orders/me` | `app/orders/me/page.tsx` | Authenticated | Client's own order history |
 | `/barista/queue` | `app/barista/queue/page.tsx` | BARISTA, ADMIN | Live order queue |
 | `/admin/dashboard` | `app/admin/dashboard/page.tsx` | ADMIN | Sales summary, top products, peak hours |
+| `/admin/orders` | `app/admin/orders/page.tsx` | ADMIN | Live order queue (Kanban), admin-side — search, sort, and category filters |
 | `/admin/categories` | `app/admin/categories/page.tsx` | ADMIN | Category list |
 | `/admin/categories/new` | `app/admin/categories/new/page.tsx` | ADMIN | Create category |
 | `/admin/categories/[id]/edit` | `app/admin/categories/[id]/edit/page.tsx` | ADMIN | Edit category |
@@ -49,11 +52,14 @@ These handlers exist only to manage the cookie. Business logic stays in the back
 
 | Component | Description |
 |-----------|-------------|
+| `AdminOrderQueueClient` | Client-side Kanban order queue for `/admin/orders` — search, category/sort filters, status advancement via Orval hooks |
 | `AdminSidebar` | Side navigation for all admin pages |
 | `CategoriesTable` | Paginated table of categories with edit/delete actions |
 | `ConfirmModal` | Generic confirmation dialog (delete flows) |
+| `DashboardInventoryAlerts` | Server component listing ingredients below minimum stock on the dashboard, links to restock |
 | `DataTable` | Generic sortable/paginated table primitive used by admin tables |
 | `DateRangePicker` | `from` / `to` date input pair used in dashboard and movements filters |
+| `GenerateReportButton` | Dashboard button that triggers report generation (currently a stubbed toast) |
 | `IngredientFilter` | Dropdown filter by ingredient for movements page |
 | `PeakHoursChart` | Bar chart of orders by hour of day |
 | `ProductsTable` | Paginated table of products with availability toggle |
@@ -76,11 +82,25 @@ These handlers exist only to manage the cookie. Business logic stays in the back
 | `CartSidebar` | Slide-in cart with item list, quantity controls, and place-order button |
 | `OrderForm` | Form for client name and notes submitted with the cart |
 
+### `components/confirmation/`
+
+| Component | Description |
+|-----------|-------------|
+| `ItemThumbnail` | Product image with placeholder fallback, used in the order confirmation item list |
+
+### `components/landing/`
+
+| Component | Description |
+|-----------|-------------|
+| `ExplorarCardapioButton` | CTA on the landing page (`/`) that navigates to `/cardapio` with a loading state |
+
 ### `components/layout/`
 
 | Component | Description |
 |-----------|-------------|
-| `NavBar` | Top navigation bar; shows role-appropriate links and logout |
+| `Footer` | Site footer with links and copyright; used on `/checkout` and `/checkout/confirmation` |
+| `NavBar` | Top navigation bar with cart/logout, role-appropriate links; used on `/cardapio`, `/orders/me`, `/barista/*` |
+| `TopNavBar` | Marketing-style top nav (logo, nav links, account/cart icons); used on `/checkout` and `/checkout/confirmation` alongside `Footer` |
 
 ### `components/ui/`
 
