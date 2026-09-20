@@ -1,20 +1,33 @@
 schema: spec-driven
 
-# Project context (optional)
-# This is shown to AI when creating artifacts.
-# Add your tech stack, conventions, style guides, domain knowledge, etc.
-# Example:
-#   context: |
-#     Tech stack: TypeScript, React, Node.js
-#     We use conventional commits
-#     Domain: e-commerce platform
+context: |
+  Tech stack: Next.js 16 App Router, React 19, TypeScript, Tailwind 4, TanStack Query,
+  Orval-generated API hooks, next-intl. Consumes kafe-api.
+  Roles: CLIENT (/cardapio), BARISTA (/barista/queue), ADMIN (/admin/dashboard).
+  Access control lives entirely in proxy.ts — pages must not duplicate it.
 
-# Per-artifact rules (optional)
-# Add custom rules for specific artifacts.
-# Example:
-#   rules:
-#     proposal:
-#       - Keep proposals under 500 words
-#       - Always include a "Non-goals" section
-#     tasks:
-#       - Break tasks into chunks of max 2 hours
+rules:
+  proposal:
+    - >
+      If the change touches proxy.ts, auth (AuthContext, kafe_token cookie), role-gated
+      routes, or checkout/order state, add a "Security Considerations" section
+      answering: which roles can reach the new/changed route or action, is that
+      enforced in proxy.ts (not just by hiding UI), and could an unauthenticated or
+      wrong-role user reach it by navigating directly to the URL or calling the API
+      client directly.
+    - >
+      Add a "Verification" section stating how the change will be proven to work in
+      the running app (Playwright E2E, or a manual click-through with the `run`
+      skill) before the task is marked done — a passing `pnpm build` and unit tests
+      with mocked hooks do not prove the real API integration works.
+  tasks:
+    - >
+      Any task that wires a page/component to a real Orval-generated hook or backend
+      endpoint must end with a subtask that runs the feature against a running
+      kafe-api (or the relevant e2e/smoke spec) — not just a build pass — before
+      being marked complete. This is how a previous change shipped pages that looked
+      done but were missing the write-side API wrappers.
+    - >
+      A task is not "done" until any tracker used alongside OpenSpec (e.g. Task
+      Master) is updated to match — do not archive a change while an external
+      tracker still shows the task in progress.
