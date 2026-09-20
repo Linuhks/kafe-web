@@ -16,6 +16,8 @@ Coffee shop management platform — online menu for customers, live Kanban order
 
 Access control lives entirely in `proxy.ts` (middleware). Pages do not duplicate it.
 
+**Security default**: a role check that only hides a link/button in a page component is not access control — it's UX. Any new route or action gated by role must be enforced in `proxy.ts` (or, for data, by the API itself), and verified by attempting the direct URL/action as a disallowed role before the task is marked done. Assume any client-side check can be bypassed.
+
 ## Critical files
 
 | File | Purpose |
