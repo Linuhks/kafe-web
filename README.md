@@ -36,7 +36,7 @@ Consumes the `kafe-api` REST backend and exposes a role-based UI for three user 
 
 - Node.js 20+
 - pnpm 10+
-- `kafe-api` running locally (default: `http://localhost:8080`)
+- `kafe-api` running locally (default: `http://localhost:3333`)
 
 ---
 
@@ -49,7 +49,7 @@ pnpm install
 Create a `.env.local` file at the project root:
 
 ```env
-NEXT_PUBLIC_API_URL=http://localhost:8080
+NEXT_PUBLIC_API_URL=http://localhost:3333
 ```
 
 ---

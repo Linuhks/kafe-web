@@ -4,7 +4,7 @@
 
 Next.js 16.2.1 · React 19 · TypeScript · Tailwind 4
 
-Coffee shop management platform — online menu for customers, live Kanban order queue for baristas, analytics and catalog management for admins. Consumes `kafe-api` (default `http://localhost:8080`).
+Coffee shop management platform — online menu for customers, live Kanban order queue for baristas, analytics and catalog management for admins. Consumes `kafe-api` (default `http://localhost:3333`).
 
 ## Roles and entry routes
 

@@ -24,7 +24,7 @@ You implement and debug code in **kafe-web**, the Next.js frontend for the Kafe 
 | E2E tests | Playwright, `e2e/` |
 | Package manager | pnpm 10, Node 22 (`.tool-versions`) |
 
-Backend is a separate service, `kafe-api`. Local dev port is **inconsistent across docs** — root `CLAUDE.md`/`README.md` say `8080`, but `proxy.ts`, `lib/api/fetcher.ts`, and `orval.config.ts` all default to `3333`, and this machine's `.env.local` confirms `NEXT_PUBLIC_API_URL=http://localhost:3333`. Trust the code/`.env.local` over the prose docs here.
+Backend is a separate service, `kafe-api`. The local `kafe-api` port is **3333** (`NEXT_PUBLIC_API_URL=http://localhost:3333`, matching `proxy.ts`, `lib/api/fetcher.ts`, `orval.config.ts`).
 
 ## Roles & access control
 

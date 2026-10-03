@@ -80,7 +80,7 @@ One commit per subtask. Each commit must leave the codebase in a working state.
 
 - If the task wires a page/component to a real backend endpoint (an Orval-generated hook, `serverFetch`, or anything under `lib/api/`), run it against a live `kafe-api` — via the `run` skill, a manual click-through, or the relevant Playwright spec under `e2e/` — before marking the task done. Unit tests that mock the generated hooks prove the component's own logic, not that the real integration works. This is exactly the gap that shipped an admin CRUD page whose write-side API wrappers were missing despite the UI looking complete.
 - If the task changes `proxy.ts`, a role-gated route, or anything auth-related, verify by actually navigating as each affected role (or a Playwright test doing the same) — not just reading the middleware code.
-- If the task is tracked in an external tool (e.g. Task Master) in addition to OpenSpec, update both before marking the task done.
+- OpenSpec is the only task tracker (`openspec/changes/<name>/tasks.md`). Don't keep a parallel tracker.
 
 ### Security-sensitive tasks
 

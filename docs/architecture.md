@@ -109,4 +109,4 @@ QueryProvider → AuthProvider → CartProvider → ToastProvider → {children}
 |----------|------------|---------|
 | `NEXT_PUBLIC_API_URL` | production | Backend base URL (e.g. `https://api.kafe.com`) |
 
-In development, defaults to `http://localhost:3000` when not set.
+In development, defaults to `http://localhost:3333` when not set.
