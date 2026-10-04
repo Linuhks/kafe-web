@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import { ChevronLeft, ChevronRight, Pencil, Tag, Trash2 } from 'lucide-react'
 import ConfirmModal from '@/components/admin/ConfirmModal'
 import { useCategoriesControllerRemove } from '@/lib/api/generated/api'
@@ -14,6 +15,8 @@ interface CategoriesTableProps {
 }
 
 export default function CategoriesTable({ categories }: CategoriesTableProps) {
+  const t = useTranslations('adminCategories.table')
+  const tc = useTranslations('common')
   const router = useRouter()
   const { addToast } = useToast()
   const [deleteTarget, setDeleteTarget] = useState<CategoryResponseDto | null>(null)
@@ -21,12 +24,12 @@ export default function CategoriesTable({ categories }: CategoriesTableProps) {
   const { mutate: removeCategory, isPending } = useCategoriesControllerRemove({
     mutation: {
       onSuccess: () => {
-        addToast('Categoria removida com sucesso.', 'success')
+        addToast(t('removed'), 'success')
         setDeleteTarget(null)
         router.refresh()
       },
       onError: () => {
-        addToast('Erro ao remover categoria.', 'error')
+        addToast(t('removeError'), 'error')
       },
     },
   })
@@ -34,7 +37,7 @@ export default function CategoriesTable({ categories }: CategoriesTableProps) {
   if (categories.length === 0) {
     return (
       <div className="py-16 text-center text-kafe-on-surface-variant">
-        Nenhuma categoria encontrada.
+        {t('empty')}
       </div>
     )
   }
@@ -46,11 +49,11 @@ export default function CategoriesTable({ categories }: CategoriesTableProps) {
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-kafe-surface-container-low border-b border-kafe-outline-variant">
-                <th className="px-6 py-5 text-label-sm text-kafe-on-surface-variant uppercase tracking-wider">Name</th>
-                <th className="px-6 py-5 text-label-sm text-kafe-on-surface-variant uppercase tracking-wider">Description</th>
-                <th className="px-6 py-5 text-label-sm text-kafe-on-surface-variant uppercase tracking-wider text-center">Order</th>
-                <th className="px-6 py-5 text-label-sm text-kafe-on-surface-variant uppercase tracking-wider">Status</th>
-                <th className="px-6 py-5 text-label-sm text-kafe-on-surface-variant uppercase tracking-wider text-right">Actions</th>
+                <th className="px-6 py-5 text-label-sm text-kafe-on-surface-variant uppercase tracking-wider">{tc('name')}</th>
+                <th className="px-6 py-5 text-label-sm text-kafe-on-surface-variant uppercase tracking-wider">{tc('description')}</th>
+                <th className="px-6 py-5 text-label-sm text-kafe-on-surface-variant uppercase tracking-wider text-center">{t('order')}</th>
+                <th className="px-6 py-5 text-label-sm text-kafe-on-surface-variant uppercase tracking-wider">{tc('status')}</th>
+                <th className="px-6 py-5 text-label-sm text-kafe-on-surface-variant uppercase tracking-wider text-right">{tc('actions')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-kafe-outline-variant">
@@ -65,17 +68,17 @@ export default function CategoriesTable({ categories }: CategoriesTableProps) {
                     </div>
                   </td>
                   <td className="px-6 py-5 text-body-md text-kafe-on-surface-variant">
-                    {typeof cat.description === 'string' ? cat.description : '—'}
+                    {typeof cat.description === 'string' ? cat.description : tc('emptyValue')}
                   </td>
                   <td className="px-6 py-5 text-body-md text-kafe-on-surface-variant text-center">{cat.sortOrder}</td>
                   <td className="px-6 py-5">
                     {cat.isActive ? (
                       <span className="inline-block px-3 py-1 bg-status-ready/15 text-status-ready rounded-full text-[12px] uppercase font-semibold">
-                        Ativo
+                        {tc('active')}
                       </span>
                     ) : (
                       <span className="inline-block px-3 py-1 bg-kafe-surface-container text-kafe-on-surface-variant rounded-full text-[12px] uppercase font-semibold">
-                        Inativo
+                        {tc('inactive')}
                       </span>
                     )}
                   </td>
@@ -86,14 +89,14 @@ export default function CategoriesTable({ categories }: CategoriesTableProps) {
                         className="p-2 text-kafe-on-surface-variant hover:text-kafe-primary hover:bg-kafe-surface-container-high transition-all rounded-lg"
                       >
                         <Pencil className="h-4 w-4" />
-                        <span className="sr-only">Editar</span>
+                        <span className="sr-only">{tc('edit')}</span>
                       </Link>
                       <button
                         className="p-2 text-kafe-on-surface-variant hover:text-kafe-error hover:bg-kafe-error-container/50 transition-all rounded-lg"
                         onClick={() => setDeleteTarget(cat)}
                       >
                         <Trash2 className="h-4 w-4" />
-                        <span className="sr-only">Remover</span>
+                        <span className="sr-only">{tc('remove')}</span>
                       </button>
                     </div>
                   </td>
@@ -103,7 +106,7 @@ export default function CategoriesTable({ categories }: CategoriesTableProps) {
           </table>
         </div>
         <div className="px-6 py-4 bg-kafe-surface-container-low flex justify-between items-center border-t border-kafe-outline-variant">
-          <span className="text-body-md text-kafe-on-surface-variant">Showing {categories.length} categories</span>
+          <span className="text-body-md text-kafe-on-surface-variant">{t('showing', { count: categories.length })}</span>
           <div className="flex gap-2">
             <button
               className="p-2 rounded-lg border border-kafe-outline-variant hover:bg-kafe-surface-container-high disabled:opacity-30"
@@ -124,9 +127,9 @@ export default function CategoriesTable({ categories }: CategoriesTableProps) {
       <ConfirmModal
         open={!!deleteTarget}
         onOpenChange={(open) => { if (!open) setDeleteTarget(null) }}
-        title="Remover categoria"
-        message={`Tem certeza que deseja remover a categoria "${deleteTarget?.name}"? Esta ação não pode ser desfeita.`}
-        confirmLabel="Remover"
+        title={t('removeTitle')}
+        message={t('removeMessage', { name: deleteTarget?.name ?? '' })}
+        confirmLabel={tc('remove')}
         onConfirm={() => deleteTarget && removeCategory({ id: deleteTarget.id })}
         loading={isPending}
       />

@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import { Pencil, Trash2 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -18,17 +19,13 @@ const roleBadgeVariant: Record<UserRole, 'destructive' | 'secondary' | 'outline'
   CLIENT: 'outline',
 }
 
-const roleLabel: Record<UserRole, string> = {
-  ADMIN: 'Admin',
-  BARISTA: 'Barista',
-  CLIENT: 'Cliente',
-}
-
 interface UsersTableProps {
   users: User[]
 }
 
 export default function UsersTable({ users }: UsersTableProps) {
+  const t = useTranslations('adminUsers')
+  const tc = useTranslations('common')
   const router = useRouter()
   const { addToast } = useToast()
   const [deleteTarget, setDeleteTarget] = useState<User | null>(null)
@@ -36,12 +33,12 @@ export default function UsersTable({ users }: UsersTableProps) {
   const { mutate: removeUser, isPending } = useUsersControllerRemove({
     mutation: {
       onSuccess: () => {
-        addToast('Usuário removido com sucesso.', 'success')
+        addToast(t('table.removed'), 'success')
         setDeleteTarget(null)
         router.refresh()
       },
       onError: () => {
-        addToast('Erro ao remover usuário.', 'error')
+        addToast(t('table.removeError'), 'error')
       },
     },
   })
@@ -49,7 +46,7 @@ export default function UsersTable({ users }: UsersTableProps) {
   if (users.length === 0) {
     return (
       <p className="text-sm text-muted-foreground py-8 text-center">
-        Nenhum usuário encontrado.
+        {t('table.empty')}
       </p>
     )
   }
@@ -60,10 +57,10 @@ export default function UsersTable({ users }: UsersTableProps) {
         <table className="w-full text-sm">
           <thead className="bg-muted/50">
             <tr>
-              <th className="text-left px-4 py-3 font-medium text-muted-foreground">Nome</th>
-              <th className="text-left px-4 py-3 font-medium text-muted-foreground">Email</th>
-              <th className="text-left px-4 py-3 font-medium text-muted-foreground">Papel</th>
-              <th className="text-left px-4 py-3 font-medium text-muted-foreground">Status</th>
+              <th className="text-left px-4 py-3 font-medium text-muted-foreground">{tc('name')}</th>
+              <th className="text-left px-4 py-3 font-medium text-muted-foreground">{tc('email')}</th>
+              <th className="text-left px-4 py-3 font-medium text-muted-foreground">{t('role')}</th>
+              <th className="text-left px-4 py-3 font-medium text-muted-foreground">{tc('status')}</th>
               <th className="px-4 py-3" />
             </tr>
           </thead>
@@ -74,12 +71,12 @@ export default function UsersTable({ users }: UsersTableProps) {
                 <td className="px-4 py-3 text-muted-foreground">{user.email}</td>
                 <td className="px-4 py-3">
                   <Badge variant={roleBadgeVariant[user.role as UserRole]}>
-                    {roleLabel[user.role as UserRole] ?? user.role}
+                    {t.has(`roles.${user.role}`) ? t(`roles.${user.role}`) : user.role}
                   </Badge>
                 </td>
                 <td className="px-4 py-3">
                   <Badge variant={user.isActive ? 'default' : 'outline'}>
-                    {user.isActive ? 'Ativo' : 'Inativo'}
+                    {user.isActive ? tc('active') : tc('inactive')}
                   </Badge>
                 </td>
                 <td className="px-4 py-3">
@@ -87,7 +84,7 @@ export default function UsersTable({ users }: UsersTableProps) {
                     <Button variant="ghost" size="icon" asChild>
                       <Link href={`/admin/users/${user.id}/edit`}>
                         <Pencil className="h-4 w-4" />
-                        <span className="sr-only">Editar</span>
+                        <span className="sr-only">{tc('edit')}</span>
                       </Link>
                     </Button>
                     <Button
@@ -96,7 +93,7 @@ export default function UsersTable({ users }: UsersTableProps) {
                       onClick={() => setDeleteTarget(user)}
                     >
                       <Trash2 className="h-4 w-4 text-destructive" />
-                      <span className="sr-only">Remover</span>
+                      <span className="sr-only">{tc('remove')}</span>
                     </Button>
                   </div>
                 </td>
@@ -109,9 +106,9 @@ export default function UsersTable({ users }: UsersTableProps) {
       <ConfirmModal
         open={deleteTarget !== null}
         onOpenChange={(open) => { if (!open) setDeleteTarget(null) }}
-        title="Remover usuário"
-        message={`Tem certeza que deseja remover "${deleteTarget?.name}"? Esta ação não pode ser desfeita.`}
-        confirmLabel="Remover"
+        title={t('table.removeTitle')}
+        message={t('table.removeMessage', { name: deleteTarget?.name ?? '' })}
+        confirmLabel={tc('remove')}
         loading={isPending}
         onConfirm={() => {
           if (deleteTarget) removeUser({ id: deleteTarget.id })

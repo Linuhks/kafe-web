@@ -9,10 +9,11 @@ const eslintConfig = defineConfig([
   // Flags hardcoded JSX text so new UI copy goes through the pt-BR
   // catalog instead of being written as a literal (see openspec
   // change add-i18n-support). Scoped to app/ and components/ pages;
-  // components/ui/* primitives and test files are exempt.
+  // components/ui/* primitives, test files and the internal design-system
+  // reference page (app/test-components) are exempt.
   {
     files: ["app/**/*.tsx", "components/**/*.tsx"],
-    ignores: ["**/*.test.tsx", "components/ui/**"],
+    ignores: ["**/*.test.tsx", "components/ui/**", "app/test-components/**"],
     plugins: { i18next },
     rules: {
       "i18next/no-literal-string": [
@@ -20,7 +21,8 @@ const eslintConfig = defineConfig([
         {
           // Brand names and proper nouns are never translated (see
           // design.md's Decisions section on the add-i18n-support change).
-          words: { exclude: ["[0-9!-/:-@[-`{-~]+", "[A-Z_-]+", "Kafe", "Google", "Apple"] },
+          // Typographic glyphs (…, ×, —, ·, arrows, ©) are symbols, not copy.
+          words: { exclude: ["[0-9!-/:-@[-`{-~]+", "[A-Z_-]+", "[…×—·←→©]+", "Kafe", "Google", "Apple"] },
         },
       ],
     },

@@ -1,6 +1,8 @@
 export const dynamic = 'force-dynamic'
 
 import { Suspense } from 'react'
+import { getTranslations } from 'next-intl/server'
+import { useTranslations } from 'next-intl'
 import { getMyOrders } from '@/lib/api/orders'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -21,7 +23,8 @@ function formatDate(dateStr: string): string {
 }
 
 function OrderCard({ order }: { order: Order }) {
-  const clientName = typeof order.clientName === 'string' ? order.clientName : 'Anônimo'
+  const t = useTranslations('ordersPage')
+  const clientName = typeof order.clientName === 'string' ? order.clientName : t('anonymous')
 
   return (
     <div className="rounded-lg border bg-card p-4 space-y-3">
@@ -37,7 +40,7 @@ function OrderCard({ order }: { order: Order }) {
         {order.items.map((item) => (
           <li key={item.id} className="flex justify-between">
             <span>{item.productName}</span>
-            <span className="text-muted-foreground">× {item.quantity}</span>
+            <span className="text-muted-foreground">{t('quantityTimes', { quantity: item.quantity })}</span>
           </li>
         ))}
       </ul>
@@ -83,11 +86,12 @@ function OrderListSkeleton() {
 }
 
 async function OrderList({ page }: { page: number }) {
+  const t = await getTranslations('ordersPage')
   const { orders, pagination } = await getMyOrders({ page })
 
   if (orders.length === 0) {
     return (
-      <div className="py-16 text-center text-muted-foreground">Nenhum pedido encontrado.</div>
+      <div className="py-16 text-center text-muted-foreground">{t('empty')}</div>
     )
   }
 
@@ -116,13 +120,14 @@ export default async function OrdersPage({
   searchParams: Promise<{ page?: string }>
 }) {
   const { page: pageStr } = await searchParams
+  const t = await getTranslations('ordersPage')
   const page = Math.max(1, Number(pageStr) || 1)
 
   return (
     <>
       <NavBar />
       <main className="mx-auto max-w-2xl px-4 py-8">
-        <h1 className="mb-6 text-2xl font-bold">Meus Pedidos</h1>
+        <h1 className="mb-6 text-2xl font-bold">{t('title')}</h1>
         <Suspense fallback={<OrderListSkeleton />}>
           <OrderList page={page} />
         </Suspense>

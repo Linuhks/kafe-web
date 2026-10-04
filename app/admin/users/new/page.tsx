@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -16,15 +17,11 @@ import { useUsersControllerCreate, CreateUserDtoRole } from '@/lib/api/generated
 import { useToast } from '@/context/ToastContext'
 import { useFormDirty } from '@/lib/hooks/useFormDirty'
 
-const newUserSchema = z.object({
-  name: z.string().min(1, 'Nome é obrigatório').max(100, 'Nome deve ter no máximo 100 caracteres'),
-  email: z.string().email('Email inválido').max(254, 'Email deve ter no máximo 254 caracteres'),
-  password: z.string().min(8, 'Senha deve ter pelo menos 8 caracteres').max(128, 'Senha deve ter no máximo 128 caracteres'),
-})
-
-type NewUserErrors = Partial<Record<keyof z.infer<typeof newUserSchema>, string>>
+type NewUserErrors = Partial<Record<'name' | 'email' | 'password', string>>
 
 export default function NewUserPage() {
+  const t = useTranslations('adminUsers')
+  const tc = useTranslations('common')
   const router = useRouter()
   const { addToast } = useToast()
   const { setDirty, confirmNavigation } = useFormDirty()
@@ -39,11 +36,11 @@ export default function NewUserPage() {
     mutation: {
       onSuccess: () => {
         setDirty(false)
-        addToast('Usuário criado com sucesso.', 'success')
+        addToast(t('new.created'), 'success')
         router.push('/admin/users')
       },
       onError: () => {
-        addToast('Erro ao criar usuário. Verifique os dados e tente novamente.', 'error')
+        addToast(t('new.createError'), 'error')
       },
     },
   })
@@ -54,6 +51,14 @@ export default function NewUserPage() {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+    const newUserSchema = z.object({
+      name: z.string().min(1, t('validation.nameRequired')).max(100, t('validation.nameMax')),
+      email: z.string().email(t('validation.emailInvalid')).max(254, t('validation.emailMax')),
+      password: z
+        .string()
+        .min(8, t('validation.passwordMin'))
+        .max(128, t('validation.passwordMax')),
+    })
     const result = newUserSchema.safeParse({ name, email, password })
     if (!result.success) {
       const errors: NewUserErrors = {}
@@ -71,15 +76,15 @@ export default function NewUserPage() {
   return (
     <div className="p-6 max-w-lg space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Novo usuário</h1>
+        <h1 className="text-2xl font-bold">{t('new.title')}</h1>
         <Button variant="outline" onClick={() => confirmNavigation('/admin/users')}>
-          Cancelar
+          {tc('cancel')}
         </Button>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-1">
-          <label className="text-sm font-medium" htmlFor="name">Nome</label>
+          <label className="text-sm font-medium" htmlFor="name">{tc('name')}</label>
           <Input
             id="name"
             value={name}
@@ -92,7 +97,7 @@ export default function NewUserPage() {
         </div>
 
         <div className="space-y-1">
-          <label className="text-sm font-medium" htmlFor="email">Email</label>
+          <label className="text-sm font-medium" htmlFor="email">{tc('email')}</label>
           <Input
             id="email"
             type="email"
@@ -106,7 +111,7 @@ export default function NewUserPage() {
         </div>
 
         <div className="space-y-1">
-          <label className="text-sm font-medium" htmlFor="password">Senha</label>
+          <label className="text-sm font-medium" htmlFor="password">{t('password')}</label>
           <Input
             id="password"
             type="password"
@@ -121,22 +126,22 @@ export default function NewUserPage() {
         </div>
 
         <div className="space-y-1">
-          <label className="text-sm font-medium">Papel</label>
+          <label className="text-sm font-medium">{t('role')}</label>
           <Select value={role} onValueChange={(v) => { setRole(v as CreateUserDtoRole); handleChange() }}>
             <SelectTrigger>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value={CreateUserDtoRole.CLIENT}>Cliente</SelectItem>
-              <SelectItem value={CreateUserDtoRole.BARISTA}>Barista</SelectItem>
-              <SelectItem value={CreateUserDtoRole.ADMIN}>Admin</SelectItem>
+              <SelectItem value={CreateUserDtoRole.CLIENT}>{t('roles.CLIENT')}</SelectItem>
+              <SelectItem value={CreateUserDtoRole.BARISTA}>{t('roles.BARISTA')}</SelectItem>
+              <SelectItem value={CreateUserDtoRole.ADMIN}>{t('roles.ADMIN')}</SelectItem>
             </SelectContent>
           </Select>
         </div>
 
         <div className="flex gap-3 pt-2">
           <Button type="submit" disabled={isPending}>
-            {isPending ? 'Salvando...' : 'Criar usuário'}
+            {isPending ? tc('saving') : t('new.submit')}
           </Button>
         </div>
       </form>

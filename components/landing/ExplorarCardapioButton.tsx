@@ -2,10 +2,12 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { ArrowRight, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 export function ExplorarCardapioButton() {
+  const t = useTranslations('landing')
   const [loading, setLoading] = useState(false)
   const router = useRouter()
 
@@ -24,11 +26,11 @@ export function ExplorarCardapioButton() {
       {loading ? (
         <>
           <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-          Carregando…
+          {t('loading')}
         </>
       ) : (
         <>
-          Explorar Cardápio
+          {t('explore')}
           <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
         </>
       )}

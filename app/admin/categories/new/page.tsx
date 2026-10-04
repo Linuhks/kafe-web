@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { useCategoriesControllerCreate } from '@/lib/api/generated/api'
 import { useToast } from '@/context/ToastContext'
 import { useFormDirty } from '@/lib/hooks/useFormDirty'
@@ -16,6 +17,9 @@ const inputClass =
   'w-full px-4 py-3 bg-kafe-surface border border-kafe-outline-variant rounded-xl text-body-md text-kafe-on-surface placeholder:text-kafe-on-surface-variant/50 transition-all focus:outline-none focus:border-kafe-primary focus:ring-4 focus:ring-kafe-primary/5'
 
 export default function NewCategoryPage() {
+  const t = useTranslations('adminCategories')
+  const tn = useTranslations('adminCategories.new')
+  const tc = useTranslations('common')
   const router = useRouter()
   const { addToast } = useToast()
   const { setDirty, confirmNavigation } = useFormDirty()
@@ -29,18 +33,18 @@ export default function NewCategoryPage() {
     mutation: {
       onSuccess: () => {
         setDirty(false)
-        addToast('Categoria criada com sucesso.', 'success')
+        addToast(tn('created'), 'success')
         router.push('/admin/categories')
       },
       onError: () => {
-        addToast('Erro ao criar categoria. Verifique os dados e tente novamente.', 'error')
+        addToast(tn('createError'), 'error')
       },
     },
   })
 
   function validate(): boolean {
     const errs: FormErrors = {}
-    if (!name.trim()) errs.name = 'Nome é obrigatório.'
+    if (!name.trim()) errs.name = t('form.nameRequired')
     setErrors(errs)
     return Object.keys(errs).length === 0
   }
@@ -61,9 +65,9 @@ export default function NewCategoryPage() {
     <div className="p-8 max-w-5xl space-y-8">
       <div className="flex justify-between items-end">
         <div>
-          <h1 className="text-headline-lg text-kafe-on-surface mb-2">Nova categoria</h1>
+          <h1 className="text-headline-lg text-kafe-on-surface mb-2">{tn('title')}</h1>
           <p className="text-body-md text-kafe-on-surface-variant">
-            Organize seus produtos criando categorias claras para seus clientes.
+            {tn('subtitle')}
           </p>
         </div>
         <button
@@ -71,7 +75,7 @@ export default function NewCategoryPage() {
           onClick={() => confirmNavigation('/admin/categories')}
           className="border border-kafe-outline-variant text-kafe-on-surface-variant rounded-full px-6 py-2.5 text-label-sm hover:bg-kafe-surface-container-low hover:border-kafe-on-surface-variant transition-all duration-200"
         >
-          Cancelar
+          {tc('cancel')}
         </button>
       </div>
 
@@ -80,11 +84,11 @@ export default function NewCategoryPage() {
           <div className="bg-white rounded-2xl p-8 border border-kafe-outline-variant/30 shadow-[0_4px_20px_-2px_rgba(85,55,34,0.08)]">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
-                <label className="block text-label-sm text-kafe-on-surface" htmlFor="name">Nome</label>
+                <label className="block text-label-sm text-kafe-on-surface" htmlFor="name">{tc('name')}</label>
                 <input
                   id="name"
                   className={cn(inputClass, errors.name && 'border-kafe-error')}
-                  placeholder="Ex: Bebidas Quentes"
+                  placeholder={tn('namePlaceholder')}
                   value={name}
                   onChange={(e) => { setName(e.target.value); setDirty(true) }}
                 />
@@ -93,13 +97,13 @@ export default function NewCategoryPage() {
 
               <div className="space-y-2">
                 <label className="block text-label-sm text-kafe-on-surface" htmlFor="description">
-                  Descrição (opcional)
+                  {t('form.descriptionOptional')}
                 </label>
                 <textarea
                   id="description"
                   className={cn(inputClass, 'resize-none')}
                   rows={4}
-                  placeholder="Uma breve descrição sobre os produtos desta categoria..."
+                  placeholder={tn('descriptionPlaceholder')}
                   value={description}
                   onChange={(e) => { setDescription(e.target.value); setDirty(true) }}
                 />
@@ -107,7 +111,7 @@ export default function NewCategoryPage() {
 
               <div className="space-y-2">
                 <label className="block text-label-sm text-kafe-on-surface" htmlFor="sortOrder">
-                  Ordem de exibição (opcional)
+                  {t('form.displayOrderOptional')}
                 </label>
                 <div className="w-32">
                   <input
@@ -122,7 +126,7 @@ export default function NewCategoryPage() {
                   />
                 </div>
                 <p className="text-xs text-kafe-on-surface-variant">
-                  Determine a posição desta categoria no menu digital.
+                  {tn('displayOrderHint')}
                 </p>
               </div>
 
@@ -132,7 +136,7 @@ export default function NewCategoryPage() {
                   disabled={isPending}
                   className="w-full bg-kafe-primary text-kafe-on-primary rounded-xl py-4 text-label-sm disabled:opacity-50 disabled:cursor-not-allowed hover:opacity-90 transition-all duration-200 active:scale-[0.98] shadow-md shadow-kafe-primary/10"
                 >
-                  {isPending ? 'Salvando...' : 'Criar categoria'}
+                  {isPending ? tc('saving') : tn('submit')}
                 </button>
               </div>
             </form>
@@ -144,9 +148,9 @@ export default function NewCategoryPage() {
             <div className="w-10 h-10 bg-kafe-primary/10 rounded-lg flex items-center justify-center mb-4">
               <Lightbulb className="w-5 h-5 text-kafe-secondary" />
             </div>
-            <h3 className="text-headline-md text-kafe-secondary mb-2">Dica de Design</h3>
+            <h3 className="text-headline-md text-kafe-secondary mb-2">{tn('tipTitle')}</h3>
             <p className="text-sm text-kafe-on-surface-variant leading-relaxed">
-              Categorias com nomes curtos (1-2 palavras) funcionam melhor em dispositivos móveis e tornam a navegação do cliente mais fluida.
+              {tn('tipBody')}
             </p>
           </div>
 
@@ -154,7 +158,7 @@ export default function NewCategoryPage() {
             <div className="relative h-40 bg-kafe-surface-container-low overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-kafe-primary/70 to-kafe-secondary/50" />
               <div className="absolute inset-0 flex items-end p-4">
-                <span className="text-white font-bold tracking-widest uppercase text-xs">Prévia do App</span>
+                <span className="text-white font-bold tracking-widest uppercase text-xs">{tn('previewLabel')}</span>
               </div>
             </div>
             <div className="p-4 space-y-3">

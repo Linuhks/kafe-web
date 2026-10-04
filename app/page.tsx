@@ -1,7 +1,11 @@
 import { Coffee } from 'lucide-react'
+import { getTranslations } from 'next-intl/server'
 import { ExplorarCardapioButton } from '@/components/landing/ExplorarCardapioButton'
 
-export default function LandingPage() {
+export default async function LandingPage() {
+  const t = await getTranslations('landing')
+  const sections = ['classics', 'specials', 'sides'] as const
+
   return (
     <div className="min-h-screen flex flex-col bg-kafe-surface">
       <header className="flex items-center justify-between px-8 py-6 md:px-12">
@@ -13,7 +17,7 @@ export default function LandingPage() {
           href="#menu"
           className="hidden md:block text-sm font-medium text-kafe-on-surface-variant hover:text-kafe-primary transition-colors"
         >
-          Cardápio
+          {t('menuLink')}
         </a>
       </header>
 
@@ -30,14 +34,13 @@ export default function LandingPage() {
               Kafe
             </h1>
             <p className="text-2xl text-kafe-secondary font-medium">
-              Café &amp; Experiências
+              {t('tagline')}
             </p>
           </div>
 
           <div className="animate-fade-in-up mb-10" style={{ animationDelay: '0.5s' }}>
             <p className="text-kafe-on-surface-variant text-body-lg leading-relaxed max-w-lg mx-auto">
-              Cappuccinos cremosos, expressos intensos, lattes aveludados e muito mais.
-              Cada copo, uma experiência única feita com grãos cuidadosamente selecionados.
+              {t('description')}
             </p>
           </div>
 
@@ -60,20 +63,16 @@ export default function LandingPage() {
 
       <section id="menu" className="py-24 bg-kafe-surface-container-lowest">
         <div className="container mx-auto px-6 text-center">
-          <h3 className="text-headline-lg text-kafe-primary mb-12">Nosso Cardápio</h3>
+          <h3 className="text-headline-lg text-kafe-primary mb-12">{t('menuTitle')}</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {[
-              { label: 'Clássicos', desc: 'A pureza do café em sua melhor forma.' },
-              { label: 'Especiais', desc: 'Combinações únicas com ingredientes selecionados.' },
-              { label: 'Acompanhamentos', desc: 'Doces e salgados feitos diariamente.' },
-            ].map(({ label, desc }) => (
+            {sections.map((key) => (
               <div
-                key={label}
+                key={key}
                 className="p-8 bg-kafe-surface-container-low border border-kafe-outline-variant rounded-2xl hover:shadow-lg transition-shadow"
               >
                 <div className="w-12 h-12 bg-kafe-primary rounded-lg mb-4 mx-auto" />
-                <h4 className="text-headline-md text-kafe-on-surface mb-2">{label}</h4>
-                <p className="text-body-md text-kafe-on-surface-variant">{desc}</p>
+                <h4 className="text-headline-md text-kafe-on-surface mb-2">{t(`sections.${key}.label`)}</h4>
+                <p className="text-body-md text-kafe-on-surface-variant">{t(`sections.${key}.description`)}</p>
               </div>
             ))}
           </div>
@@ -81,7 +80,7 @@ export default function LandingPage() {
       </section>
 
       <footer className="text-center py-6 text-body-md text-kafe-on-surface-variant border-t border-kafe-outline-variant">
-        Feito com amor e muito café ☕
+        {t('footer')}
       </footer>
     </div>
   )

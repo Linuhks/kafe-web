@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
+import { useTranslations } from 'next-intl'
 import { Search, Trash2, History, ChevronDown, Package } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
 import {
@@ -24,21 +25,24 @@ const ACTIVE_STATUSES = new Set(['RECEIVED', 'IN_PREPARATION'])
 type CategoryFilter = 'all' | 'expressos' | 'lanches'
 type SortOption = 'newest' | 'oldest' | 'priority'
 
-const STATUS_LABELS: Record<string, string> = {
-  RECEIVED: 'RECEBIDO',
-  IN_PREPARATION: 'EM PREPARO',
-  READY: 'PRONTO',
-  DELIVERED: 'ENTREGUE',
-  CANCELLED: 'CANCELADO',
+const SORT_OPTIONS: SortOption[] = ['newest', 'oldest', 'priority']
+
+const KNOWN_STATUSES = ['RECEIVED', 'IN_PREPARATION', 'READY', 'DELIVERED', 'CANCELLED'] as const
+
+function isKnownStatus(status: string): status is (typeof KNOWN_STATUSES)[number] {
+  return (KNOWN_STATUSES as readonly string[]).includes(status)
 }
 
-const SORT_LABELS: Record<SortOption, string> = {
-  newest: 'Mais recentes',
-  oldest: 'Mais antigos',
-  priority: 'Prioridade',
+type AdvanceStatus = 'RECEIVED' | 'IN_PREPARATION' | 'READY'
+
+function advanceLabelKey(status: string): AdvanceStatus {
+  return status === 'RECEIVED' || status === 'IN_PREPARATION' ? status : 'READY'
 }
 
 export default function AdminOrderQueueClient() {
+  const t = useTranslations('adminOrderQueue')
+  const tq = useTranslations('orderQueue')
+  const tc = useTranslations('common')
   const { addToast } = useToast()
   const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>('all')
   const [search, setSearch] = useState('')
@@ -61,10 +65,10 @@ export default function AdminOrderQueueClient() {
       onSuccess: () => {
         queueQuery.refetch()
         readyQuery.refetch()
-        addToast('Status atualizado', 'success')
+        addToast(tq('statusUpdated'), 'success')
       },
       onError: () => {
-        addToast('Erro ao atualizar status', 'error')
+        addToast(tq('statusUpdateError'), 'error')
       },
     },
   })
@@ -149,9 +153,9 @@ export default function AdminOrderQueueClient() {
   }
 
   const categoryTabs: { key: CategoryFilter; label: string }[] = [
-    { key: 'all', label: 'Todos os Pedidos' },
-    { key: 'expressos', label: 'Expressos' },
-    { key: 'lanches', label: 'Lanches' },
+    { key: 'all', label: t('tabs.all') },
+    { key: 'expressos', label: t('tabs.espressos') },
+    { key: 'lanches', label: t('tabs.snacks') },
   ]
 
   return (
@@ -159,16 +163,16 @@ export default function AdminOrderQueueClient() {
       {/* Header */}
       <header className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <h1 className="text-headline-lg text-kafe-primary">Fila de pedidos</h1>
+          <h1 className="text-headline-lg text-kafe-primary">{t('title')}</h1>
           <p className="text-body-md text-kafe-on-surface-variant mt-1">
-            Acompanhe e avance o status dos pedidos em tempo real.
+            {t('subtitle')}
           </p>
         </div>
         <div className="relative w-full md:w-72">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--kafe-on-surface-variant)]" />
           <input
             type="text"
-            placeholder="Buscar por cliente..."
+            placeholder={t('searchPlaceholder')}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-[var(--kafe-outline-variant)] bg-[var(--kafe-surface-container-low)] text-sm text-[var(--kafe-on-surface)] placeholder:text-[var(--kafe-on-surface-variant)] focus:outline-none focus:ring-2 focus:ring-[var(--kafe-primary)]"
@@ -200,12 +204,12 @@ export default function AdminOrderQueueClient() {
             onClick={() => setSortOpen((v) => !v)}
             className="flex items-center gap-2 px-4 py-2 rounded-xl border border-[var(--kafe-outline-variant)] bg-[var(--kafe-surface-container-low)] text-sm text-[var(--kafe-on-surface-variant)] hover:bg-[var(--kafe-surface-container)] hover:text-[var(--kafe-on-surface)] transition-colors"
           >
-            {SORT_LABELS[sort]}
+            {t(`sort.${sort}`)}
             <ChevronDown className="h-4 w-4" />
           </button>
           {sortOpen && (
             <div className="absolute right-0 mt-1 z-10 w-44 rounded-xl border border-[var(--kafe-outline-variant)] bg-[var(--kafe-surface-container-lowest)] shadow-lg overflow-hidden">
-              {(Object.keys(SORT_LABELS) as SortOption[]).map((key) => (
+              {SORT_OPTIONS.map((key) => (
                 <button
                   key={key}
                   onClick={() => {
@@ -219,7 +223,7 @@ export default function AdminOrderQueueClient() {
                       : 'text-[var(--kafe-on-surface-variant)] hover:bg-[var(--kafe-surface-container)] hover:text-[var(--kafe-on-surface)]',
                   )}
                 >
-                  {SORT_LABELS[key]}
+                  {t(`sort.${key}`)}
                 </button>
               ))}
             </div>
@@ -241,7 +245,7 @@ export default function AdminOrderQueueClient() {
         </div>
       ) : allOrders.length === 0 && !search.trim() ? (
         <p className="text-center text-[var(--kafe-on-surface-variant)] py-20">
-          Nenhum pedido ativo no momento.
+          {t('empty')}
         </p>
       ) : (
         <div
@@ -250,7 +254,7 @@ export default function AdminOrderQueueClient() {
             e.currentTarget.scrollLeft += e.deltaY
           }}
         >
-          <KanbanColumn dotClass="bg-[var(--kafe-secondary-container)]" label="RECEBIDOS" count={receivedOrders.length}>
+          <KanbanColumn dotClass="bg-[var(--kafe-secondary-container)]" label={t('columns.received')} count={receivedOrders.length}>
             {receivedOrders.map((order) => (
               <OrderCard
                 key={order.id}
@@ -263,12 +267,12 @@ export default function AdminOrderQueueClient() {
             ))}
             {receivedOrders.length === 0 && (
               <p className="text-center text-xs text-[var(--kafe-on-surface-variant)] py-8">
-                Sem pedidos recebidos
+                {t('columnEmpty.received')}
               </p>
             )}
           </KanbanColumn>
 
-          <KanbanColumn dotClass="bg-[var(--kafe-primary-fixed)] animate-pulse" label="EM PREPARO" count={inPrepOrders.length}>
+          <KanbanColumn dotClass="bg-[var(--kafe-primary-fixed)] animate-pulse" label={t('columns.inPreparation')} count={inPrepOrders.length}>
             {inPrepOrders.map((order) => (
               <OrderCard
                 key={order.id}
@@ -281,12 +285,12 @@ export default function AdminOrderQueueClient() {
             ))}
             {inPrepOrders.length === 0 && (
               <p className="text-center text-xs text-[var(--kafe-on-surface-variant)] py-8">
-                Sem pedidos em preparo
+                {t('columnEmpty.inPreparation')}
               </p>
             )}
           </KanbanColumn>
 
-          <KanbanColumn dotClass="bg-[var(--kafe-tertiary-fixed)]" label="PRONTOS" count={readyOrders.length}>
+          <KanbanColumn dotClass="bg-[var(--kafe-tertiary-fixed)]" label={t('columns.ready')} count={readyOrders.length}>
             {readyOrders.map((order) => (
               <OrderCard
                 key={order.id}
@@ -301,7 +305,7 @@ export default function AdminOrderQueueClient() {
               <div className="flex flex-col items-center justify-center gap-3 py-16 rounded-2xl border border-dashed border-[var(--kafe-outline-variant)] bg-[var(--kafe-surface-container-lowest)]">
                 <History className="h-8 w-8 text-[var(--kafe-on-surface-variant)]" />
                 <p className="text-sm text-[var(--kafe-on-surface-variant)] text-center px-4">
-                  Nenhum pedido pronto para entrega
+                  {t('columnEmpty.ready')}
                 </p>
               </div>
             )}
@@ -314,43 +318,43 @@ export default function AdminOrderQueueClient() {
         <div className="flex gap-6">
           <div>
             <p className="text-xs text-[var(--kafe-on-surface-variant)] uppercase tracking-wide">
-              Pedidos na Fila
+              {t('stats.queued')}
             </p>
             <p className="text-xl font-bold text-[var(--kafe-on-surface)]">{allOrders.length}</p>
           </div>
           <div>
             <p className="text-xs text-[var(--kafe-on-surface-variant)] uppercase tracking-wide">
-              Tempo Médio de Preparo
+              {t('stats.avgPrepTime')}
             </p>
-            <p className="text-xl font-bold text-[var(--kafe-on-surface)]">—</p>
+            <p className="text-xl font-bold text-[var(--kafe-on-surface)]">{tc('emptyValue')}</p>
           </div>
           <div>
             <p className="text-xs text-[var(--kafe-on-surface-variant)] uppercase tracking-wide">
-              Eficiência
+              {t('stats.efficiency')}
             </p>
-            <p className="text-xl font-bold text-[var(--kafe-on-surface)]">—</p>
+            <p className="text-xl font-bold text-[var(--kafe-on-surface)]">{tc('emptyValue')}</p>
           </div>
         </div>
         <div className="flex items-center gap-3">
-          <span className="text-xs text-[var(--kafe-on-surface-variant)]">Operação ativa</span>
+          <span className="text-xs text-[var(--kafe-on-surface-variant)]">{t('stats.operationActive')}</span>
           <div className="flex -space-x-2">
             <div
               className="w-8 h-8 rounded-full bg-[var(--kafe-primary)] text-[var(--kafe-on-primary)] flex items-center justify-center text-xs font-bold ring-2 ring-[var(--kafe-surface)]"
-              title="Barista 1"
+              title={t('staff.barista1')}
             >
-              B1
+              {t('staff.barista1Initials')}
             </div>
             <div
               className="w-8 h-8 rounded-full bg-[var(--kafe-secondary)] text-[var(--kafe-on-secondary)] flex items-center justify-center text-xs font-bold ring-2 ring-[var(--kafe-surface)]"
-              title="Barista 2"
+              title={t('staff.barista2')}
             >
-              B2
+              {t('staff.barista2Initials')}
             </div>
             <div
               className="w-8 h-8 rounded-full bg-[var(--kafe-tertiary)] text-[var(--kafe-on-tertiary)] flex items-center justify-center text-xs font-bold ring-2 ring-[var(--kafe-surface)]"
-              title="Cozinha"
+              title={t('staff.kitchen')}
             >
-              CZ
+              {t('staff.kitchenInitials')}
             </div>
           </div>
         </div>
@@ -369,7 +373,7 @@ export default function AdminOrderQueueClient() {
                   <DialogTitle className="text-[var(--kafe-on-surface)]">
                     {typeof selectedOrder.clientName === 'string' && selectedOrder.clientName
                       ? selectedOrder.clientName
-                      : 'Cliente'}
+                      : t('client')}
                   </DialogTitle>
                   <StatusBadge status={selectedOrder.status} />
                 </div>
@@ -385,7 +389,7 @@ export default function AdminOrderQueueClient() {
                       {item.productName}
                     </span>
                     <span className="text-sm font-bold text-[var(--kafe-primary)]">
-                      ×{item.quantity}
+                      {t('quantityTimes', { quantity: item.quantity })}
                     </span>
                   </div>
                 ))}
@@ -407,12 +411,8 @@ export default function AdminOrderQueueClient() {
                     className="flex-1 bg-[var(--kafe-primary)] text-[var(--kafe-on-primary)] py-2.5 rounded-xl text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-60 disabled:cursor-not-allowed"
                   >
                     {updatingIds.has(selectedOrder.id)
-                      ? 'Atualizando...'
-                      : selectedOrder.status === 'RECEIVED'
-                        ? 'Iniciar preparo'
-                        : selectedOrder.status === 'IN_PREPARATION'
-                          ? 'Concluir'
-                          : 'Marcar como entregue'}
+                      ? t('updating')
+                      : t(`advance.${advanceLabelKey(selectedOrder.status)}`)}
                   </button>
                 </DialogFooter>
               )}
@@ -464,8 +464,9 @@ function OrderCard({
   onDelete: (order: OrderResponseDto) => void
   onOpen: (order: OrderResponseDto) => void
 }) {
+  const t = useTranslations('adminOrderQueue')
   const clientName =
-    typeof order.clientName === 'string' && order.clientName ? order.clientName : 'Cliente'
+    typeof order.clientName === 'string' && order.clientName ? order.clientName : t('client')
   const orderNum = order.id.slice(-6).toUpperCase()
   const isReceived = order.status === 'RECEIVED'
   const isInPrep = order.status === 'IN_PREPARATION'
@@ -500,7 +501,9 @@ function OrderCard({
               className="text-sm text-[var(--kafe-on-surface-variant)] flex justify-between"
             >
               <span>{item.productName}</span>
-              <span className="text-[var(--kafe-on-surface)] font-medium">×{item.quantity}</span>
+              <span className="text-[var(--kafe-on-surface)] font-medium">
+                {t('quantityTimes', { quantity: item.quantity })}
+              </span>
             </li>
           ))}
         </ul>
@@ -518,19 +521,13 @@ function OrderCard({
               onClick={(e) => { e.stopPropagation(); onAdvance(order) }}
               className="flex-1 bg-[var(--kafe-primary)] text-[var(--kafe-on-primary)] py-2.5 rounded-xl text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              {isUpdating
-                ? 'Atualizando...'
-                : isReceived
-                  ? 'Iniciar preparo'
-                  : isInPrep
-                    ? 'Concluir'
-                    : 'Marcar como entregue'}
+              {isUpdating ? t('updating') : t(`advance.${advanceLabelKey(order.status)}`)}
             </button>
             {!isReady && (
               <button
                 disabled={isUpdating}
                 onClick={(e) => { e.stopPropagation(); onDelete(order) }}
-                aria-label="Cancelar pedido"
+                aria-label={t('cancelOrderAria')}
                 className="p-2.5 rounded-xl border border-[var(--kafe-outline-variant)] text-[var(--kafe-on-surface-variant)] hover:bg-red-50 hover:text-red-500 hover:border-red-200 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 <Trash2 className="h-4 w-4" />
@@ -544,6 +541,7 @@ function OrderCard({
 }
 
 function StatusBadge({ status }: { status: string }) {
+  const t = useTranslations('badge.status')
   const isInPrep = status === 'IN_PREPARATION'
   const isReceived = status === 'RECEIVED'
 
@@ -559,7 +557,7 @@ function StatusBadge({ status }: { status: string }) {
       )}
     >
       {isInPrep && <span className="w-1.5 h-1.5 rounded-full bg-current animate-pulse flex-none" />}
-      {STATUS_LABELS[status] ?? status}
+      {isKnownStatus(status) ? t(status) : status}
     </span>
   )
 }

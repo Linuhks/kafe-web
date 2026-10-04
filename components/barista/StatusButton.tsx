@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import type { UpdateOrderStatusDtoStatus } from '@/lib/api/generated/api'
 
@@ -9,12 +10,6 @@ const NEXT_STATUS: Partial<Record<OrderStatus, OrderStatus>> = {
   RECEIVED: 'IN_PREPARATION',
   IN_PREPARATION: 'READY',
   READY: 'DELIVERED',
-}
-
-const LABEL: Partial<Record<OrderStatus, string>> = {
-  RECEIVED: 'Iniciar preparo',
-  IN_PREPARATION: 'Marcar como pronto',
-  READY: 'Entregar',
 }
 
 interface StatusButtonProps {
@@ -30,12 +25,13 @@ export default function StatusButton({
   onUpdate,
   isUpdating,
 }: StatusButtonProps) {
+  const t = useTranslations('statusButton')
   const nextStatus = NEXT_STATUS[currentStatus]
   if (!nextStatus) return null
 
   return (
     <Button size="sm" isLoading={isUpdating} onClick={() => onUpdate(orderId, nextStatus)}>
-      {LABEL[currentStatus]}
+      {t(currentStatus as 'RECEIVED' | 'IN_PREPARATION' | 'READY')}
     </Button>
   )
 }

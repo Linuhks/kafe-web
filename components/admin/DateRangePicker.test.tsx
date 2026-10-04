@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent } from '@/lib/test-utils'
 import React from 'react'
 import DateRangePicker from './DateRangePicker'
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'

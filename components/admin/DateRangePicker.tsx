@@ -2,6 +2,7 @@
 
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import { useCallback } from 'react'
+import { useTranslations } from 'next-intl'
 import { Input } from '@/components/ui/input'
 
 interface DateRangePickerProps {
@@ -10,6 +11,7 @@ interface DateRangePickerProps {
 }
 
 export default function DateRangePicker({ from, to }: DateRangePickerProps) {
+  const t = useTranslations('adminInventory.movements')
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -27,7 +29,7 @@ export default function DateRangePicker({ from, to }: DateRangePickerProps) {
     <div className="flex items-center gap-4">
       <div className="flex items-center gap-2">
         <label htmlFor="date-from" className="text-sm text-muted-foreground whitespace-nowrap">
-          De
+          {t('dateFrom')}
         </label>
         <Input
           id="date-from"
@@ -39,7 +41,7 @@ export default function DateRangePicker({ from, to }: DateRangePickerProps) {
       </div>
       <div className="flex items-center gap-2">
         <label htmlFor="date-to" className="text-sm text-muted-foreground whitespace-nowrap">
-          Até
+          {t('dateTo')}
         </label>
         <Input
           id="date-to"
