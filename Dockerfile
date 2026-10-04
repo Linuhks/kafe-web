@@ -14,6 +14,8 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ARG NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+# lib/api/generated/ is git-ignored, so it must be generated before the build
+RUN pnpm generate:api
 RUN pnpm build
 
 # ── runner: minimal production image ─────────────────────────────────────────
