@@ -93,12 +93,6 @@ Run the `security-review` skill on the diff before committing when any of the ab
 
 ---
 
-## Code standards
-
-See [Code Guide](code-guide.md) for conventions on typing, class merging, UI primitives, and API client generation.
-
----
-
 ## After completing all tasks
 
 When all tasks in a change are done, update documentation before archiving:
@@ -111,5 +105,19 @@ When all tasks in a change are done, update documentation before archiving:
 | Auth or middleware logic | `docs/architecture.md` |
 | New convention or pattern | `docs/code-guide.md` |
 | Folder structure changed | Relevant `CLAUDE.md` in that folder |
+| New project-wide convention, testing rule, or workflow change | `.claude/rules/` |
 
 If nothing changed structurally, no documentation update is needed.
+
+---
+
+## Opening a PR (last step)
+
+The flow ends with a pull request — never push straight to `master`.
+
+1. Work on a branch off `master`, named `<type>/<short-kebab-description>` (e.g. `fix/cardapio-api-unavailable`, `feat/admin-users-table`). If you are on `master`, branch before the first commit.
+2. When all tasks are done and docs are updated, run `pnpm lint` and `pnpm build` once more, then `git push -u origin <branch>`.
+3. Open the PR against `master` with `gh pr create`:
+   - Title: the Conventional Commit subject of the change (`fix(cardapio): ...`).
+   - Body: a short summary of what changed and why, how it was verified (including any live-`kafe-api` check from the Definition of done), and the OpenSpec change name if there is one.
+4. Merge happens on GitHub after review; archive the OpenSpec change (`/opsx:archive`) once it is merged.

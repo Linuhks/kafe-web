@@ -52,15 +52,12 @@ All tokens are CSS custom properties with `--kafe-*` prefix, exposed as Tailwind
 
 **Spacing tokens**: `--kafe-stack-sm` 0.5 rem · `--kafe-stack-md` 1.5 rem · `--kafe-stack-lg` 4 rem · `--kafe-margin-page` 2 rem
 
-**Rules**
-- Always merge classes with `cn()` from `lib/utils.ts`
-- Icons: `lucide-react` only
-- Forms: `react-hook-form` + `zod` + `zodResolver`
-- Toasts: `useToast()` from `context/ToastContext` — types: `success | error | warning | info`
-
 ## Docs
 
 - [Architecture](docs/architecture.md) — rendering model, auth flow, API layers, middleware
 - [Code Guide](docs/code-guide.md) — conventions, data fetching patterns, styling, forms
 - [Modules](docs/modules.md) — route map, component index, layouts, hooks
-- [Workflow](docs/workflow-dev.md) — per-subtask gate, commit process, code standards
+
+## Rules
+
+`.claude/rules/` (`workflow.md`, `code-style.md`, `testing.md`) is loaded automatically — per-subtask gate, commit process, opening the PR, code conventions and testing. Follow it for every feature, refactor and bug fix.
