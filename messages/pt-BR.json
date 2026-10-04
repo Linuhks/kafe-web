@@ -257,5 +257,8 @@
       "membership": "ASSINATURA",
       "subscribeNow": "Assinar Agora"
     }
+  },
+  "catalog": {
+    "loadError": "Não foi possível carregar o cardápio agora. Recarregue a página em instantes."
   }
 }

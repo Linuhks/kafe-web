@@ -41,6 +41,13 @@ export async function apiFetch<T>(
   })
 
   const text = [204, 205, 304].includes(res.status) ? null : await res.text()
-  const data = text ? JSON.parse(text) : {}
+  let data: unknown = {}
+  if (text) {
+    try {
+      data = JSON.parse(text)
+    } catch {
+      // Non-JSON body (e.g. a proxy/cold-start HTML page) — keep the status so callers can react
+    }
+  }
   return { data, status: res.status, headers: res.headers } as T
 }

@@ -75,6 +75,18 @@ describe('apiFetch', () => {
     expect(result.status).toBe(204)
   })
 
+  it('returns empty data and keeps the status when the body is not JSON', async () => {
+    vi.mocked(fetch).mockResolvedValue(makeFetchResponse('<html>Service waking up</html>', 503))
+
+    const result = await apiFetch<{ data: object; status: number }>(
+      '/api/v1/products',
+      { method: 'GET' },
+    )
+
+    expect(result.data).toEqual({})
+    expect(result.status).toBe(503)
+  })
+
   it('throws in production when NEXT_PUBLIC_API_URL is not set', async () => {
     vi.stubGlobal('window', undefined as unknown as Window)
     vi.stubEnv('NODE_ENV', 'production')
