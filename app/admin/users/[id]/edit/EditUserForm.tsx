@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -17,15 +18,13 @@ import { useToast } from '@/context/ToastContext'
 import { useFormDirty } from '@/lib/hooks/useFormDirty'
 import type { User } from '@/lib/types'
 
-const editUserSchema = z.object({
-  name: z.string().min(1, 'Nome é obrigatório').max(100, 'Nome deve ter no máximo 100 caracteres'),
-})
-
 interface EditUserFormProps {
   user: User
 }
 
 export default function EditUserForm({ user }: EditUserFormProps) {
+  const t = useTranslations('adminUsers')
+  const tc = useTranslations('common')
   const router = useRouter()
   const { addToast } = useToast()
   const { setDirty, confirmNavigation } = useFormDirty()
@@ -39,12 +38,12 @@ export default function EditUserForm({ user }: EditUserFormProps) {
     mutation: {
       onSuccess: () => {
         setDirty(false)
-        addToast('Usuário atualizado com sucesso.', 'success')
+        addToast(t('edit.updated'), 'success')
         router.refresh()
         router.push('/admin/users')
       },
       onError: () => {
-        addToast('Erro ao atualizar usuário.', 'error')
+        addToast(t('edit.updateError'), 'error')
       },
     },
   })
@@ -55,6 +54,9 @@ export default function EditUserForm({ user }: EditUserFormProps) {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+    const editUserSchema = z.object({
+      name: z.string().min(1, t('validation.nameRequired')).max(100, t('validation.nameMax')),
+    })
     const result = editUserSchema.safeParse({ name })
     if (!result.success) {
       setNameError(result.error.issues[0].message)
@@ -67,12 +69,12 @@ export default function EditUserForm({ user }: EditUserFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-1">
-        <label className="text-sm font-medium" htmlFor="email">Email</label>
+        <label className="text-sm font-medium" htmlFor="email">{tc('email')}</label>
         <Input id="email" value={user.email} disabled />
       </div>
 
       <div className="space-y-1">
-        <label className="text-sm font-medium" htmlFor="name">Nome</label>
+        <label className="text-sm font-medium" htmlFor="name">{tc('name')}</label>
         <Input
           id="name"
           value={name}
@@ -85,21 +87,21 @@ export default function EditUserForm({ user }: EditUserFormProps) {
       </div>
 
       <div className="space-y-1">
-        <label className="text-sm font-medium">Papel</label>
+        <label className="text-sm font-medium">{t('role')}</label>
         <Select value={role} onValueChange={(v) => { setRole(v as UpdateUserDtoRole); handleChange() }}>
           <SelectTrigger>
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value={UpdateUserDtoRole.CLIENT}>Cliente</SelectItem>
-            <SelectItem value={UpdateUserDtoRole.BARISTA}>Barista</SelectItem>
-            <SelectItem value={UpdateUserDtoRole.ADMIN}>Admin</SelectItem>
+            <SelectItem value={UpdateUserDtoRole.CLIENT}>{t('roles.CLIENT')}</SelectItem>
+            <SelectItem value={UpdateUserDtoRole.BARISTA}>{t('roles.BARISTA')}</SelectItem>
+            <SelectItem value={UpdateUserDtoRole.ADMIN}>{t('roles.ADMIN')}</SelectItem>
           </SelectContent>
         </Select>
       </div>
 
       <div className="flex items-center gap-3">
-        <label className="text-sm font-medium" htmlFor="isActive">Ativo</label>
+        <label className="text-sm font-medium" htmlFor="isActive">{tc('active')}</label>
         <input
           id="isActive"
           type="checkbox"
@@ -111,10 +113,10 @@ export default function EditUserForm({ user }: EditUserFormProps) {
 
       <div className="flex gap-3 pt-2">
         <Button type="submit" disabled={isPending}>
-          {isPending ? 'Salvando...' : 'Salvar alterações'}
+          {isPending ? tc('saving') : tc('saveChanges')}
         </Button>
         <Button type="button" variant="outline" onClick={() => confirmNavigation('/admin/users')}>
-          Cancelar
+          {tc('cancel')}
         </Button>
       </div>
     </form>

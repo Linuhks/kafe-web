@@ -2,6 +2,7 @@
 
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import { useCallback } from 'react'
+import { useTranslations } from 'next-intl'
 import {
   Select,
   SelectContent,
@@ -17,6 +18,7 @@ interface IngredientFilterProps {
 }
 
 export default function IngredientFilter({ ingredients, selectedId }: IngredientFilterProps) {
+  const t = useTranslations('adminInventory.movements')
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -38,10 +40,10 @@ export default function IngredientFilter({ ingredients, selectedId }: Ingredient
   return (
     <Select value={selectedId || 'all'} onValueChange={handleChange}>
       <SelectTrigger className="w-48">
-        <SelectValue placeholder="Todos os ingredientes" />
+        <SelectValue placeholder={t('allIngredients')} />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="all">Todos os ingredientes</SelectItem>
+        <SelectItem value="all">{t('allIngredients')}</SelectItem>
         {ingredients.map((ing) => (
           <SelectItem key={ing.id} value={ing.id}>
             {ing.name}

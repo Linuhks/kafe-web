@@ -9,13 +9,15 @@ import { getInventory } from '@/lib/api/inventory'
 export default async function AdminInventoryPage() {
   const { ingredients } = await getInventory()
   const t = await getTranslations('inventoryList.status')
+  const ti = await getTranslations('adminInventory')
+  const tc = await getTranslations('common')
 
   return (
     <div className="p-6 space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Estoque</h1>
+        <h1 className="text-2xl font-bold">{ti('title')}</h1>
         <Button variant="outline" asChild>
-          <Link href="/admin/inventory/movements">Ver movimentações</Link>
+          <Link href="/admin/inventory/movements">{ti('viewMovements')}</Link>
         </Button>
       </div>
 
@@ -23,19 +25,19 @@ export default async function AdminInventoryPage() {
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b bg-muted/50">
-              <th className="px-4 py-3 text-left font-medium">Nome</th>
-              <th className="px-4 py-3 text-left font-medium">Unidade</th>
-              <th className="px-4 py-3 text-left font-medium">Estoque atual</th>
-              <th className="px-4 py-3 text-left font-medium">Estoque mínimo</th>
-              <th className="px-4 py-3 text-left font-medium">Status</th>
-              <th className="px-4 py-3 text-left font-medium">Ações</th>
+              <th className="px-4 py-3 text-left font-medium">{tc('name')}</th>
+              <th className="px-4 py-3 text-left font-medium">{ti('unit')}</th>
+              <th className="px-4 py-3 text-left font-medium">{ti('currentStock')}</th>
+              <th className="px-4 py-3 text-left font-medium">{ti('minimumStock')}</th>
+              <th className="px-4 py-3 text-left font-medium">{tc('status')}</th>
+              <th className="px-4 py-3 text-left font-medium">{tc('actions')}</th>
             </tr>
           </thead>
           <tbody>
             {ingredients.length === 0 ? (
               <tr>
                 <td colSpan={6} className="px-4 py-8 text-center text-muted-foreground">
-                  Nenhum ingrediente encontrado.
+                  {ti('empty')}
                 </td>
               </tr>
             ) : (
@@ -53,13 +55,13 @@ export default async function AdminInventoryPage() {
                         <Badge variant="destructive">{t('low')}</Badge>
                       ) : (
                         <Badge className="bg-green-100 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-400 dark:border-green-800">
-                          OK
+                          {ti('ok')}
                         </Badge>
                       )}
                     </td>
                     <td className="px-4 py-3">
                       <Button size="sm" variant="outline" asChild>
-                        <Link href={`/admin/inventory/${ingredient.id}/restock`}>Reabastecer</Link>
+                        <Link href={`/admin/inventory/${ingredient.id}/restock`}>{ti('restock')}</Link>
                       </Button>
                     </td>
                   </tr>

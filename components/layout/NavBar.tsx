@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import { ShoppingCart, LogOut, User, ClipboardList } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useCart } from '@/context/CartContext'
@@ -9,6 +10,7 @@ import { useAuth } from '@/context/AuthContext'
 import CartSidebar from '@/components/catalog/CartSidebar'
 
 export default function NavBar() {
+  const t = useTranslations('navBar')
   const { itemCount } = useCart()
   const { user, logout } = useAuth()
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
@@ -30,7 +32,7 @@ export default function NavBar() {
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <User className="h-4 w-4" />
                 <span className="hidden sm:inline">{user.name}</span>
-                <Button variant="ghost" size="icon-sm" onClick={logout} title="Sair">
+                <Button variant="ghost" size="icon-sm" onClick={logout} title={t('logout')}>
                   <LogOut className="h-4 w-4" />
                 </Button>
               </div>
@@ -40,7 +42,7 @@ export default function NavBar() {
               <Button variant="ghost" size="sm" asChild>
                 <Link href="/orders/me">
                   <ClipboardList className="h-4 w-4" />
-                  <span className="ml-1 hidden sm:inline">Meus Pedidos</span>
+                  <span className="ml-1 hidden sm:inline">{t('myOrders')}</span>
                 </Link>
               </Button>
             )}
@@ -57,7 +59,7 @@ export default function NavBar() {
                     {itemCount > 99 ? '99+' : itemCount}
                   </span>
                 )}
-                <span className="hidden sm:inline uppercase tracking-wider font-semibold text-sm">Carrinho</span>
+                <span className="hidden sm:inline uppercase tracking-wider font-semibold text-sm">{t('cart')}</span>
               </Button>
             )}
           </div>

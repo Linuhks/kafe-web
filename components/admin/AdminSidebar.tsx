@@ -3,17 +3,18 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { LayoutDashboard, Package, Tag, Users, Archive, Settings, Coffee } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Skeleton } from '@/components/ui/skeleton'
 
 const navItems = [
-  { href: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/admin/products', label: 'Produtos', icon: Package },
-  { href: '/admin/categories', label: 'Categorias', icon: Tag },
-  { href: '/admin/users', label: 'Usuários', icon: Users },
-  { href: '/admin/inventory', label: 'Estoque', icon: Archive },
-]
+  { href: '/admin/dashboard', labelKey: 'dashboard', icon: LayoutDashboard },
+  { href: '/admin/products', labelKey: 'products', icon: Package },
+  { href: '/admin/categories', labelKey: 'categories', icon: Tag },
+  { href: '/admin/users', labelKey: 'users', icon: Users },
+  { href: '/admin/inventory', labelKey: 'inventory', icon: Archive },
+] as const
 
 function getInitials(name: string): string {
   const parts = name.trim().split(/\s+/)
@@ -22,6 +23,7 @@ function getInitials(name: string): string {
 }
 
 export default function AdminSidebar() {
+  const t = useTranslations('adminSidebar')
   const pathname = usePathname()
   const [user, setUser] = useState<{ name: string; role: string } | null>(null)
   const [loading, setLoading] = useState(true)
@@ -47,7 +49,7 @@ export default function AdminSidebar() {
 
       {/* Nav */}
       <nav className="flex-1 px-4 space-y-1 mt-2">
-        {navItems.map(({ href, label, icon: Icon }) => {
+        {navItems.map(({ href, labelKey, icon: Icon }) => {
           const active = pathname === href || pathname.startsWith(href + '/')
           return (
             <Link
@@ -61,7 +63,7 @@ export default function AdminSidebar() {
               )}
             >
               <Icon className="h-4 w-4 shrink-0" />
-              {label}
+              {t(`nav.${labelKey}`)}
             </Link>
           )
         })}
@@ -74,7 +76,7 @@ export default function AdminSidebar() {
           className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm text-[var(--kafe-on-surface-variant)] hover:text-[var(--kafe-primary)] transition-colors"
         >
           <Settings className="h-4 w-4 shrink-0" />
-          <span>Configurações</span>
+          <span>{t('settings')}</span>
         </Link>
 
         {loading ? (

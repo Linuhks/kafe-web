@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
@@ -12,14 +13,6 @@ import {
 } from '@/components/ui/dialog'
 import StatusButton from './StatusButton'
 import type { OrderResponseDto, UpdateOrderStatusDtoStatus } from '@/lib/api/generated/api'
-
-const STATUS_LABEL: Record<string, string> = {
-  RECEIVED: 'Recebido',
-  IN_PREPARATION: 'Em preparo',
-  READY: 'Pronto',
-  DELIVERED: 'Entregue',
-  CANCELLED: 'Cancelado',
-}
 
 const STATUS_VARIANT: Record<string, 'default' | 'secondary' | 'destructive' | 'outline'> = {
   RECEIVED: 'default',
@@ -40,6 +33,8 @@ export default function OrderQueueCard({
   updatingId,
   onStatusUpdate,
 }: OrderQueueCardProps) {
+  const t = useTranslations('orderQueueCard')
+  const tStatus = useTranslations('badge.status')
   const [confirmCancel, setConfirmCancel] = useState(false)
   const isUpdating = updatingId === order.id
 
@@ -48,7 +43,7 @@ export default function OrderQueueCard({
   )
 
   const clientName =
-    typeof order.clientName === 'string' ? order.clientName : 'Anônimo'
+    typeof order.clientName === 'string' ? order.clientName : t('anonymous')
   const notes = typeof order.notes === 'string' ? order.notes : null
 
   async function handleConfirmCancel() {
@@ -66,9 +61,9 @@ export default function OrderQueueCard({
           </div>
           <div className="flex flex-col items-end gap-1">
             <Badge variant={STATUS_VARIANT[order.status]}>
-              {STATUS_LABEL[order.status] ?? order.status}
+              {tStatus.has(order.status) ? tStatus(order.status) : order.status}
             </Badge>
-            <span className="text-xs text-muted-foreground">{elapsedMin} min atrás</span>
+            <span className="text-xs text-muted-foreground">{t('minutesAgo', { minutes: elapsedMin })}</span>
           </div>
         </div>
 
@@ -76,14 +71,14 @@ export default function OrderQueueCard({
           {order.items.map(item => (
             <li key={item.id} className="flex justify-between">
               <span>{item.productName}</span>
-              <span className="text-muted-foreground">× {item.quantity}</span>
+              <span className="text-muted-foreground">{t('quantityTimes', { quantity: item.quantity })}</span>
             </li>
           ))}
         </ul>
 
         {notes && (
           <p className="text-sm text-muted-foreground border-t pt-2">
-            <span className="font-medium">Obs:</span> {notes}
+            <span className="font-medium">{t('notes')}</span> {notes}
           </p>
         )}
 
@@ -101,7 +96,7 @@ export default function OrderQueueCard({
               disabled={isUpdating}
               onClick={() => setConfirmCancel(true)}
             >
-              Cancelar
+              {t('cancel')}
             </Button>
           )}
         </div>
@@ -110,18 +105,20 @@ export default function OrderQueueCard({
       <Dialog open={confirmCancel} onOpenChange={setConfirmCancel}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Cancelar pedido?</DialogTitle>
+            <DialogTitle>{t('cancelTitle')}</DialogTitle>
           </DialogHeader>
           <p className="text-sm text-muted-foreground">
-            Tem certeza que deseja cancelar o pedido de <strong>{clientName}</strong>? Esta ação
-            não pode ser desfeita.
+            {t.rich('cancelMessage', {
+              clientName,
+              strong: (chunks) => <strong>{chunks}</strong>,
+            })}
           </p>
           <DialogFooter>
             <Button variant="outline" onClick={() => setConfirmCancel(false)}>
-              Voltar
+              {t('back')}
             </Button>
             <Button variant="destructive" onClick={handleConfirmCancel}>
-              Confirmar cancelamento
+              {t('confirmCancel')}
             </Button>
           </DialogFooter>
         </DialogContent>

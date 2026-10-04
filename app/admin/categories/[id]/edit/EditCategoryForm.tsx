@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { useCategoriesControllerUpdate } from '@/lib/api/generated/api'
 import { useToast } from '@/context/ToastContext'
 import { useFormDirty } from '@/lib/hooks/useFormDirty'
@@ -16,6 +17,8 @@ const inputClass =
   'bg-transparent border-b border-kafe-outline-variant focus:border-kafe-primary outline-none py-2 text-body-md text-kafe-on-surface placeholder:text-kafe-on-surface-variant/50 transition-colors w-full'
 
 export default function EditCategoryForm({ category }: { category: CategoryResponseDto }) {
+  const t = useTranslations('adminCategories')
+  const tc = useTranslations('common')
   const router = useRouter()
   const { addToast } = useToast()
   const { setDirty, confirmNavigation } = useFormDirty()
@@ -32,18 +35,18 @@ export default function EditCategoryForm({ category }: { category: CategoryRespo
     mutation: {
       onSuccess: () => {
         setDirty(false)
-        addToast('Categoria atualizada com sucesso.', 'success')
+        addToast(t('edit.updated'), 'success')
         router.push('/admin/categories')
       },
       onError: () => {
-        addToast('Erro ao atualizar categoria. Verifique os dados e tente novamente.', 'error')
+        addToast(t('edit.updateError'), 'error')
       },
     },
   })
 
   function validate(): boolean {
     const errs: FormErrors = {}
-    if (!name.trim()) errs.name = 'Nome é obrigatório.'
+    if (!name.trim()) errs.name = t('form.nameRequired')
     setErrors(errs)
     return Object.keys(errs).length === 0
   }
@@ -66,7 +69,7 @@ export default function EditCategoryForm({ category }: { category: CategoryRespo
     <form onSubmit={handleSubmit} className={cn('space-y-4')}>
       <div className="bg-kafe-surface-container-low rounded-xl p-8 space-y-4">
         <div className="space-y-1">
-          <label className="text-label-sm text-kafe-on-surface-variant" htmlFor="name">Nome</label>
+          <label className="text-label-sm text-kafe-on-surface-variant" htmlFor="name">{tc('name')}</label>
           <input
             id="name"
             className={inputClass}
@@ -78,7 +81,7 @@ export default function EditCategoryForm({ category }: { category: CategoryRespo
 
         <div className="space-y-1">
           <label className="text-label-sm text-kafe-on-surface-variant" htmlFor="description">
-            Descrição <span className="text-kafe-on-surface-variant/60 font-normal">(opcional)</span>
+            {tc('description')} <span className="text-kafe-on-surface-variant/60 font-normal">{tc('optional')}</span>
           </label>
           <input
             id="description"
@@ -89,7 +92,7 @@ export default function EditCategoryForm({ category }: { category: CategoryRespo
         </div>
 
         <div className="space-y-1">
-          <label className="text-label-sm text-kafe-on-surface-variant" htmlFor="sortOrder">Ordem de exibição</label>
+          <label className="text-label-sm text-kafe-on-surface-variant" htmlFor="sortOrder">{t('form.displayOrder')}</label>
           <input
             id="sortOrder"
             type="number"
@@ -109,7 +112,7 @@ export default function EditCategoryForm({ category }: { category: CategoryRespo
             onChange={(e) => { setIsActive(e.target.checked); setDirty(true) }}
             className="h-4 w-4 rounded border-input accent-kafe-primary"
           />
-          <label className="text-label-sm text-kafe-on-surface-variant" htmlFor="isActive">Ativo</label>
+          <label className="text-label-sm text-kafe-on-surface-variant" htmlFor="isActive">{tc('active')}</label>
         </div>
       </div>
 
@@ -119,14 +122,14 @@ export default function EditCategoryForm({ category }: { category: CategoryRespo
           disabled={isPending}
           className="bg-kafe-primary text-kafe-on-primary rounded-full px-6 py-2.5 text-label-sm disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isPending ? 'Salvando...' : 'Salvar alterações'}
+          {isPending ? tc('saving') : tc('saveChanges')}
         </button>
         <button
           type="button"
           onClick={() => confirmNavigation('/admin/categories')}
           className="border border-kafe-primary text-kafe-primary rounded-full px-6 py-2.5 text-label-sm"
         >
-          Cancelar
+          {tc('cancel')}
         </button>
       </div>
     </form>

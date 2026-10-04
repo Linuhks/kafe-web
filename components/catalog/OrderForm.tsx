@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -19,12 +20,7 @@ import { useToast } from '@/context/ToastContext'
 import { useOrdersControllerCreate } from '@/lib/api/generated/api'
 import type { OrderResponseDto } from '@/lib/api/generated/api'
 
-const orderSchema = z.object({
-  clientName: z.string().max(100, 'Nome deve ter no máximo 100 caracteres').optional(),
-  notes: z.string().max(500, 'Observações devem ter no máximo 500 caracteres').optional(),
-})
-
-type OrderFields = z.infer<typeof orderSchema>
+type OrderFields = { clientName?: string; notes?: string }
 
 interface OrderFormProps {
   isOpen: boolean
@@ -32,6 +28,12 @@ interface OrderFormProps {
 }
 
 export default function OrderForm({ isOpen, onClose }: OrderFormProps) {
+  const t = useTranslations('orderForm')
+  const tc = useTranslations('common')
+  const orderSchema = z.object({
+    clientName: z.string().max(100, t('nameMax')).optional(),
+    notes: z.string().max(500, t('notesMax')).optional(),
+  })
   const { items, total, clearCart } = useCart()
   const { user } = useAuth()
   const { addToast } = useToast()
@@ -50,8 +52,8 @@ export default function OrderForm({ isOpen, onClose }: OrderFormProps) {
           clearCart()
         }
       },
-      onError: (err) => {
-        addToast('Erro ao criar pedido', 'error')
+      onError: () => {
+        addToast(t('createError'), 'error')
       },
     },
   })
@@ -78,33 +80,33 @@ export default function OrderForm({ isOpen, onClose }: OrderFormProps) {
         {confirmedOrder ? (
           <>
             <DialogHeader>
-              <DialogTitle>Pedido confirmado!</DialogTitle>
+              <DialogTitle>{t('confirmedTitle')}</DialogTitle>
             </DialogHeader>
             <div className="space-y-2 py-2">
               <p className="text-sm text-muted-foreground">
-                Seu pedido foi recebido com sucesso.
+                {t('confirmedMessage')}
               </p>
               <p className="text-sm font-mono bg-muted px-3 py-2 rounded">
-                ID: {confirmedOrder.id}
+                {t('orderId', { id: confirmedOrder.id })}
               </p>
             </div>
             <DialogFooter>
-              <Button onClick={handleClose}>Fechar</Button>
+              <Button onClick={handleClose}>{tc('close')}</Button>
             </DialogFooter>
           </>
         ) : (
           <>
             <DialogHeader>
-              <DialogTitle>Finalizar pedido</DialogTitle>
+              <DialogTitle>{t('title')}</DialogTitle>
             </DialogHeader>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div className="space-y-1">
                 <label htmlFor="clientName" className="text-sm font-medium">
-                  Seu nome
+                  {t('yourName')}
                 </label>
                 <Input
                   id="clientName"
-                  placeholder="Nome para o pedido"
+                  placeholder={t('namePlaceholder')}
                   {...register('clientName')}
                 />
                 {errors.clientName && (
@@ -113,12 +115,12 @@ export default function OrderForm({ isOpen, onClose }: OrderFormProps) {
               </div>
               <div className="space-y-1">
                 <label htmlFor="notes" className="text-sm font-medium">
-                  Observações
+                  {t('notes')}
                 </label>
                 <textarea
                   id="notes"
                   className="w-full min-h-[80px] rounded-md border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring resize-none"
-                  placeholder="Alguma observação? (opcional)"
+                  placeholder={t('notesPlaceholder')}
                   {...register('notes')}
                 />
                 {errors.notes && (
@@ -127,7 +129,7 @@ export default function OrderForm({ isOpen, onClose }: OrderFormProps) {
               </div>
               <div className="border-t pt-3">
                 <div className="flex justify-between text-sm font-semibold">
-                  <span>Total</span>
+                  <span>{tc('total')}</span>
                   <span>
                     {total.toLocaleString('pt-BR', {
                       style: 'currency',
@@ -138,10 +140,10 @@ export default function OrderForm({ isOpen, onClose }: OrderFormProps) {
               </div>
               <DialogFooter>
                 <Button type="button" variant="outline" onClick={handleClose}>
-                  Cancelar
+                  {tc('cancel')}
                 </Button>
                 <Button type="submit" isLoading={isPending} disabled={items.length === 0}>
-                  Confirmar pedido
+                  {t('confirm')}
                 </Button>
               </DialogFooter>
             </form>

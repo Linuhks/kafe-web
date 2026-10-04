@@ -2,12 +2,15 @@
 
 import { useState } from 'react'
 import { useRouter, useParams } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useInventoryControllerRestock } from '@/lib/api/generated/api'
 import { useToast } from '@/context/ToastContext'
 
 export default function RestockPage() {
+  const t = useTranslations('adminInventory.restockPage')
+  const tc = useTranslations('common')
   const router = useRouter()
   const params = useParams<{ id: string }>()
   const { addToast } = useToast()
@@ -19,11 +22,11 @@ export default function RestockPage() {
   const { mutate: restock, isPending } = useInventoryControllerRestock({
     mutation: {
       onSuccess: () => {
-        addToast('Estoque atualizado com sucesso.', 'success')
+        addToast(t('success'), 'success')
         router.push('/admin/inventory')
       },
       onError: () => {
-        addToast('Erro ao reabastecer. Tente novamente.', 'error')
+        addToast(t('error'), 'error')
       },
     },
   })
@@ -31,7 +34,7 @@ export default function RestockPage() {
   function validate(): boolean {
     const qty = parseFloat(quantity)
     if (!quantity.trim() || isNaN(qty) || qty <= 0) {
-      setQuantityError('A quantidade deve ser um número positivo.')
+      setQuantityError(t('quantityInvalid'))
       return false
     }
     setQuantityError('')
@@ -53,16 +56,16 @@ export default function RestockPage() {
   return (
     <div className="p-6 max-w-md space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Reabastecer ingrediente</h1>
+        <h1 className="text-2xl font-bold">{t('title')}</h1>
         <Button variant="outline" onClick={() => router.push('/admin/inventory')}>
-          Cancelar
+          {tc('cancel')}
         </Button>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-1">
           <label className="text-sm font-medium" htmlFor="quantity">
-            Quantidade a adicionar
+            {t('quantity')}
           </label>
           <Input
             id="quantity"
@@ -71,7 +74,7 @@ export default function RestockPage() {
             step="0.01"
             value={quantity}
             onChange={(e) => setQuantity(e.target.value)}
-            placeholder="Ex: 10.5"
+            placeholder={t('quantityPlaceholder')}
           />
           {quantityError && (
             <p className="text-xs text-destructive">{quantityError}</p>
@@ -80,13 +83,13 @@ export default function RestockPage() {
 
         <div className="space-y-1">
           <label className="text-sm font-medium" htmlFor="note">
-            Nota <span className="text-muted-foreground font-normal">(opcional)</span>
+            {t('note')} <span className="text-muted-foreground font-normal">{tc('optional')}</span>
           </label>
           <textarea
             id="note"
             value={note}
             onChange={(e) => setNote(e.target.value)}
-            placeholder="Ex: Reabastecimento semanal"
+            placeholder={t('notePlaceholder')}
             rows={3}
             className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring resize-none"
           />
@@ -94,7 +97,7 @@ export default function RestockPage() {
 
         <div className="flex gap-3 pt-2">
           <Button type="submit" disabled={isPending}>
-            {isPending ? 'Salvando...' : 'Reabastecer'}
+            {isPending ? tc('saving') : t('submit')}
           </Button>
         </div>
       </form>

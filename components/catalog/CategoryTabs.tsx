@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { cn } from '@/lib/utils'
 import ProductCard from './ProductCard'
 import type { Category, Product } from '@/lib/types'
@@ -11,6 +12,7 @@ interface CategoryTabsProps {
 }
 
 export default function CategoryTabs({ categories, products }: CategoryTabsProps) {
+  const t = useTranslations('categoryTabs')
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null)
 
   const filtered =
@@ -33,7 +35,7 @@ export default function CategoryTabs({ categories, products }: CategoryTabsProps
               : 'bg-muted text-muted-foreground hover:bg-muted/80'
           )}
         >
-          Todos
+          {t('all')}
         </button>
         {activeCategories
           .sort((a, b) => a.sortOrder - b.sortOrder)
@@ -56,7 +58,7 @@ export default function CategoryTabs({ categories, products }: CategoryTabsProps
       {/* Products grid */}
       {filtered.length === 0 ? (
         <p className="text-center text-sm text-muted-foreground py-12">
-          Nenhum produto disponível nesta categoria.
+          {t('empty')}
         </p>
       ) : (
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">

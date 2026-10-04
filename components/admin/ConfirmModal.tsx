@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import {
   Dialog,
   DialogContent,
@@ -23,25 +24,28 @@ interface ConfirmModalProps {
 export default function ConfirmModal({
   open,
   onOpenChange,
-  title = 'Confirmar ação',
+  title,
   message,
-  confirmLabel = 'Confirmar',
+  confirmLabel,
   onConfirm,
   loading = false,
 }: ConfirmModalProps) {
+  const t = useTranslations('confirmModal')
+  const tc = useTranslations('common')
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton={false}>
         <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
+          <DialogTitle>{title ?? t('defaultTitle')}</DialogTitle>
           <DialogDescription>{message}</DialogDescription>
         </DialogHeader>
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)} disabled={loading}>
-            Cancelar
+            {tc('cancel')}
           </Button>
           <Button variant="destructive" onClick={onConfirm} disabled={loading}>
-            {loading ? 'Aguarde...' : confirmLabel}
+            {loading ? t('wait') : (confirmLabel ?? t('defaultConfirm'))}
           </Button>
         </DialogFooter>
       </DialogContent>
