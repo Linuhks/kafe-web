@@ -261,5 +261,10 @@
   "catalog": {
     "unavailable": "Cardápio indisponível no momento. Tente novamente.",
     "retry": "Tentar novamente"
+  },
+  "errors": {
+    "title": "Algo deu errado",
+    "description": "Não foi possível carregar esta página. Tente novamente.",
+    "retry": "Tentar novamente"
   }
 }
