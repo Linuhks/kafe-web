@@ -259,6 +259,7 @@
     }
   },
   "catalog": {
-    "loadError": "We couldn't load the menu right now. Please reload the page in a moment."
+    "unavailable": "The menu is unavailable right now. Please try again.",
+    "retry": "Try again"
   }
 }

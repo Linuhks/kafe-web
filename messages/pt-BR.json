@@ -259,6 +259,7 @@
     }
   },
   "catalog": {
-    "loadError": "Não foi possível carregar o cardápio agora. Recarregue a página em instantes."
+    "unavailable": "Cardápio indisponível no momento. Tente novamente.",
+    "retry": "Tentar novamente"
   }
 }
