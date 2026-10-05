@@ -266,5 +266,323 @@
     "title": "Something went wrong",
     "description": "We couldn't load this page. Please try again.",
     "retry": "Try again"
+  },
+  "common": {
+    "cancel": "Cancel",
+    "saving": "Saving...",
+    "saveChanges": "Save changes",
+    "edit": "Edit",
+    "remove": "Remove",
+    "total": "Total",
+    "close": "Close",
+    "optional": "(optional)",
+    "loading": "Loading...",
+    "active": "Active",
+    "inactive": "Inactive",
+    "name": "Name",
+    "description": "Description",
+    "status": "Status",
+    "actions": "Actions",
+    "email": "Email",
+    "emptyValue": "—"
+  },
+  "adminCategories": {
+    "list": {
+      "title": "Categories",
+      "subtitle": "Manage menu categories. Organize products by type to improve navigation and customer experience.",
+      "newCategory": "New category",
+      "tipsTitle": "Organization Tips",
+      "tipsBody": "Well-defined categories help customers find what they want in under 3 seconds. Keep names short and descriptive.",
+      "totalTitle": "Total Categories",
+      "totalCaption": "Across all menu sections"
+    },
+    "table": {
+      "empty": "No categories found.",
+      "order": "Order",
+      "showing": "Showing {count, plural, one {# category} other {# categories}}",
+      "removeTitle": "Remove category",
+      "removeMessage": "Are you sure you want to remove the category \"{name}\"? This action cannot be undone.",
+      "removed": "Category removed successfully.",
+      "removeError": "Error removing category."
+    },
+    "form": {
+      "nameRequired": "Name is required.",
+      "displayOrder": "Display order",
+      "displayOrderOptional": "Display order (optional)",
+      "descriptionOptional": "Description (optional)"
+    },
+    "edit": {
+      "title": "Edit category",
+      "updated": "Category updated successfully.",
+      "updateError": "Error updating category. Check the data and try again."
+    },
+    "new": {
+      "title": "New category",
+      "subtitle": "Organize your products by creating clear categories for your customers.",
+      "namePlaceholder": "E.g. Hot Drinks",
+      "descriptionPlaceholder": "A short description of the products in this category...",
+      "displayOrderHint": "Set the position of this category in the digital menu.",
+      "submit": "Create category",
+      "created": "Category created successfully.",
+      "createError": "Error creating category. Check the data and try again.",
+      "tipTitle": "Design tip",
+      "tipBody": "Categories with short names (1-2 words) work better on mobile devices and make customer navigation smoother.",
+      "previewLabel": "App preview"
+    }
+  },
+  "adminInventory": {
+    "title": "Inventory",
+    "viewMovements": "View movements",
+    "empty": "No ingredients found.",
+    "unit": "Unit",
+    "currentStock": "Current stock",
+    "minimumStock": "Minimum stock",
+    "ok": "OK",
+    "restock": "Restock",
+    "restockPage": {
+      "title": "Restock ingredient",
+      "quantity": "Quantity to add",
+      "quantityPlaceholder": "E.g. 10.5",
+      "note": "Note",
+      "notePlaceholder": "E.g. Weekly restock",
+      "quantityInvalid": "Quantity must be a positive number.",
+      "success": "Inventory updated successfully.",
+      "error": "Error restocking. Please try again.",
+      "submit": "Restock"
+    },
+    "movements": {
+      "title": "Inventory movements",
+      "backToInventory": "← Back to inventory",
+      "ingredient": "Ingredient",
+      "type": "Type",
+      "quantity": "Quantity",
+      "note": "Note",
+      "order": "Order",
+      "date": "Date",
+      "empty": "No movements found.",
+      "dateFrom": "From",
+      "dateTo": "To",
+      "allIngredients": "All ingredients"
+    }
+  },
+  "adminProducts": {
+    "edit": {
+      "title": "Edit product",
+      "price": "Price",
+      "imageUrl": "Image URL",
+      "category": "Category",
+      "categoryPlaceholder": "Select a category",
+      "available": "Available",
+      "ingredients": "Ingredients",
+      "noIngredients": "No ingredients added.",
+      "removeIngredient": "Remove ingredient",
+      "addIngredient": "Add ingredient",
+      "ingredientPlaceholder": "Select an ingredient",
+      "quantityPlaceholder": "Qty.",
+      "updated": "Product updated successfully.",
+      "updateError": "Error updating product. Check the data and try again.",
+      "ingredientAdded": "Ingredient added.",
+      "ingredientAddError": "Error adding ingredient.",
+      "ingredientRemoved": "Ingredient removed.",
+      "ingredientRemoveError": "Error removing ingredient.",
+      "nameRequired": "Name is required.",
+      "categoryRequired": "Category is required.",
+      "priceRequired": "Price is required.",
+      "priceInvalid": "Price must be a positive number.",
+      "selectIngredient": "Select an ingredient.",
+      "quantityInvalid": "Enter a valid quantity.",
+      "ingredientDuplicate": "This ingredient has already been added."
+    }
+  },
+  "adminUsers": {
+    "list": {
+      "title": "Users",
+      "newUser": "New user"
+    },
+    "table": {
+      "empty": "No users found.",
+      "role": "Role",
+      "removeTitle": "Remove user",
+      "removeMessage": "Are you sure you want to remove \"{name}\"? This action cannot be undone.",
+      "removed": "User removed successfully.",
+      "removeError": "Error removing user."
+    },
+    "roles": {
+      "CLIENT": "Client",
+      "BARISTA": "Barista",
+      "ADMIN": "Admin"
+    },
+    "password": "Password",
+    "role": "Role",
+    "validation": {
+      "nameRequired": "Name is required",
+      "nameMax": "Name must be at most 100 characters",
+      "emailInvalid": "Invalid email",
+      "emailMax": "Email must be at most 254 characters",
+      "passwordMin": "Password must be at least 8 characters",
+      "passwordMax": "Password must be at most 128 characters"
+    },
+    "new": {
+      "title": "New user",
+      "submit": "Create user",
+      "created": "User created successfully.",
+      "createError": "Error creating user. Check the data and try again."
+    },
+    "edit": {
+      "title": "Edit user",
+      "updated": "User updated successfully.",
+      "updateError": "Error updating user."
+    }
+  },
+  "confirmModal": {
+    "defaultTitle": "Confirm action",
+    "defaultConfirm": "Confirm",
+    "wait": "Please wait..."
+  },
+  "adminSidebar": {
+    "settings": "Settings",
+    "nav": {
+      "dashboard": "Dashboard",
+      "products": "Products",
+      "categories": "Categories",
+      "users": "Users",
+      "inventory": "Inventory"
+    }
+  },
+  "orderQueue": {
+    "title": "Order queue",
+    "empty": "No active orders right now.",
+    "statusUpdated": "Status updated",
+    "statusUpdateError": "Error updating status"
+  },
+  "statusButton": {
+    "RECEIVED": "Start preparing",
+    "IN_PREPARATION": "Mark as ready",
+    "READY": "Deliver"
+  },
+  "inventoryAlertBanner": {
+    "lowStock": "Low stock:"
+  },
+  "orderQueueCard": {
+    "anonymous": "Anonymous",
+    "minutesAgo": "{minutes} min ago",
+    "quantityTimes": "× {quantity}",
+    "notes": "Notes:",
+    "cancel": "Cancel",
+    "cancelTitle": "Cancel order?",
+    "cancelMessage": "Are you sure you want to cancel the order from <strong>{clientName}</strong>? This action cannot be undone.",
+    "back": "Back",
+    "confirmCancel": "Confirm cancellation"
+  },
+  "adminOrderQueue": {
+    "title": "Order queue",
+    "subtitle": "Track and advance order status in real time.",
+    "searchPlaceholder": "Search by customer...",
+    "tabs": {
+      "all": "All orders",
+      "espressos": "Espressos",
+      "snacks": "Snacks"
+    },
+    "sort": {
+      "newest": "Newest",
+      "oldest": "Oldest",
+      "priority": "Priority"
+    },
+    "empty": "No active orders right now.",
+    "columns": {
+      "received": "Received",
+      "inPreparation": "In preparation",
+      "ready": "Ready"
+    },
+    "columnEmpty": {
+      "received": "No received orders",
+      "inPreparation": "No orders in preparation",
+      "ready": "No orders ready for pickup"
+    },
+    "stats": {
+      "queued": "Orders in queue",
+      "avgPrepTime": "Average prep time",
+      "efficiency": "Efficiency",
+      "operationActive": "Operation active"
+    },
+    "staff": {
+      "barista1": "Barista 1",
+      "barista2": "Barista 2",
+      "kitchen": "Kitchen",
+      "barista1Initials": "B1",
+      "barista2Initials": "B2",
+      "kitchenInitials": "K"
+    },
+    "client": "Customer",
+    "quantityTimes": "×{quantity}",
+    "updating": "Updating...",
+    "advance": {
+      "RECEIVED": "Start preparing",
+      "IN_PREPARATION": "Complete",
+      "READY": "Mark as delivered"
+    },
+    "cancelOrderAria": "Cancel order"
+  },
+  "cartSidebar": {
+    "title": "Your selection",
+    "subtitle": "Prepared for your ritual",
+    "empty": "Your cart is empty.",
+    "continueShopping": "Continue shopping",
+    "checkout": "Place order"
+  },
+  "categoryTabs": {
+    "all": "All",
+    "empty": "No products available in this category."
+  },
+  "orderForm": {
+    "confirmedTitle": "Order confirmed!",
+    "confirmedMessage": "Your order was received successfully.",
+    "orderId": "ID: {id}",
+    "title": "Place order",
+    "yourName": "Your name",
+    "namePlaceholder": "Name for the order",
+    "notes": "Notes",
+    "notesPlaceholder": "Any notes? (optional)",
+    "confirm": "Confirm order",
+    "createError": "Error creating order",
+    "nameMax": "Name must be at most 100 characters",
+    "notesMax": "Notes must be at most 500 characters"
+  },
+  "landing": {
+    "menuLink": "Menu",
+    "tagline": "Coffee & Experiences",
+    "description": "Creamy cappuccinos, intense espressos, velvety lattes and more. Every cup, a unique experience made with carefully selected beans.",
+    "menuTitle": "Our menu",
+    "sections": {
+      "classics": {
+        "label": "Classics",
+        "description": "The purity of coffee at its best."
+      },
+      "specials": {
+        "label": "Specials",
+        "description": "Unique combinations with selected ingredients."
+      },
+      "sides": {
+        "label": "Sides",
+        "description": "Sweet and savory treats made daily."
+      }
+    },
+    "footer": "Made with love and plenty of coffee ☕",
+    "explore": "Explore menu",
+    "loading": "Loading…"
+  },
+  "navBar": {
+    "myOrders": "My orders",
+    "cart": "Cart",
+    "logout": "Log out"
+  },
+  "menuPage": {
+    "title": "Menu"
+  },
+  "ordersPage": {
+    "title": "My orders",
+    "empty": "No orders found.",
+    "anonymous": "Anonymous",
+    "quantityTimes": "× {quantity}"
   }
 }

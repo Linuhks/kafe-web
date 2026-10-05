@@ -103,4 +103,4 @@ docker run -p 3000:3000 kafe-web
 - [Architecture](docs/architecture.md) — rendering model, auth flow, API layers, middleware
 - [Code Guide](docs/code-guide.md) — conventions, data fetching patterns, styling, forms
 - [Modules](docs/modules.md) — route map, component index, layouts, hooks
-- [Workflow](docs/workflow-dev.md) — per-subtask gate, commit process, code standards
+- [Rules](.claude/rules/) — workflow (per-subtask gate, commit, PR), code style, testing

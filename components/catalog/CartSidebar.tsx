@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { X, Minus, Plus, Trash2, ShoppingBag } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useCart } from '@/context/CartContext'
@@ -12,6 +13,8 @@ interface CartSidebarProps {
 }
 
 export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
+  const t = useTranslations('cartSidebar')
+  const tc = useTranslations('common')
   const { items, updateQuantity, removeItem, total, itemCount } = useCart()
   const [isOrderFormOpen, setIsOrderFormOpen] = useState(false)
 
@@ -35,8 +38,8 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
         {/* Header */}
         <div className="flex items-center justify-between border-b border-outline-variant p-8">
           <div>
-            <h2 className="text-2xl font-extrabold text-[var(--kafe-primary)]">Sua Seleção</h2>
-            <p className="text-sm text-[var(--kafe-on-surface-variant)]">Preparado para seu ritual</p>
+            <h2 className="text-2xl font-extrabold text-[var(--kafe-primary)]">{t('title')}</h2>
+            <p className="text-sm text-[var(--kafe-on-surface-variant)]">{t('subtitle')}</p>
           </div>
           <Button variant="ghost" size="icon" onClick={onClose}>
             <X className="h-5 w-5" />
@@ -50,9 +53,9 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
               <div className="bg-[var(--kafe-surface-container)] p-8 rounded-full mb-6">
                 <ShoppingBag className="h-10 w-10 text-[var(--kafe-on-surface-variant)]" />
               </div>
-              <p className="text-sm text-[var(--kafe-on-surface-variant)] mb-4">Seu carrinho está vazio.</p>
+              <p className="text-sm text-[var(--kafe-on-surface-variant)] mb-4">{t('empty')}</p>
               <Button variant="outline" onClick={onClose}>
-                Continuar comprando
+                {t('continueShopping')}
               </Button>
             </div>
           ) : (
@@ -102,7 +105,7 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
         {/* Footer — always rendered */}
         <div className="border-t border-outline-variant p-8 bg-surface-container-low space-y-3">
           <div className="flex justify-between items-baseline">
-            <span className="text-sm font-semibold">Total</span>
+            <span className="text-sm font-semibold">{tc('total')}</span>
             <span className="text-2xl font-extrabold text-[var(--kafe-primary)]">
               {total.toLocaleString('pt-BR', {
                 style: 'currency',
@@ -115,7 +118,7 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
             onClick={() => setIsOrderFormOpen(true)}
             disabled={itemCount === 0}
           >
-            Finalizar Pedido
+            {t('checkout')}
           </Button>
         </div>
       </div>

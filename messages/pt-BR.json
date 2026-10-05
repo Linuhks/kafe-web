@@ -266,5 +266,323 @@
     "title": "Algo deu errado",
     "description": "Não foi possível carregar esta página. Tente novamente.",
     "retry": "Tentar novamente"
+  },
+  "common": {
+    "cancel": "Cancelar",
+    "saving": "Salvando...",
+    "saveChanges": "Salvar alterações",
+    "edit": "Editar",
+    "remove": "Remover",
+    "total": "Total",
+    "close": "Fechar",
+    "optional": "(opcional)",
+    "loading": "Carregando...",
+    "active": "Ativo",
+    "inactive": "Inativo",
+    "name": "Nome",
+    "description": "Descrição",
+    "status": "Status",
+    "actions": "Ações",
+    "email": "Email",
+    "emptyValue": "—"
+  },
+  "adminCategories": {
+    "list": {
+      "title": "Categorias",
+      "subtitle": "Gerencie as categorias do cardápio. Organize os produtos por tipo para melhorar a navegação e a experiência do cliente.",
+      "newCategory": "Nova categoria",
+      "tipsTitle": "Dicas de organização",
+      "tipsBody": "Categorias bem definidas ajudam os clientes a encontrar o que querem em menos de 3 segundos. Mantenha os nomes curtos e descritivos.",
+      "totalTitle": "Total de categorias",
+      "totalCaption": "Em todas as seções do cardápio"
+    },
+    "table": {
+      "empty": "Nenhuma categoria encontrada.",
+      "order": "Ordem",
+      "showing": "Exibindo {count, plural, one {# categoria} other {# categorias}}",
+      "removeTitle": "Remover categoria",
+      "removeMessage": "Tem certeza que deseja remover a categoria \"{name}\"? Esta ação não pode ser desfeita.",
+      "removed": "Categoria removida com sucesso.",
+      "removeError": "Erro ao remover categoria."
+    },
+    "form": {
+      "nameRequired": "Nome é obrigatório.",
+      "displayOrder": "Ordem de exibição",
+      "displayOrderOptional": "Ordem de exibição (opcional)",
+      "descriptionOptional": "Descrição (opcional)"
+    },
+    "edit": {
+      "title": "Editar categoria",
+      "updated": "Categoria atualizada com sucesso.",
+      "updateError": "Erro ao atualizar categoria. Verifique os dados e tente novamente."
+    },
+    "new": {
+      "title": "Nova categoria",
+      "subtitle": "Organize seus produtos criando categorias claras para seus clientes.",
+      "namePlaceholder": "Ex: Bebidas Quentes",
+      "descriptionPlaceholder": "Uma breve descrição sobre os produtos desta categoria...",
+      "displayOrderHint": "Determine a posição desta categoria no menu digital.",
+      "submit": "Criar categoria",
+      "created": "Categoria criada com sucesso.",
+      "createError": "Erro ao criar categoria. Verifique os dados e tente novamente.",
+      "tipTitle": "Dica de Design",
+      "tipBody": "Categorias com nomes curtos (1-2 palavras) funcionam melhor em dispositivos móveis e tornam a navegação do cliente mais fluida.",
+      "previewLabel": "Prévia do App"
+    }
+  },
+  "adminInventory": {
+    "title": "Estoque",
+    "viewMovements": "Ver movimentações",
+    "empty": "Nenhum ingrediente encontrado.",
+    "unit": "Unidade",
+    "currentStock": "Estoque atual",
+    "minimumStock": "Estoque mínimo",
+    "ok": "OK",
+    "restock": "Reabastecer",
+    "restockPage": {
+      "title": "Reabastecer ingrediente",
+      "quantity": "Quantidade a adicionar",
+      "quantityPlaceholder": "Ex: 10.5",
+      "note": "Nota",
+      "notePlaceholder": "Ex: Reabastecimento semanal",
+      "quantityInvalid": "A quantidade deve ser um número positivo.",
+      "success": "Estoque atualizado com sucesso.",
+      "error": "Erro ao reabastecer. Tente novamente.",
+      "submit": "Reabastecer"
+    },
+    "movements": {
+      "title": "Movimentações de estoque",
+      "backToInventory": "← Voltar ao estoque",
+      "ingredient": "Ingrediente",
+      "type": "Tipo",
+      "quantity": "Quantidade",
+      "note": "Nota",
+      "order": "Pedido",
+      "date": "Data",
+      "empty": "Nenhuma movimentação encontrada.",
+      "dateFrom": "De",
+      "dateTo": "Até",
+      "allIngredients": "Todos os ingredientes"
+    }
+  },
+  "adminProducts": {
+    "edit": {
+      "title": "Editar produto",
+      "price": "Preço",
+      "imageUrl": "URL da imagem",
+      "category": "Categoria",
+      "categoryPlaceholder": "Selecione uma categoria",
+      "available": "Disponível",
+      "ingredients": "Ingredientes",
+      "noIngredients": "Nenhum ingrediente adicionado.",
+      "removeIngredient": "Remover ingrediente",
+      "addIngredient": "Adicionar ingrediente",
+      "ingredientPlaceholder": "Selecione um ingrediente",
+      "quantityPlaceholder": "Qtd.",
+      "updated": "Produto atualizado com sucesso.",
+      "updateError": "Erro ao atualizar produto. Verifique os dados e tente novamente.",
+      "ingredientAdded": "Ingrediente adicionado.",
+      "ingredientAddError": "Erro ao adicionar ingrediente.",
+      "ingredientRemoved": "Ingrediente removido.",
+      "ingredientRemoveError": "Erro ao remover ingrediente.",
+      "nameRequired": "Nome é obrigatório.",
+      "categoryRequired": "Categoria é obrigatória.",
+      "priceRequired": "Preço é obrigatório.",
+      "priceInvalid": "Preço deve ser um número positivo.",
+      "selectIngredient": "Selecione um ingrediente.",
+      "quantityInvalid": "Informe uma quantidade válida.",
+      "ingredientDuplicate": "Este ingrediente já foi adicionado."
+    }
+  },
+  "adminUsers": {
+    "list": {
+      "title": "Usuários",
+      "newUser": "Novo usuário"
+    },
+    "table": {
+      "empty": "Nenhum usuário encontrado.",
+      "role": "Papel",
+      "removeTitle": "Remover usuário",
+      "removeMessage": "Tem certeza que deseja remover \"{name}\"? Esta ação não pode ser desfeita.",
+      "removed": "Usuário removido com sucesso.",
+      "removeError": "Erro ao remover usuário."
+    },
+    "roles": {
+      "CLIENT": "Cliente",
+      "BARISTA": "Barista",
+      "ADMIN": "Admin"
+    },
+    "password": "Senha",
+    "role": "Papel",
+    "validation": {
+      "nameRequired": "Nome é obrigatório",
+      "nameMax": "Nome deve ter no máximo 100 caracteres",
+      "emailInvalid": "Email inválido",
+      "emailMax": "Email deve ter no máximo 254 caracteres",
+      "passwordMin": "Senha deve ter pelo menos 8 caracteres",
+      "passwordMax": "Senha deve ter no máximo 128 caracteres"
+    },
+    "new": {
+      "title": "Novo usuário",
+      "submit": "Criar usuário",
+      "created": "Usuário criado com sucesso.",
+      "createError": "Erro ao criar usuário. Verifique os dados e tente novamente."
+    },
+    "edit": {
+      "title": "Editar usuário",
+      "updated": "Usuário atualizado com sucesso.",
+      "updateError": "Erro ao atualizar usuário."
+    }
+  },
+  "confirmModal": {
+    "defaultTitle": "Confirmar ação",
+    "defaultConfirm": "Confirmar",
+    "wait": "Aguarde..."
+  },
+  "adminSidebar": {
+    "settings": "Configurações",
+    "nav": {
+      "dashboard": "Dashboard",
+      "products": "Produtos",
+      "categories": "Categorias",
+      "users": "Usuários",
+      "inventory": "Estoque"
+    }
+  },
+  "orderQueue": {
+    "title": "Fila de pedidos",
+    "empty": "Nenhum pedido ativo no momento.",
+    "statusUpdated": "Status atualizado",
+    "statusUpdateError": "Erro ao atualizar status"
+  },
+  "statusButton": {
+    "RECEIVED": "Iniciar preparo",
+    "IN_PREPARATION": "Marcar como pronto",
+    "READY": "Entregar"
+  },
+  "inventoryAlertBanner": {
+    "lowStock": "Estoque baixo:"
+  },
+  "orderQueueCard": {
+    "anonymous": "Anônimo",
+    "minutesAgo": "{minutes} min atrás",
+    "quantityTimes": "× {quantity}",
+    "notes": "Obs:",
+    "cancel": "Cancelar",
+    "cancelTitle": "Cancelar pedido?",
+    "cancelMessage": "Tem certeza que deseja cancelar o pedido de <strong>{clientName}</strong>? Esta ação não pode ser desfeita.",
+    "back": "Voltar",
+    "confirmCancel": "Confirmar cancelamento"
+  },
+  "adminOrderQueue": {
+    "title": "Fila de pedidos",
+    "subtitle": "Acompanhe e avance o status dos pedidos em tempo real.",
+    "searchPlaceholder": "Buscar por cliente...",
+    "tabs": {
+      "all": "Todos os Pedidos",
+      "espressos": "Expressos",
+      "snacks": "Lanches"
+    },
+    "sort": {
+      "newest": "Mais recentes",
+      "oldest": "Mais antigos",
+      "priority": "Prioridade"
+    },
+    "empty": "Nenhum pedido ativo no momento.",
+    "columns": {
+      "received": "Recebidos",
+      "inPreparation": "Em preparo",
+      "ready": "Prontos"
+    },
+    "columnEmpty": {
+      "received": "Sem pedidos recebidos",
+      "inPreparation": "Sem pedidos em preparo",
+      "ready": "Nenhum pedido pronto para entrega"
+    },
+    "stats": {
+      "queued": "Pedidos na Fila",
+      "avgPrepTime": "Tempo Médio de Preparo",
+      "efficiency": "Eficiência",
+      "operationActive": "Operação ativa"
+    },
+    "staff": {
+      "barista1": "Barista 1",
+      "barista2": "Barista 2",
+      "kitchen": "Cozinha",
+      "barista1Initials": "B1",
+      "barista2Initials": "B2",
+      "kitchenInitials": "CZ"
+    },
+    "client": "Cliente",
+    "quantityTimes": "×{quantity}",
+    "updating": "Atualizando...",
+    "advance": {
+      "RECEIVED": "Iniciar preparo",
+      "IN_PREPARATION": "Concluir",
+      "READY": "Marcar como entregue"
+    },
+    "cancelOrderAria": "Cancelar pedido"
+  },
+  "cartSidebar": {
+    "title": "Sua Seleção",
+    "subtitle": "Preparado para seu ritual",
+    "empty": "Seu carrinho está vazio.",
+    "continueShopping": "Continuar comprando",
+    "checkout": "Finalizar Pedido"
+  },
+  "categoryTabs": {
+    "all": "Todos",
+    "empty": "Nenhum produto disponível nesta categoria."
+  },
+  "orderForm": {
+    "confirmedTitle": "Pedido confirmado!",
+    "confirmedMessage": "Seu pedido foi recebido com sucesso.",
+    "orderId": "ID: {id}",
+    "title": "Finalizar pedido",
+    "yourName": "Seu nome",
+    "namePlaceholder": "Nome para o pedido",
+    "notes": "Observações",
+    "notesPlaceholder": "Alguma observação? (opcional)",
+    "confirm": "Confirmar pedido",
+    "createError": "Erro ao criar pedido",
+    "nameMax": "Nome deve ter no máximo 100 caracteres",
+    "notesMax": "Observações devem ter no máximo 500 caracteres"
+  },
+  "landing": {
+    "menuLink": "Cardápio",
+    "tagline": "Café & Experiências",
+    "description": "Cappuccinos cremosos, expressos intensos, lattes aveludados e muito mais. Cada copo, uma experiência única feita com grãos cuidadosamente selecionados.",
+    "menuTitle": "Nosso Cardápio",
+    "sections": {
+      "classics": {
+        "label": "Clássicos",
+        "description": "A pureza do café em sua melhor forma."
+      },
+      "specials": {
+        "label": "Especiais",
+        "description": "Combinações únicas com ingredientes selecionados."
+      },
+      "sides": {
+        "label": "Acompanhamentos",
+        "description": "Doces e salgados feitos diariamente."
+      }
+    },
+    "footer": "Feito com amor e muito café ☕",
+    "explore": "Explorar Cardápio",
+    "loading": "Carregando…"
+  },
+  "navBar": {
+    "myOrders": "Meus Pedidos",
+    "cart": "Carrinho",
+    "logout": "Sair"
+  },
+  "menuPage": {
+    "title": "Cardápio"
+  },
+  "ordersPage": {
+    "title": "Meus Pedidos",
+    "empty": "Nenhum pedido encontrado.",
+    "anonymous": "Anônimo",
+    "quantityTimes": "× {quantity}"
   }
 }

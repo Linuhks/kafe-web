@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from '@/lib/test-utils'
 import React from 'react'
 import AdminSidebar from './AdminSidebar'
 import { usePathname } from 'next/navigation'

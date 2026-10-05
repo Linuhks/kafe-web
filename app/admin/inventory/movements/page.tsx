@@ -2,6 +2,7 @@ export const dynamic = 'force-dynamic'
 
 import { Suspense } from 'react'
 import Link from 'next/link'
+import { getLocale, getTranslations } from 'next-intl/server'
 import { Button } from '@/components/ui/button'
 import { PaginationWithSuspense } from '@/components/ui/pagination'
 import DateRangePicker from '@/components/admin/DateRangePicker'
@@ -21,6 +22,8 @@ interface PageProps {
 
 export default async function InventoryMovementsPage({ searchParams }: PageProps) {
   const { from, to, ingredientId, page: pageParam } = await searchParams
+  const t = await getTranslations('adminInventory.movements')
+  const locale = await getLocale()
   const currentPage = Math.max(1, parseInt(pageParam ?? '1', 10))
 
   const [{ ingredients }, { movements }] = await Promise.all([
@@ -51,9 +54,9 @@ export default async function InventoryMovementsPage({ searchParams }: PageProps
   return (
     <div className="p-6 space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Movimentações de estoque</h1>
+        <h1 className="text-2xl font-bold">{t('title')}</h1>
         <Button variant="outline" asChild>
-          <Link href="/admin/inventory">← Voltar ao estoque</Link>
+          <Link href="/admin/inventory">{t('backToInventory')}</Link>
         </Button>
       </div>
 
@@ -70,19 +73,19 @@ export default async function InventoryMovementsPage({ searchParams }: PageProps
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b bg-muted/50">
-              <th className="px-4 py-3 text-left font-medium">Ingrediente</th>
-              <th className="px-4 py-3 text-left font-medium">Tipo</th>
-              <th className="px-4 py-3 text-left font-medium">Quantidade</th>
-              <th className="px-4 py-3 text-left font-medium">Nota</th>
-              <th className="px-4 py-3 text-left font-medium">Pedido</th>
-              <th className="px-4 py-3 text-left font-medium">Data</th>
+              <th className="px-4 py-3 text-left font-medium">{t('ingredient')}</th>
+              <th className="px-4 py-3 text-left font-medium">{t('type')}</th>
+              <th className="px-4 py-3 text-left font-medium">{t('quantity')}</th>
+              <th className="px-4 py-3 text-left font-medium">{t('note')}</th>
+              <th className="px-4 py-3 text-left font-medium">{t('order')}</th>
+              <th className="px-4 py-3 text-left font-medium">{t('date')}</th>
             </tr>
           </thead>
           <tbody>
             {paginated.length === 0 ? (
               <tr>
                 <td colSpan={6} className="px-4 py-8 text-center text-muted-foreground">
-                  Nenhuma movimentação encontrada.
+                  {t('empty')}
                 </td>
               </tr>
             ) : (
@@ -102,7 +105,7 @@ export default async function InventoryMovementsPage({ searchParams }: PageProps
                     {typeof movement.orderId === 'string' ? movement.orderId : '—'}
                   </td>
                   <td className="px-4 py-3 text-muted-foreground whitespace-nowrap">
-                    {new Date(movement.createdAt).toLocaleString('pt-BR')}
+                    {new Date(movement.createdAt).toLocaleString(locale)}
                   </td>
                 </tr>
               ))

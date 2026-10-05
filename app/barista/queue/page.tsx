@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import { Skeleton } from '@/components/ui/skeleton'
 import InventoryAlertBanner from '@/components/barista/InventoryAlertBanner'
 import OrderQueueCard from '@/components/barista/OrderQueueCard'
@@ -14,6 +15,7 @@ import type { UpdateOrderStatusDtoStatus } from '@/lib/api/generated/api'
 const ACTIVE_STATUSES = new Set(['RECEIVED', 'IN_PREPARATION'])
 
 export default function BaristaQueuePage() {
+  const t = useTranslations('orderQueue')
   const { addToast } = useToast()
 
   const queueQuery = useOrdersControllerQueue({
@@ -26,10 +28,10 @@ export default function BaristaQueuePage() {
     mutation: {
       onSuccess: () => {
         queueQuery.refetch()
-        addToast('Status atualizado', 'success')
+        addToast(t('statusUpdated'), 'success')
       },
-      onError: (err) => {
-        addToast('Erro ao atualizar status', 'error')
+      onError: () => {
+        addToast(t('statusUpdateError'), 'error')
       },
     },
   })
@@ -51,7 +53,7 @@ export default function BaristaQueuePage() {
   return (
     <div className="min-h-screen bg-background">
       <div className="mx-auto max-w-4xl px-4 py-6 space-y-4">
-        <h1 className="text-2xl font-bold">Fila de pedidos</h1>
+        <h1 className="text-2xl font-bold">{t('title')}</h1>
 
         <InventoryAlertBanner ingredients={alerts} />
 
@@ -63,7 +65,7 @@ export default function BaristaQueuePage() {
           </div>
         ) : orders.length === 0 ? (
           <p className="text-center text-muted-foreground py-16">
-            Nenhum pedido ativo no momento.
+            {t('empty')}
           </p>
         ) : (
           <div className="grid gap-4 sm:grid-cols-2">

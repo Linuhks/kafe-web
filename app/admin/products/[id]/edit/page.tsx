@@ -2,6 +2,7 @@
 
 import { useState, useEffect, use } from 'react'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { Trash2, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -37,6 +38,8 @@ interface PageProps {
 
 export default function EditProductPage({ params }: PageProps) {
   const { id } = use(params)
+  const t = useTranslations('adminProducts.edit')
+  const tc = useTranslations('common')
   const router = useRouter()
   const { addToast } = useToast()
   const { setDirty, confirmNavigation } = useFormDirty()
@@ -85,11 +88,11 @@ export default function EditProductPage({ params }: PageProps) {
     mutation: {
       onSuccess: () => {
         setDirty(false)
-        addToast('Produto atualizado com sucesso.', 'success')
+        addToast(t('updated'), 'success')
         router.push('/admin/products')
       },
       onError: () => {
-        addToast('Erro ao atualizar produto. Verifique os dados e tente novamente.', 'error')
+        addToast(t('updateError'), 'error')
       },
     },
   })
@@ -97,14 +100,14 @@ export default function EditProductPage({ params }: PageProps) {
   const { mutate: addIngredient, isPending: isAdding } = useProductsControllerAddIngredient({
     mutation: {
       onSuccess: () => {
-        addToast('Ingrediente adicionado.', 'success')
+        addToast(t('ingredientAdded'), 'success')
         setAddIngredientId('')
         setAddQuantity('')
         setAddIngredientError('')
         refetchProductIngredients()
       },
       onError: () => {
-        addToast('Erro ao adicionar ingrediente.', 'error')
+        addToast(t('ingredientAddError'), 'error')
       },
     },
   })
@@ -112,11 +115,11 @@ export default function EditProductPage({ params }: PageProps) {
   const { mutate: removeIngredient } = useProductsControllerRemoveIngredient({
     mutation: {
       onSuccess: () => {
-        addToast('Ingrediente removido.', 'success')
+        addToast(t('ingredientRemoved'), 'success')
         refetchProductIngredients()
       },
       onError: () => {
-        addToast('Erro ao remover ingrediente.', 'error')
+        addToast(t('ingredientRemoveError'), 'error')
       },
     },
   })
@@ -127,12 +130,12 @@ export default function EditProductPage({ params }: PageProps) {
 
   function validate(): boolean {
     const errs: FormErrors = {}
-    if (!name.trim()) errs.name = 'Nome é obrigatório.'
-    if (!categoryId) errs.categoryId = 'Categoria é obrigatória.'
+    if (!name.trim()) errs.name = t('nameRequired')
+    if (!categoryId) errs.categoryId = t('categoryRequired')
     if (!price.trim()) {
-      errs.price = 'Preço é obrigatório.'
+      errs.price = t('priceRequired')
     } else if (isNaN(parseFloat(price)) || parseFloat(price) <= 0) {
-      errs.price = 'Preço deve ser um número positivo.'
+      errs.price = t('priceInvalid')
     }
     setErrors(errs)
     return Object.keys(errs).length === 0
@@ -156,16 +159,16 @@ export default function EditProductPage({ params }: PageProps) {
 
   function handleAddIngredient() {
     if (!addIngredientId) {
-      setAddIngredientError('Selecione um ingrediente.')
+      setAddIngredientError(t('selectIngredient'))
       return
     }
     if (!addQuantity || isNaN(parseFloat(addQuantity)) || parseFloat(addQuantity) <= 0) {
-      setAddIngredientError('Informe uma quantidade válida.')
+      setAddIngredientError(t('quantityInvalid'))
       return
     }
     const alreadyAdded = productIngredients.some((pi) => pi.ingredientId === addIngredientId)
     if (alreadyAdded) {
-      setAddIngredientError('Este ingrediente já foi adicionado.')
+      setAddIngredientError(t('ingredientDuplicate'))
       return
     }
     setAddIngredientError('')
@@ -175,7 +178,7 @@ export default function EditProductPage({ params }: PageProps) {
   if (!initialized) {
     return (
       <div className="p-6">
-        <p className="text-sm text-muted-foreground">Carregando...</p>
+        <p className="text-sm text-muted-foreground">{tc('loading')}</p>
       </div>
     )
   }
@@ -183,15 +186,15 @@ export default function EditProductPage({ params }: PageProps) {
   return (
     <div className="p-6 max-w-lg space-y-8">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Editar produto</h1>
+        <h1 className="text-2xl font-bold">{t('title')}</h1>
         <Button variant="outline" onClick={() => confirmNavigation('/admin/products')}>
-          Cancelar
+          {tc('cancel')}
         </Button>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-1">
-          <label className="text-sm font-medium" htmlFor="name">Nome</label>
+          <label className="text-sm font-medium" htmlFor="name">{tc('name')}</label>
           <Input
             id="name"
             value={name}
@@ -201,7 +204,7 @@ export default function EditProductPage({ params }: PageProps) {
         </div>
 
         <div className="space-y-1">
-          <label className="text-sm font-medium" htmlFor="description">Descrição</label>
+          <label className="text-sm font-medium" htmlFor="description">{tc('description')}</label>
           <Input
             id="description"
             value={description}
@@ -210,7 +213,7 @@ export default function EditProductPage({ params }: PageProps) {
         </div>
 
         <div className="space-y-1">
-          <label className="text-sm font-medium" htmlFor="price">Preço</label>
+          <label className="text-sm font-medium" htmlFor="price">{t('price')}</label>
           <Input
             id="price"
             type="number"
@@ -223,7 +226,7 @@ export default function EditProductPage({ params }: PageProps) {
         </div>
 
         <div className="space-y-1">
-          <label className="text-sm font-medium" htmlFor="imageUrl">URL da imagem</label>
+          <label className="text-sm font-medium" htmlFor="imageUrl">{t('imageUrl')}</label>
           <Input
             id="imageUrl"
             type="url"
@@ -233,10 +236,10 @@ export default function EditProductPage({ params }: PageProps) {
         </div>
 
         <div className="space-y-1">
-          <label className="text-sm font-medium">Categoria</label>
+          <label className="text-sm font-medium">{t('category')}</label>
           <Select value={categoryId} onValueChange={(v) => { setCategoryId(v); handleChange() }}>
             <SelectTrigger>
-              <SelectValue placeholder="Selecione uma categoria" />
+              <SelectValue placeholder={t('categoryPlaceholder')} />
             </SelectTrigger>
             <SelectContent>
               {categories.map((cat) => (
@@ -257,21 +260,21 @@ export default function EditProductPage({ params }: PageProps) {
             onChange={(e) => { setIsAvailable(e.target.checked); handleChange() }}
             className="h-4 w-4 rounded border-input accent-primary"
           />
-          <label className="text-sm font-medium" htmlFor="isAvailable">Disponível</label>
+          <label className="text-sm font-medium" htmlFor="isAvailable">{t('available')}</label>
         </div>
 
         <div className="flex gap-3 pt-2">
           <Button type="submit" disabled={isPending}>
-            {isPending ? 'Salvando...' : 'Salvar alterações'}
+            {isPending ? tc('saving') : tc('saveChanges')}
           </Button>
         </div>
       </form>
 
       <div className="space-y-4">
-        <h2 className="text-lg font-semibold">Ingredientes</h2>
+        <h2 className="text-lg font-semibold">{t('ingredients')}</h2>
 
         {productIngredients.length === 0 ? (
-          <p className="text-sm text-muted-foreground">Nenhum ingrediente adicionado.</p>
+          <p className="text-sm text-muted-foreground">{t('noIngredients')}</p>
         ) : (
           <div className="rounded-lg border divide-y">
             {productIngredients.map((pi) => {
@@ -292,7 +295,7 @@ export default function EditProductPage({ params }: PageProps) {
                     onClick={() => removeIngredient({ id, ingredientId: pi.ingredientId })}
                   >
                     <Trash2 className="h-4 w-4 text-destructive" />
-                    <span className="sr-only">Remover ingrediente</span>
+                    <span className="sr-only">{t('removeIngredient')}</span>
                   </Button>
                 </div>
               )
@@ -301,14 +304,14 @@ export default function EditProductPage({ params }: PageProps) {
         )}
 
         <div className="space-y-2">
-          <p className="text-sm font-medium">Adicionar ingrediente</p>
+          <p className="text-sm font-medium">{t('addIngredient')}</p>
           <div className="flex gap-2">
             <Select
               value={addIngredientId}
               onValueChange={(v) => { setAddIngredientId(v); setAddIngredientError('') }}
             >
               <SelectTrigger className="flex-1">
-                <SelectValue placeholder="Selecione um ingrediente" />
+                <SelectValue placeholder={t('ingredientPlaceholder')} />
               </SelectTrigger>
               <SelectContent>
                 {allIngredients.map((ing) => (
@@ -322,7 +325,7 @@ export default function EditProductPage({ params }: PageProps) {
               type="number"
               min="0.01"
               step="0.01"
-              placeholder="Qtd."
+              placeholder={t('quantityPlaceholder')}
               value={addQuantity}
               onChange={(e) => { setAddQuantity(e.target.value); setAddIngredientError('') }}
               className="w-24"
