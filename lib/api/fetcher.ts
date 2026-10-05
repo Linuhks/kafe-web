@@ -41,6 +41,17 @@ export async function apiFetch<T>(
   })
 
   const text = [204, 205, 304].includes(res.status) ? null : await res.text()
-  const data = text ? JSON.parse(text) : {}
+  let data: unknown = {}
+  if (text) {
+    try {
+      data = JSON.parse(text)
+    } catch {
+      // e.g. a proxy or cold-start HTML page — fail loudly instead of returning a bogus body
+      const contentType = res.headers.get('content-type') ?? 'none'
+      throw new Error(
+        `${method} ${url} returned a non-JSON response (HTTP ${res.status}, content-type: ${contentType})`,
+      )
+    }
+  }
   return { data, status: res.status, headers: res.headers } as T
 }

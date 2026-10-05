@@ -258,6 +258,15 @@
       "subscribeNow": "Subscribe Now"
     }
   },
+  "catalog": {
+    "unavailable": "The menu is unavailable right now. Please try again.",
+    "retry": "Try again"
+  },
+  "errors": {
+    "title": "Something went wrong",
+    "description": "We couldn't load this page. Please try again.",
+    "retry": "Try again"
+  },
   "common": {
     "cancel": "Cancel",
     "saving": "Saving...",

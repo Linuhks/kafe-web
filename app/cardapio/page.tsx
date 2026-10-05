@@ -4,24 +4,35 @@ import { getTranslations } from 'next-intl/server'
 import { categoriesControllerList, productsControllerList } from '@/lib/api/generated/api'
 import NavBar from '@/components/layout/NavBar'
 import CategoryTabs from '@/components/catalog/CategoryTabs'
+import MenuUnavailable from '@/components/catalog/MenuUnavailable'
 
 export default async function CardapioPage() {
   const t = await getTranslations('menuPage')
   const tf = await getTranslations('footer')
-  const [categoriesRes, productsRes] = await Promise.all([
+  // The API can be unreachable (e.g. cold start on free hosting) — degrade instead of returning a 500
+  const [categoriesResult, productsResult] = await Promise.allSettled([
     categoriesControllerList(),
     productsControllerList(),
   ])
+  for (const result of [categoriesResult, productsResult]) {
+    if (result.status === 'rejected') console.error('[cardapio] failed to load the menu:', result.reason)
+  }
+  const categoriesOk = categoriesResult.status === 'fulfilled' && categoriesResult.value.status === 200
+  const productsOk = productsResult.status === 'fulfilled' && productsResult.value.status === 200
+  const loadFailed = !categoriesOk || !productsOk
+  const categories = categoriesOk ? (categoriesResult.value.data.data ?? []) : []
+  const products = productsOk ? (productsResult.value.data.data ?? []) : []
 
   return (
     <>
       <NavBar />
       <main className="max-w-7xl mx-auto px-8 py-12">
         <h2 className="text-4xl font-extrabold text-[var(--kafe-primary)] mb-6">{t('title')}</h2>
-        <CategoryTabs
-          categories={categoriesRes.data.data ?? []}
-          products={productsRes.data.data ?? []}
-        />
+        {loadFailed ? (
+          <MenuUnavailable />
+        ) : (
+          <CategoryTabs categories={categories} products={products} />
+        )}
       </main>
       <footer className="bg-surface-container-highest border-t border-outline-variant">
         <div className="max-w-7xl mx-auto px-8 py-12 flex items-center justify-between">

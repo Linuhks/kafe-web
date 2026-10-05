@@ -75,6 +75,26 @@ describe('apiFetch', () => {
     expect(result.status).toBe(204)
   })
 
+  it('throws a clear error when the body is not JSON', async () => {
+    vi.mocked(fetch).mockResolvedValue({
+      status: 503,
+      headers: new Headers({ 'content-type': 'text/html' }),
+      text: () => Promise.resolve('<html>Service waking up</html>'),
+    } as unknown as Response)
+
+    await expect(apiFetch('/api/v1/products', { method: 'GET' })).rejects.toThrow(
+      'GET /api/v1/products returned a non-JSON response (HTTP 503, content-type: text/html)',
+    )
+  })
+
+  it('does not leak the response body into the error message', async () => {
+    vi.mocked(fetch).mockResolvedValue(makeFetchResponse('<html>secret-internal-page</html>', 502))
+
+    await expect(apiFetch('/api/v1/products', { method: 'GET' })).rejects.not.toThrow(
+      /secret-internal-page/,
+    )
+  })
+
   it('throws in production when NEXT_PUBLIC_API_URL is not set', async () => {
     vi.stubGlobal('window', undefined as unknown as Window)
     vi.stubEnv('NODE_ENV', 'production')
