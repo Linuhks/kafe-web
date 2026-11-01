@@ -531,7 +531,10 @@
     "subtitle": "Preparado para seu ritual",
     "empty": "Seu carrinho está vazio.",
     "continueShopping": "Continuar comprando",
-    "checkout": "Finalizar Pedido"
+    "checkout": "Finalizar Pedido",
+    "decreaseQuantity": "Diminuir quantidade de {name}",
+    "increaseQuantity": "Aumentar quantidade de {name}",
+    "removeItem": "Remover {name} do carrinho"
   },
   "categoryTabs": {
     "all": "Todos",

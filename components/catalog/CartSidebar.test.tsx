@@ -120,4 +120,11 @@ describe('CartSidebar', () => {
     await userEvent.click(orderBtn)
     expect(screen.getByTestId('order-form')).toBeInTheDocument()
   })
+  it('gives the icon-only buttons accessible names', () => {
+    renderSidebar(true, true)
+    expect(screen.getByRole('button', { name: 'Diminuir quantidade de Espresso' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Aumentar quantidade de Espresso' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Remover Espresso do carrinho' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Fechar' })).toBeInTheDocument()
+  })
 })

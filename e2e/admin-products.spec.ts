@@ -208,8 +208,7 @@ test.describe('edit product', () => {
     await page.getByRole('combobox').last().click();
     await page.getByRole('option', { name: ingredient }).click();
     await page.getByPlaceholder('Qtd.').fill('2');
-    // the add button is icon-only (no accessible name), so locate it next to the quantity field
-    await page.getByPlaceholder('Qtd.').locator('xpath=following-sibling::button').click();
+    await page.getByRole('button', { name: 'Adicionar ingrediente' }).click();
     await expect(page.getByText('Ingrediente adicionado.')).toBeVisible();
     await expect(page.getByText('Nenhum ingrediente adicionado.')).toHaveCount(0);
 

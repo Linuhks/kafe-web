@@ -531,7 +531,10 @@
     "subtitle": "Prepared for your ritual",
     "empty": "Your cart is empty.",
     "continueShopping": "Continue shopping",
-    "checkout": "Place order"
+    "checkout": "Place order",
+    "decreaseQuantity": "Decrease quantity of {name}",
+    "increaseQuantity": "Increase quantity of {name}",
+    "removeItem": "Remove {name} from the cart"
   },
   "categoryTabs": {
     "all": "All",

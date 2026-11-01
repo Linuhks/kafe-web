@@ -4,7 +4,9 @@ import { uid } from './support/api';
 
 // Cart rows are <li>s; sonner toasts are <li data-sonner-toast> and must not match.
 const cartRow = (page: Page, name: string) => page.locator('li:not([data-sonner-toast])').filter({ hasText: name });
-const cartButton = (page: Page) => page.getByRole('button', { name: 'Carrinho' });
+// The badge count is part of the accessible name ("1 Carrinho"); "Remover X do carrinho" must not match.
+const CART_BUTTON_NAME = /^(\d+\+?\s)?Carrinho$/;
+const cartButton = (page: Page) => page.getByRole('button', { name: CART_BUTTON_NAME });
 const firstAvailable = (page: Page) => page.locator('article').filter({ has: page.getByRole('button', { name: 'Adicionar' }) }).first();
 
 async function addFirstProduct(page: Page) {
@@ -79,7 +81,9 @@ test.describe('cart', () => {
     const name = await addFirstProduct(page);
     await cartButton(page).click();
     const row = cartRow(page, name);
-    const [minus, plus, trash] = await row.getByRole('button').all();
+    const minus = row.getByRole('button', { name: `Diminuir quantidade de ${name}` });
+    const plus = row.getByRole('button', { name: `Aumentar quantidade de ${name}` });
+    const trash = row.getByRole('button', { name: `Remover ${name} do carrinho` });
 
     const totalText = () => page.getByText('Total', { exact: true }).locator('xpath=following-sibling::span').innerText();
     const unit = await totalText();
@@ -219,7 +223,7 @@ test.describe('signed-in client', () => {
     const page = await ctx.newPage();
     await page.goto('/cardapio');
     await expect(page.getByTitle('Sair')).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Carrinho' })).toHaveCount(0);
+    await expect(page.getByRole('button', { name: CART_BUTTON_NAME })).toHaveCount(0);
     await ctx.close();
   });
 });

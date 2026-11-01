@@ -325,7 +325,7 @@ export default function EditProductForm({ id }: { id: string }) {
               onChange={(e) => { setAddQuantity(e.target.value); setAddIngredientError('') }}
               className="w-24"
             />
-            <Button type="button" onClick={handleAddIngredient} disabled={isAdding}>
+            <Button type="button" onClick={handleAddIngredient} disabled={isAdding} aria-label={t('addIngredient')}>
               <Plus className="h-4 w-4" />
             </Button>
           </div>
