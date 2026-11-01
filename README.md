@@ -85,7 +85,8 @@ pnpm test:unit
 # Coverage
 pnpm test:coverage
 
-# E2E
+# E2E (needs kafe-api running with seed data; raise its rate limits first:
+#   THROTTLE_LIMIT=100000 THROTTLE_AUTH_LIMIT=100000 pnpm start:dev)
 pnpm test:e2e
 
 # E2E with interactive UI
