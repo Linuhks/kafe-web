@@ -61,12 +61,27 @@ test.describe('admin order queue (/admin/orders)', () => {
     expect(await statusOf(id)).toBe('DELIVERED');
   });
 
-  // Behaviour worth knowing: the barista queue asks for confirmation before cancelling, this one does not.
-  test('the trash button cancels the order immediately (no confirmation)', async ({ page }) => {
+  test('the trash button asks for confirmation; "Cancelar" keeps the order', async ({ page }) => {
+    const name = uid('kanban-keep');
+    const id = await createAnonymousOrder(name);
+    await page.goto('/admin/orders');
+    await card(page, name).getByRole('button', { name: 'Cancelar pedido' }).click();
+
+    const dialog = page.getByRole('dialog');
+    await expect(dialog.getByText('Cancelar pedido?')).toBeVisible();
+    await expect(dialog.getByText(new RegExp(`pedido de ${name}`))).toBeVisible();
+    await dialog.getByRole('button', { name: 'Cancelar', exact: true }).click();
+    await expect(dialog).toBeHidden();
+    await expect(card(page, name)).toBeVisible();
+    expect(await statusOf(id)).toBe('RECEIVED');
+  });
+
+  test('confirming the cancellation removes the card and cancels the order', async ({ page }) => {
     const name = uid('kanban-cancel');
     const id = await createAnonymousOrder(name);
     await page.goto('/admin/orders');
     await card(page, name).getByRole('button', { name: 'Cancelar pedido' }).click();
+    await page.getByRole('dialog').getByRole('button', { name: 'Confirmar cancelamento' }).click();
     await expect(page.getByText(name)).toHaveCount(0);
     expect(await statusOf(id)).toBe('CANCELLED');
   });

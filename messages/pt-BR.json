@@ -521,7 +521,10 @@
       "IN_PREPARATION": "Concluir",
       "READY": "Marcar como entregue"
     },
-    "cancelOrderAria": "Cancelar pedido"
+    "cancelOrderAria": "Cancelar pedido",
+    "cancelTitle": "Cancelar pedido?",
+    "cancelMessage": "Tem certeza que deseja cancelar o pedido de {clientName}? Esta ação não pode ser desfeita.",
+    "cancelConfirm": "Confirmar cancelamento"
   },
   "cartSidebar": {
     "title": "Sua Seleção",

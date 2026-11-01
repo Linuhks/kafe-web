@@ -521,7 +521,10 @@
       "IN_PREPARATION": "Complete",
       "READY": "Mark as delivered"
     },
-    "cancelOrderAria": "Cancel order"
+    "cancelOrderAria": "Cancel order",
+    "cancelTitle": "Cancel order?",
+    "cancelMessage": "Are you sure you want to cancel {clientName}'s order? This cannot be undone.",
+    "cancelConfirm": "Confirm cancellation"
   },
   "cartSidebar": {
     "title": "Your selection",
