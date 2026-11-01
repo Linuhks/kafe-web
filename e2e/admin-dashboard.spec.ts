@@ -66,7 +66,7 @@ test.describe('admin dashboard', () => {
     const label = page.getByLabel('Pedidos por hora do dia').locator('text').first();
     await expect(label).toBeVisible();
     const px = await label.evaluate((el) => {
-      const svg = el.ownerSVGElement!;
+      const svg = (el as SVGTextElement).ownerSVGElement!;
       const scale = svg.getBoundingClientRect().width / svg.viewBox.baseVal.width;
       return parseFloat(getComputedStyle(el).fontSize) * scale;
     });
