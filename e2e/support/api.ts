@@ -84,3 +84,15 @@ export async function findByName<T extends { id: string; name: string }>(
   const rows = ((await res.json()) as { data?: T[] }).data ?? [];
   return rows.find((r) => r.name === name);
 }
+
+/** An order placed without signing in, so the API keeps the given client name verbatim. */
+export async function createAnonymousOrder(clientName: string) {
+  const ctx = await playwrightRequest.newContext({ baseURL: API_URL });
+  const products = (await (await ctx.get('/api/v1/products')).json()) as { data: { id: string; isAvailable: boolean }[] };
+  const productId = products.data.find((p) => p.isAvailable)!.id;
+  const res = await ctx.post('/api/v1/orders', { data: { clientName, items: [{ productId, quantity: 1 }] } });
+  if (res.status() !== 201) throw new Error(`anonymous order failed: ${res.status()}`);
+  const { id } = (await res.json()) as { id: string };
+  await ctx.dispose();
+  return id;
+}
