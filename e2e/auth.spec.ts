@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import fs from 'node:fs';
 import { USERS, authFile, type Role } from './support/users';
+import { waitForHydration } from './support/hydration';
 
 function savedToken(role: Role): string {
   const state = JSON.parse(fs.readFileSync(authFile(role), 'utf8')) as { cookies: { name: string; value: string }[] };
@@ -17,6 +18,7 @@ test.describe('login page (signed out)', () => {
 
   test.beforeEach(async ({ page }) => {
     await page.goto('/login');
+    await waitForHydration(page, 'form');
   });
 
   test('renders the form', async ({ page }) => {
