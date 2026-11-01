@@ -173,11 +173,11 @@ test.describe('placing an order from the menu', () => {
     await expect(cartButton(page)).toContainText('1');
   });
 
-  // Known bug: apiFetch resolves on non-2xx, so onError never runs and onSuccess ignores status !== 201.
-  // test.fail() keeps the suite green while it exists and fails loudly once it is fixed.
-  test.fail('shows an error toast when the API answers 500', async ({ page }) => {
+  test('shows an error toast when the API answers 500 and keeps the cart', async ({ page }) => {
     await submitOrderWithStubbedApi(page, 500);
-    await expect(page.getByText('Erro ao criar pedido')).toBeVisible({ timeout: 3000 });
+    await expect(page.getByText('Erro ao criar pedido')).toBeVisible();
+    await page.getByRole('dialog').getByRole('button', { name: 'Fechar' }).first().click();
+    await expect(cartButton(page)).toContainText('1');
   });
 });
 

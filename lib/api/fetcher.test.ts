@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { apiFetch } from './fetcher'
+import { apiFetch, ApiError } from './fetcher'
 
 function makeFetchResponse(body: string | null, status: number) {
   return {
@@ -102,5 +102,40 @@ describe('apiFetch', () => {
     await expect(apiFetch('/api/v1/test', { method: 'GET' })).rejects.toThrow(
       'NEXT_PUBLIC_API_URL is required',
     )
+  })
+  describe('failed responses', () => {
+    it('rejects a failed mutation (POST 409) with an ApiError carrying status and body', async () => {
+      vi.mocked(fetch).mockResolvedValue(makeFetchResponse('{"message":"duplicate"}', 409))
+
+      const err = await apiFetch('/api/v1/users', { method: 'POST', body: '{}' }).catch((e: unknown) => e)
+
+      expect(err).toBeInstanceOf(ApiError)
+      expect((err as ApiError).status).toBe(409)
+      expect((err as ApiError).data).toEqual({ message: 'duplicate' })
+    })
+
+    it.each(['PUT', 'PATCH', 'DELETE'] as const)('rejects a failed %s too', async (method) => {
+      vi.mocked(fetch).mockResolvedValue(makeFetchResponse('{}', 500))
+      await expect(apiFetch('/api/v1/x', { method })).rejects.toBeInstanceOf(ApiError)
+    })
+
+    it('still resolves a failed GET with its status (callers branch on it)', async () => {
+      vi.mocked(fetch).mockResolvedValue(makeFetchResponse('{}', 404))
+      await expect(apiFetch('/api/v1/x', { method: 'GET' })).resolves.toMatchObject({ status: 404 })
+    })
+
+    it('resolves a successful mutation normally', async () => {
+      vi.mocked(fetch).mockResolvedValue(makeFetchResponse('{"id":"1"}', 201))
+      await expect(apiFetch('/api/v1/x', { method: 'POST', body: '{}' })).resolves.toMatchObject({
+        status: 201,
+        data: { id: '1' },
+      })
+    })
+
+    it('does not throw for a failed mutation on the server (no window)', async () => {
+      vi.stubGlobal('window', undefined)
+      vi.mocked(fetch).mockResolvedValue(makeFetchResponse('{}', 500))
+      await expect(apiFetch('/api/v1/x', { method: 'POST', body: '{}' })).resolves.toMatchObject({ status: 500 })
+    })
   })
 })

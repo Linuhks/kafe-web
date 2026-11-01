@@ -123,18 +123,16 @@ test.describe('create user', () => {
     await expect(page).toHaveURL(/\/admin\/users\/new$/);
   });
 
-  // Known bug: the API answers 409 for a duplicate e-mail, but apiFetch resolves on non-2xx so the
-  // mutation's onError never fires and onSuccess shows the success toast / redirects as if it worked.
-  test.fail('a duplicate e-mail (API 409) is reported as an error', async ({ page }) => {
+  test('a duplicate e-mail (API 409) is reported as an error and stays on the form', async ({ page }) => {
     await submitDuplicateEmail(page);
-    await expect(page.getByText(/Erro ao criar usuário/)).toBeVisible({ timeout: 3000 });
+    await expect(page.getByText(/Erro ao criar usuário/)).toBeVisible();
+    await expect(page.getByText('Usuário criado com sucesso.')).toHaveCount(0);
+    await expect(page).toHaveURL(/\/admin\/users\/new$/);
   });
 });
 
 test.describe('edit user', () => {
-  // Known bug: getUserById reads `res.data.data` but GET /users/:id returns the user unwrapped, so the
-  // edit page 404s for every user. Flip these to plain `test` once it is fixed.
-  test.fixme('changes the role and deactivates the user', async ({ page }) => {
+  test('changes the role and deactivates the user', async ({ page }) => {
     const user = await createUserViaApi('CLIENT');
     await page.goto(`/admin/users/${user.id}/edit`);
     await waitForHydration(page, 'form');
@@ -156,7 +154,7 @@ test.describe('edit user', () => {
     await api.dispose();
   });
 
-  test.fixme('a clean form cancels without asking; a dirty one asks first', async ({ page }) => {
+  test('a clean form cancels without asking; a dirty one asks first', async ({ page }) => {
     const user = await createUserViaApi();
     await page.goto(`/admin/users/${user.id}/edit`);
     await waitForHydration(page, 'form');
@@ -178,7 +176,7 @@ test.describe('edit user', () => {
     await expect(page).toHaveURL(/\/admin\/users$/);
   });
 
-  test.fail('the edit page renders for an existing user (currently 404s)', async ({ page }) => {
+  test('the edit page renders for an existing user', async ({ page }) => {
     const user = await createUserViaApi();
     const res = await page.goto(`/admin/users/${user.id}/edit`);
     expect(res?.status()).toBe(200);
