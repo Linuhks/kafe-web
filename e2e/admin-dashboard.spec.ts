@@ -3,6 +3,11 @@ import { apiAs } from './support/api';
 import { authFile } from './support/users';
 import { waitForHydration } from './support/hydration';
 
+const todayLocal = () => new Date().toLocaleDateString('sv-SE');
+// The same day boundaries the page sends to the API (see lib/api/dashboard.ts).
+const dayQuery = (from: string, to: string) =>
+  `from=${encodeURIComponent(new Date(`${from}T00:00:00`).toISOString())}&to=${encodeURIComponent(new Date(`${to}T23:59:59.999`).toISOString())}`;
+
 const brl = (value: string | number) =>
   new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Number(value)).replace(/ /g, ' ');
 
@@ -11,7 +16,7 @@ test.describe('admin dashboard', () => {
 
   test('shows the three summary cards with the API numbers', async ({ page }) => {
     const api = await apiAs('admin');
-    const summary = (await (await api.get('/api/v1/dashboard/summary')).json()) as {
+    const summary = (await (await api.get(`/api/v1/dashboard/summary?${dayQuery(todayLocal(), todayLocal())}`)).json()) as {
       totalOrders: number;
       totalRevenue: string;
       avgOrderValue: string;
@@ -36,12 +41,12 @@ test.describe('admin dashboard', () => {
 
   test('lists top products from the API, best seller first', async ({ page }) => {
     const api = await apiAs('admin');
-    const top = (await (await api.get('/api/v1/dashboard/top-products?limit=10')).json()) as {
+    const top = (await (await api.get(`/api/v1/dashboard/top-products?limit=10&${dayQuery(todayLocal(), todayLocal())}`)).json()) as {
       productName: string;
       quantitySold: number;
     }[];
     await api.dispose();
-    test.skip(top.length === 0, 'seed has no sales');
+    test.skip(top.length === 0, 'no sales today');
 
     await page.goto('/admin/dashboard');
     const table = page.getByRole('table');
@@ -92,10 +97,27 @@ test.describe('admin dashboard', () => {
     await expect(page.getByLabel('Até', { exact: true })).toHaveValue('2026-01-20');
   });
 
-  // Known gap: getDashboardSummary/getPeakHours ignore the range and the API takes no date params.
-  test.fixme('the date range actually filters the summary', async ({ page }) => {
+  test('defaults the date pickers to today (local day)', async ({ page }) => {
+    await page.goto('/admin/dashboard');
+    await expect(page.getByLabel('De', { exact: true })).toHaveValue(todayLocal());
+    await expect(page.getByLabel('Até', { exact: true })).toHaveValue(todayLocal());
+  });
+
+  test('a range with no sales shows zeros and the empty states', async ({ page }) => {
     await page.goto('/admin/dashboard?from=2000-01-01&to=2000-01-02');
     await expect(page.getByText('R$ 0,00').first()).toBeVisible();
+    await expect(page.getByText('Ainda sem dados de vendas')).toBeVisible();
+    await expect(page.getByText('Aguardando Tráfego Horário')).toBeVisible();
+  });
+
+  test('a wide range shows at least today\'s numbers', async ({ page }) => {
+    const api = await apiAs('admin');
+    const wide = (await (await api.get(`/api/v1/dashboard/summary?${dayQuery('2000-01-01', todayLocal())}`)).json()) as {
+      totalOrders: number;
+    };
+    await api.dispose();
+    await page.goto(`/admin/dashboard?from=2000-01-01&to=${todayLocal()}`);
+    await expect(page.getByText(String(wide.totalOrders), { exact: true }).first()).toBeVisible();
   });
 
   test('has no console errors', async ({ page }) => {

@@ -18,8 +18,10 @@ import DashboardInventoryAlerts from '@/components/admin/DashboardInventoryAlert
 import GenerateReportButton from '@/components/admin/GenerateReportButton'
 import { Skeleton } from '@/components/ui/skeleton'
 
+// Local calendar day (YYYY-MM-DD). toISOString() is UTC, which is already "tomorrow" in the evening
+// in UTC-3, and the date range is interpreted in the server's local time.
 function today(): string {
-  return new Date().toISOString().split('T')[0]
+  return new Date().toLocaleDateString('sv-SE')
 }
 
 function formatCurrency(value: string | number): string {
@@ -47,7 +49,7 @@ export default async function AdminDashboardPage({
 
   const [summary, topProducts, peakHours, inventoryAlerts] = await Promise.all([
     getDashboardSummary(dateRange),
-    getTopProducts({ limit: 10 }),
+    getTopProducts({ limit: 10, dateRange }),
     getPeakHours(dateRange),
     getInventoryAlerts(),
   ])
