@@ -28,14 +28,20 @@ describe('PeakHoursChart', () => {
     ] as never
     const { container } = render(<PeakHoursChart data={data} />)
     expect(container.querySelector('svg')).toBeInTheDocument()
-    // 24 hour labels + 24 bars
-    expect(container.querySelectorAll('text').length).toBe(24)
+    // 8 hour labels (every 3h) + 3 count labels for non-empty hours
+    expect(container.querySelectorAll('text').length).toBe(11)
   })
 
-  it('renders hour labels 0-23', () => {
+  it('labels every third hour on the axis', () => {
     render(<PeakHoursChart data={[]} />)
     expect(screen.getByText('0')).toBeInTheDocument()
     expect(screen.getByText('12')).toBeInTheDocument()
-    expect(screen.getByText('23')).toBeInTheDocument()
+    expect(screen.getByText('21')).toBeInTheDocument()
+    expect(screen.queryByText('23')).not.toBeInTheDocument()
+  })
+
+  it('shows the order count above non-empty bars', () => {
+    render(<PeakHoursChart data={[{ hour: 22, orderCount: 5 }] as never} />)
+    expect(screen.getByText('5')).toBeInTheDocument()
   })
 })
