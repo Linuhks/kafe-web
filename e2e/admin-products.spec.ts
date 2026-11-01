@@ -218,9 +218,7 @@ test.describe('edit product', () => {
     await expect(page.getByText('Nenhum ingrediente adicionado.')).toBeVisible();
   });
 
-  // Known gap: the edit page is client-rendered and never calls notFound(), so an unknown id gives 200
-  // with an empty form (categories/users edit pages do 404).
-  test.fixme('an unknown id renders the 404 page', async ({ page }) => {
+  test('an unknown id renders the 404 page', async ({ page }) => {
     const res = await page.goto('/admin/products/00000000-0000-0000-0000-000000000000/edit');
     expect(res?.status()).toBe(404);
   });
