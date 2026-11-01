@@ -52,6 +52,12 @@ Create a `.env.local` file at the project root:
 NEXT_PUBLIC_API_URL=http://localhost:3333
 ```
 
+Generate the API client (`lib/api/generated/` is gitignored, so the app does not compile without it). With `kafe-api` running:
+
+```bash
+pnpm generate:api
+```
+
 ---
 
 ## Development
