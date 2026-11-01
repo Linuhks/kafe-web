@@ -58,6 +58,12 @@ Generate the API client (`lib/api/generated/` is gitignored, so the app does not
 pnpm generate:api
 ```
 
+The project ships MCP servers for Claude Code (`.mcp.json`: Playwright, Context7). The Playwright one needs its browser downloaded once per machine:
+
+```bash
+npx @playwright/mcp@0.0.84 install-browser chrome-for-testing
+```
+
 ---
 
 ## Development
