@@ -64,3 +64,23 @@ export async function createOrder(
   const body = (await res.json()) as { id?: string; data?: { id: string } };
   return (body.id ?? body.data?.id) as string;
 }
+
+type Collection = 'categories' | 'products' | 'users';
+
+/** Best-effort removal of rows a test created (matched by exact name). */
+export async function deleteByName(api: APIRequestContext, collection: Collection, name: string) {
+  const res = await api.get(`/api/v1/${collection}`);
+  if (!res.ok()) return;
+  const rows = ((await res.json()) as { data?: { id: string; name: string }[] }).data ?? [];
+  for (const row of rows.filter((r) => r.name === name)) await api.delete(`/api/v1/${collection}/${row.id}`);
+}
+
+export async function findByName<T extends { id: string; name: string }>(
+  api: APIRequestContext,
+  collection: Collection,
+  name: string,
+): Promise<T | undefined> {
+  const res = await api.get(`/api/v1/${collection}`);
+  const rows = ((await res.json()) as { data?: T[] }).data ?? [];
+  return rows.find((r) => r.name === name);
+}
