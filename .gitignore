@@ -71,3 +71,6 @@ lib/api/generated/
 
 # Playwright MCP output
 .playwright-mcp/
+
+# Playwright saved auth state
+playwright/.auth/
