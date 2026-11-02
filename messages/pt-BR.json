@@ -521,14 +521,20 @@
       "IN_PREPARATION": "Concluir",
       "READY": "Marcar como entregue"
     },
-    "cancelOrderAria": "Cancelar pedido"
+    "cancelOrderAria": "Cancelar pedido",
+    "cancelTitle": "Cancelar pedido?",
+    "cancelMessage": "Tem certeza que deseja cancelar o pedido de {clientName}? Esta ação não pode ser desfeita.",
+    "cancelConfirm": "Confirmar cancelamento"
   },
   "cartSidebar": {
     "title": "Sua Seleção",
     "subtitle": "Preparado para seu ritual",
     "empty": "Seu carrinho está vazio.",
     "continueShopping": "Continuar comprando",
-    "checkout": "Finalizar Pedido"
+    "checkout": "Finalizar Pedido",
+    "decreaseQuantity": "Diminuir quantidade de {name}",
+    "increaseQuantity": "Aumentar quantidade de {name}",
+    "removeItem": "Remover {name} do carrinho"
   },
   "categoryTabs": {
     "all": "Todos",

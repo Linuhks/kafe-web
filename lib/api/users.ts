@@ -31,8 +31,9 @@ export async function getUsers(params?: { page?: number; limit?: number }): Prom
 }
 
 export async function getUserById(id: string): Promise<User | null> {
+  // GET /users/:id returns the user itself (not wrapped in { data }, unlike the list endpoint).
   const res = await serverFetch<{
-    data: { data?: User }
+    data: User | null
     status: number
     headers: Headers
   }>(`/api/v1/users/${id}`, {
@@ -40,5 +41,5 @@ export async function getUserById(id: string): Promise<User | null> {
   })
 
   if (res.status !== 200) return null
-  return res.data.data ?? null
+  return res.data ?? null
 }

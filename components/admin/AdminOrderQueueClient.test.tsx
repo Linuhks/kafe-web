@@ -217,16 +217,38 @@ describe('AdminOrderQueueClient', () => {
     })
   })
 
-  it('cancels an order via the trash button without opening the modal', async () => {
+  it('asks for confirmation before cancelling and does not call the API yet', async () => {
     setQueueData([orderAna])
     setReadyData([])
     renderQueue()
     const [cancelBtn] = screen.getAllByRole('button', { name: 'Cancelar pedido' })
     await userEvent.click(cancelBtn)
+    expect(screen.getByRole('dialog')).toBeInTheDocument()
+    expect(screen.getByText('Cancelar pedido?')).toBeInTheDocument()
+    expect(mockMutateAsync).not.toHaveBeenCalled()
+  })
+
+  it('cancels the order only after confirming', async () => {
+    setQueueData([orderAna])
+    setReadyData([])
+    renderQueue()
+    const [cancelBtn] = screen.getAllByRole('button', { name: 'Cancelar pedido' })
+    await userEvent.click(cancelBtn)
+    await userEvent.click(screen.getByRole('button', { name: 'Confirmar cancelamento' }))
     expect(mockMutateAsync).toHaveBeenCalledWith({
       id: orderAna.id,
       data: { status: 'CANCELLED' },
     })
+  })
+
+  it('keeps the order when the cancellation is dismissed', async () => {
+    setQueueData([orderAna])
+    setReadyData([])
+    renderQueue()
+    const [cancelBtn] = screen.getAllByRole('button', { name: 'Cancelar pedido' })
+    await userEvent.click(cancelBtn)
+    await userEvent.click(screen.getByRole('button', { name: 'Cancelar' }))
+    expect(mockMutateAsync).not.toHaveBeenCalled()
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
   })
 

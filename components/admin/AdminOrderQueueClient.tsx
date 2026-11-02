@@ -4,6 +4,7 @@ import { useState, useMemo } from 'react'
 import { useTranslations } from 'next-intl'
 import { Search, Trash2, History, ChevronDown, Package } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
+import ConfirmModal from '@/components/admin/ConfirmModal'
 import {
   Dialog,
   DialogContent,
@@ -50,6 +51,7 @@ export default function AdminOrderQueueClient() {
   const [updatingIds, setUpdatingIds] = useState<Set<string>>(new Set())
   const [sortOpen, setSortOpen] = useState(false)
   const [selectedOrder, setSelectedOrder] = useState<OrderResponseDto | null>(null)
+  const [cancelTarget, setCancelTarget] = useState<OrderResponseDto | null>(null)
 
   const queueQuery = useOrdersControllerQueue({
     query: { refetchInterval: 15_000 },
@@ -130,6 +132,8 @@ export default function AdminOrderQueueClient() {
     try {
       await updateStatus.mutateAsync({ id: order.id, data: { status: next } })
       setSelectedOrder(null)
+    } catch {
+      // the mutation's onError already showed the toast
     } finally {
       setUpdatingIds((prev) => {
         const s = new Set(prev)
@@ -143,6 +147,8 @@ export default function AdminOrderQueueClient() {
     setUpdatingIds((prev) => new Set(prev).add(order.id))
     try {
       await updateStatus.mutateAsync({ id: order.id, data: { status: 'CANCELLED' } })
+    } catch {
+      // the mutation's onError already showed the toast
     } finally {
       setUpdatingIds((prev) => {
         const s = new Set(prev)
@@ -261,7 +267,7 @@ export default function AdminOrderQueueClient() {
                 order={order}
                 isUpdating={updatingIds.has(order.id)}
                 onAdvance={handleAdvance}
-                onDelete={handleDelete}
+                onDelete={setCancelTarget}
                 onOpen={setSelectedOrder}
               />
             ))}
@@ -279,7 +285,7 @@ export default function AdminOrderQueueClient() {
                 order={order}
                 isUpdating={updatingIds.has(order.id)}
                 onAdvance={handleAdvance}
-                onDelete={handleDelete}
+                onDelete={setCancelTarget}
                 onOpen={setSelectedOrder}
               />
             ))}
@@ -297,7 +303,7 @@ export default function AdminOrderQueueClient() {
                 order={order}
                 isUpdating={updatingIds.has(order.id)}
                 onAdvance={handleAdvance}
-                onDelete={handleDelete}
+                onDelete={setCancelTarget}
                 onOpen={setSelectedOrder}
               />
             ))}
@@ -420,6 +426,24 @@ export default function AdminOrderQueueClient() {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Cancel confirmation (cancelling is irreversible) */}
+      <ConfirmModal
+        open={cancelTarget !== null}
+        onOpenChange={(open) => { if (!open) setCancelTarget(null) }}
+        title={t('cancelTitle')}
+        message={t('cancelMessage', {
+          clientName:
+            typeof cancelTarget?.clientName === 'string' && cancelTarget.clientName
+              ? cancelTarget.clientName
+              : t('client'),
+        })}
+        confirmLabel={t('cancelConfirm')}
+        loading={cancelTarget !== null && updatingIds.has(cancelTarget.id)}
+        onConfirm={() => {
+          if (cancelTarget) void handleDelete(cancelTarget).finally(() => setCancelTarget(null))
+        }}
+      />
     </div>
   )
 }

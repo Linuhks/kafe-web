@@ -10,6 +10,7 @@ import { useTranslations } from 'next-intl'
 import { useAuth } from '@/context/AuthContext'
 import { useToast } from '@/context/ToastContext'
 import { useAuthControllerLogin } from '@/lib/api/generated/api'
+import { ApiError } from '@/lib/api/fetcher'
 import type { UserRole } from '@/lib/types'
 
 function buildLoginSchema(t: ReturnType<typeof useTranslations>) {
@@ -99,8 +100,10 @@ export default function LoginPage() {
       } else {
         addToast(t('toast.invalidCredentials'), 'error')
       }
-    } catch {
-      addToast(t('toast.loginFailed'), 'error')
+    } catch (err: unknown) {
+      // Failed mutations reject with ApiError: 401 means wrong credentials, anything else is a failure.
+      const wrongCredentials = err instanceof ApiError && err.status === 401
+      addToast(t(wrongCredentials ? 'toast.invalidCredentials' : 'toast.loginFailed'), 'error')
     }
   }
 

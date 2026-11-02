@@ -521,14 +521,20 @@
       "IN_PREPARATION": "Complete",
       "READY": "Mark as delivered"
     },
-    "cancelOrderAria": "Cancel order"
+    "cancelOrderAria": "Cancel order",
+    "cancelTitle": "Cancel order?",
+    "cancelMessage": "Are you sure you want to cancel {clientName}'s order? This cannot be undone.",
+    "cancelConfirm": "Confirm cancellation"
   },
   "cartSidebar": {
     "title": "Your selection",
     "subtitle": "Prepared for your ritual",
     "empty": "Your cart is empty.",
     "continueShopping": "Continue shopping",
-    "checkout": "Place order"
+    "checkout": "Place order",
+    "decreaseQuantity": "Decrease quantity of {name}",
+    "increaseQuantity": "Increase quantity of {name}",
+    "removeItem": "Remove {name} from the cart"
   },
   "categoryTabs": {
     "all": "All",

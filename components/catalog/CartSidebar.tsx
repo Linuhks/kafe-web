@@ -41,7 +41,7 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
             <h2 className="text-2xl font-extrabold text-[var(--kafe-primary)]">{t('title')}</h2>
             <p className="text-sm text-[var(--kafe-on-surface-variant)]">{t('subtitle')}</p>
           </div>
-          <Button variant="ghost" size="icon" onClick={onClose}>
+          <Button variant="ghost" size="icon" onClick={onClose} aria-label={tc('close')}>
             <X className="h-5 w-5" />
           </Button>
         </div>
@@ -76,6 +76,7 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                       variant="outline"
                       size="icon-xs"
                       onClick={() => updateQuantity(product.id, quantity - 1)}
+                      aria-label={t('decreaseQuantity', { name: product.name })}
                     >
                       <Minus className="h-3 w-3" />
                     </Button>
@@ -84,6 +85,7 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                       variant="outline"
                       size="icon-xs"
                       onClick={() => updateQuantity(product.id, quantity + 1)}
+                      aria-label={t('increaseQuantity', { name: product.name })}
                     >
                       <Plus className="h-3 w-3" />
                     </Button>
@@ -91,6 +93,7 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                       variant="ghost"
                       size="icon-xs"
                       onClick={() => removeItem(product.id)}
+                      aria-label={t('removeItem', { name: product.name })}
                       className="text-destructive hover:text-destructive"
                     >
                       <Trash2 className="h-3 w-3" />

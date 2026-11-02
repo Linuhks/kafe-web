@@ -13,6 +13,19 @@ function getBaseUrl(): string {
   return ''
 }
 
+/** Thrown for a failed mutation (non-GET, HTTP >= 400) in the browser, so React Query runs `onError`. */
+export class ApiError extends Error {
+  readonly status: number
+  readonly data: unknown
+
+  constructor(method: string, url: string, status: number, data: unknown) {
+    super(`${method} ${url} failed with HTTP ${status}`)
+    this.name = 'ApiError'
+    this.status = status
+    this.data = data
+  }
+}
+
 export async function apiFetch<T>(
   url: string,
   {
@@ -52,6 +65,11 @@ export async function apiFetch<T>(
         `${method} ${url} returned a non-JSON response (HTTP ${res.status}, content-type: ${contentType})`,
       )
     }
+  }
+  // Queries (GET) keep resolving with { data, status } because callers branch on `status`; a failed
+  // mutation must reject, otherwise React Query reports it as a success (silent failure for the user).
+  if (typeof window !== 'undefined' && method !== 'GET' && res.status >= 400) {
+    throw new ApiError(method, url, res.status, data)
   }
   return { data, status: res.status, headers: res.headers } as T
 }

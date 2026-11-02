@@ -38,7 +38,7 @@ describe('users API', () => {
 
   describe('getUserById', () => {
     it('returns user on 200', async () => {
-      mockServerFetch.mockResolvedValue(makeRes({ data: mockUser }))
+      mockServerFetch.mockResolvedValue(makeRes(mockUser)) // the API returns the user unwrapped
       const { getUserById } = await import('./users')
       expect(await getUserById('u1')).toEqual(mockUser)
     })

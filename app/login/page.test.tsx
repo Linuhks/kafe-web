@@ -7,6 +7,7 @@ import LoginPage from './page'
 import { useAuth } from '@/context/AuthContext'
 import { useToast } from '@/context/ToastContext'
 import { useAuthControllerLogin } from '@/lib/api/generated/api'
+import { ApiError } from '@/lib/api/fetcher'
 
 const { mockSetUser, mockAddToast, mockMutateAsync, mockPush } = vi.hoisted(() => ({
   mockSetUser: vi.fn(),
@@ -208,6 +209,20 @@ describe('LoginPage', () => {
       renderLogin()
       await fillAndSubmit('test@example.com', 'password123')
       await waitFor(() => expect(mockAddToast).toHaveBeenCalledWith('E-mail ou senha inválidos', 'error'))
+    })
+
+    it('an ApiError 401 (failed mutation rejects) shows "E-mail ou senha inválidos"', async () => {
+      mockMutateAsync.mockRejectedValue(new ApiError('POST', '/api/v1/auth/login', 401, {}))
+      renderLogin()
+      await fillAndSubmit('test@example.com', 'password123')
+      await waitFor(() => expect(mockAddToast).toHaveBeenCalledWith('E-mail ou senha inválidos', 'error'))
+    })
+
+    it('an ApiError 429 shows the generic login failure, not "invalid credentials"', async () => {
+      mockMutateAsync.mockRejectedValue(new ApiError('POST', '/api/v1/auth/login', 429, {}))
+      renderLogin()
+      await fillAndSubmit('test@example.com', 'password123')
+      await waitFor(() => expect(mockAddToast).toHaveBeenCalledWith('Falha no login. Tente novamente.', 'error'))
     })
 
     it('mutateAsync throwing calls addToast with "Falha no login. Tente novamente." and "error"', async () => {
