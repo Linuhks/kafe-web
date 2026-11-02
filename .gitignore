@@ -68,3 +68,6 @@ tasks/
 
 # Orval generated API clients (regenerate with `pnpm generate:api`)
 lib/api/generated/
+
+# Playwright MCP output
+.playwright-mcp/

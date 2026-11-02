@@ -52,6 +52,18 @@ Create a `.env.local` file at the project root:
 NEXT_PUBLIC_API_URL=http://localhost:3333
 ```
 
+Generate the API client (`lib/api/generated/` is gitignored, so the app does not compile without it). With `kafe-api` running:
+
+```bash
+pnpm generate:api
+```
+
+The project ships MCP servers for Claude Code (`.mcp.json`: Playwright, Context7). The Playwright one needs its browser downloaded once per machine:
+
+```bash
+npx @playwright/mcp@0.0.84 install-browser chrome-for-testing
+```
+
 ---
 
 ## Development

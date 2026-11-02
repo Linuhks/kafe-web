@@ -6,8 +6,6 @@ import {
   ShoppingBag,
   Banknote,
   ReceiptText,
-  TrendingUp,
-  TrendingDown,
   BarChart2,
   Clock,
 } from 'lucide-react'
@@ -59,22 +57,16 @@ export default async function AdminDashboardPage({
       label: t('summary.totalOrders'),
       value: summary?.totalOrders?.toString() ?? '—',
       Icon: ShoppingBag,
-      change: '+12%',
-      positive: true,
     },
     {
       label: t('summary.totalRevenue'),
       value: summary ? formatCurrency(summary.totalRevenue) : '—',
       Icon: Banknote,
-      change: '+8%',
-      positive: true,
     },
     {
       label: t('summary.avgTicket'),
       value: summary ? formatCurrency(summary.avgOrderValue) : '—',
       Icon: ReceiptText,
-      change: '-3%',
-      positive: false,
     },
   ]
 
@@ -103,7 +95,7 @@ export default async function AdminDashboardPage({
 
       {/* Summary Stat Cards */}
       <div className="grid gap-4 sm:grid-cols-3">
-        {stats.map(({ label, value, Icon, change, positive }) => (
+        {stats.map(({ label, value, Icon }) => (
           <div
             key={label}
             className="bg-[var(--kafe-surface-container-lowest)] rounded-2xl border border-[var(--kafe-outline-variant)]/30 p-5 space-y-3"
@@ -111,20 +103,6 @@ export default async function AdminDashboardPage({
             <div className="flex items-center justify-between">
               <div className="w-10 h-10 rounded-xl bg-[var(--kafe-secondary-container)]/30 flex items-center justify-center">
                 <Icon className="w-5 h-5 text-[var(--kafe-on-secondary-container)]" />
-              </div>
-              <div
-                className={`flex items-center gap-1 px-2 py-0.5 rounded-full text-label-sm ${
-                  positive
-                    ? 'bg-green-50 text-green-700'
-                    : 'bg-[var(--kafe-error-container)] text-[var(--kafe-on-error-container)]'
-                }`}
-              >
-                {positive ? (
-                  <TrendingUp className="w-3.5 h-3.5" />
-                ) : (
-                  <TrendingDown className="w-3.5 h-3.5" />
-                )}
-                {change}
               </div>
             </div>
             <div>
